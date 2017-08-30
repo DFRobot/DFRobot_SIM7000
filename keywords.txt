@@ -1,0 +1,35 @@
+#######################################
+# Syntax Coloring Map For Grove - Distance Measuring Sensor Unit
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+DFRobot_SIM7000	KEYWORD1
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################	
+
+setBaudRate	KEYWORD2	
+init	KEYWORD2
+checkSignalquality	KEYWORD2
+checkSIMStatus	KEYWORD2
+getRevision	KEYWORD2
+setNet	KEYWORD2
+attacthService	KEYWORD2
+bringupConnection	KEYWORD2
+SIM7000Connect	KEYWORD2
+SIM7000Send	KEYWORD2
+SIM7000Close	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+NB	LITERAL1
+GPRS	LITERAL1
+UDP	LITERAL1
+TCP	LITERAL1
