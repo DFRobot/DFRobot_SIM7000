@@ -41,7 +41,7 @@ The library is used to Send and receive GPRS or NB-IOT data (TCP,UDP)
 
     bool SIM7000Close(void);
 
- * @file test.ino
+ * @file DFROBOT_SIM7000_send.ino
  * @brief DFRobot's SIM7000 module
  * @n This example Send GPRS data(UDP)
  *
