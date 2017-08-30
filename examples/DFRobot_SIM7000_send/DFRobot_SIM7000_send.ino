@@ -15,7 +15,7 @@
 
 
 #include <Wire.h>
-#include <DFrobot_SIM7000.h>
+#include <DFRobot_SIM7000.h>
 
 DFRobot_SIM7000 DS;
   
@@ -27,7 +27,7 @@ void setup() {
   delay(100);
   DS.setNet(GPRS);                                //Set net mod GPRS or NB-IOT
   delay(100);
-  DS.checkSignalquality();                        //Check signal quality
+  DS.checkSignalQuality();                        //Check signal quality
   DS.attacthService();                            //Open the connection
   DS.SIM7000Connect(UDP,"116.247.119.165",7016);  //Start Up TCP or UDP Connection
   DS.SIM7000Send("1234",4);                       //Send Data Through TCP or UDP Connection 

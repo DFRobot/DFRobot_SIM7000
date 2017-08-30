@@ -21,7 +21,7 @@ class DFRobot_SIM7000
 public:
   bool setBaudRate(void);
   bool init(void);
-  bool checkSignalquality(void);
+  bool checkSignalQuality(void);
   bool checkSIMStatus(void);
   bool getRevision(void);
   bool setNet(Net net);

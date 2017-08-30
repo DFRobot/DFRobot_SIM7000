@@ -22,7 +22,7 @@ The library is used to Send and receive GPRS or NB-IOT data (TCP,UDP)
 
 ### Check signal quality
    
-    bool checkSignalquality(void);
+    bool checkSignalQuality(void);
    
 ### Open the connection
     

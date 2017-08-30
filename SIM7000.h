@@ -15,6 +15,7 @@ enum DataType {
     CMD     = 0,
     DATA    = 1,
 };
+
 int      SIM7000_check_readable();
 void     SIM7000_flush_serial();
 void     SIM7000_send_End_Mark();
