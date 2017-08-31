@@ -43,7 +43,7 @@ bool DFRobot_SIM7000::init(void)
     while(count < 3){
         SIM7000_send_cmd("AT\r\n");
         SIM7000_read_buffer(gprsBuffer,32);
-        if((NULL != strstr(gprsBuffer,"OK"))) { 
+        if((NULL != strstr(gprsBuffer,"OK"))){ 
             Serial.println("AT command READY");        
             break;
         }
@@ -64,7 +64,7 @@ bool DFRobot_SIM7000::checkSIMStatus(void)
     while(count < 3){
         SIM7000_send_cmd("AT+CPIN?\r\n");
         SIM7000_read_buffer(gprsBuffer,32);
-        if((NULL != strstr(gprsBuffer,"+CPIN: READY"))) { 
+        if((NULL != strstr(gprsBuffer,"+CPIN: READY"))){ 
             Serial.println("SIM card READY");        
             break;
         }
@@ -85,7 +85,7 @@ bool DFRobot_SIM7000::getRevision(void)
     while(count < 3){
         SIM7000_send_cmd("AT+CGMR\r\n");
         SIM7000_read_buffer(gprsBuffer,90);    
-        if((NULL != strstr(gprsBuffer,"Revision"))){             
+        if((NULL != strstr(gprsBuffer,"Revision"))){
             break;
         }
         count++;
@@ -101,36 +101,34 @@ bool DFRobot_SIM7000::setNet(Net net)
 {
     char gprsBuffer[40];
     if(net==NB){
-         SIM7000_send_cmd("AT+CNVW=0,10,\"1E00\"\r\n");
+        SIM7000_send_cmd("AT+CNVW=0,10,\"1E00\"\r\n");
         SIM7000_read_buffer(gprsBuffer, 40, DEFAULT_TIMEOUT);
         if(NULL != strstr(gprsBuffer, "OK")){
             Serial.println("Set NB-IOT mode");
             return true;
         }else{
             Serial.println("Fail to set NB-IOT mode");
-            while(1)
-            {
-                  delay(100);
+            while(1){
+                delay(100);
             }
             return false;
         }
     }else if(net==GPRS){
-       SIM7000_send_cmd("AT+CNVW=0,10,\"0D00\"\r\n");
-    SIM7000_read_buffer(gprsBuffer, 40, DEFAULT_TIMEOUT);
+        SIM7000_send_cmd("AT+CNVW=0,10,\"0D00\"\r\n");
+        SIM7000_read_buffer(gprsBuffer, 40, DEFAULT_TIMEOUT);
         if(NULL != strstr(gprsBuffer, "OK")){
             Serial.println("Set GPRS mode");
             return true;
         }else{
             Serial.println("Fail to set GPRS mode");
-            while(1)
-            {
-                  delay(100);
+            while(1){
+                delay(100);
             }
             return false;
         }
     }else{
-    Serial.println("No such mode!");        
-        return false;   
+    Serial.println("No such mode!");
+        return false;
     }
 }
 
@@ -138,7 +136,7 @@ bool DFRobot_SIM7000::checkSignalQuality(void)
 {
     char i = 0;
     char gprsBuffer[26];
-    char *p, *s;
+    char *p,*s;
     char buffers;
     SIM7000_flush_serial();
     SIM7000_clean_buffer(gprsBuffer, 26);
@@ -212,15 +210,14 @@ bool DFRobot_SIM7000::SIM7000Connect(Protocol ptl,const char *host, int port, in
         itoa(port, num, 10);
         SIM7000_send_cmd(num);
         SIM7000_send_cmd("\r\n");
-    } 
-    else if(ptl == UDP){
+    }else if(ptl == UDP){
         SIM7000_send_cmd("AT+CIPSTART=\"UDP\",\"");
         SIM7000_send_cmd(host);
         SIM7000_send_cmd("\",");
         itoa(port, num, 10);
         SIM7000_send_cmd(num);
         SIM7000_send_cmd("\r\n");
-    } else{
+    }else{
         Serial.println("No such mode!");
         return false;
     }
@@ -250,8 +247,7 @@ int DFRobot_SIM7000::SIM7000Send(const char *str, int len)
         if(NULL!=strstr(gprsBuffer,"OK")){
             Serial.println("Send OK");
             return len;
-        }
-        else{
+        }else{
             Serial.println("Fail to send");
             return 0;
         }
@@ -275,7 +271,7 @@ bool DFRobot_SIM7000::SIM7000Close(void)
     delay(500);
 }
 
-int DFRobot_SIM7000::SIM7000_check_readable()
+int DFRobot_SIM7000::SIM7000_check_readable(void)
 {
     return SIM7000Serial.available();
 }
@@ -302,7 +298,7 @@ boolean DFRobot_SIM7000::SIM7000_wait_for_resp(const char* resp, DataType type, 
     char c[50];
     unsigned long timerStart;//prevChar;  //prevChar is the time when the previous Char has been read.
     timerStart = millis();
-    while(1) {
+    while(1){
         if(SIM7000Serial.available()){
             while(SIM7000Serial.available()){
             Serial.write(SIM7000Serial.read());
@@ -338,7 +334,7 @@ void DFRobot_SIM7000::SIM7000_read_buffer(char *buffer, int count, unsigned int 
     timerStart = millis();
     prevChar = 0;
     char c;
-    while(1) {
+    while(1){
         while (SIM7000_check_readable()){
             c = SIM7000Serial.read();
             prevChar = millis();
@@ -346,11 +342,11 @@ void DFRobot_SIM7000::SIM7000_read_buffer(char *buffer, int count, unsigned int 
             if(i >= count)
                 break;
         }
-        if ((unsigned long) (millis() - timerStart) > timeout * 1000){
+        if((unsigned long) (millis() - timerStart) > timeout * 1000){
             //Serial.println("timeout");
             break;
         }       
-        if (((unsigned long) (millis() - prevChar) > chartimeout) && (prevChar != 0)){
+        if(((unsigned long) (millis() - prevChar) > chartimeout) && (prevChar != 0)){
             //Serial.println("timeout");
             break;
         }
@@ -364,7 +360,7 @@ void DFRobot_SIM7000::SIM7000_clean_buffer(char *buffer, int count)
     }
 }
 
-void DFRobot_SIM7000::SIM7000_flush_serial()
+void DFRobot_SIM7000::SIM7000_flush_serial(void)
 {
     while(SIM7000Serial.available()){
         SIM7000Serial.read();

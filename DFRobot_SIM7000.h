@@ -8,8 +8,8 @@
 #include <HardwareSerial.h>
 #include <Wire.h>
 
-#define DEFAULT_TIMEOUT              5   //seconds
-#define DEFAULT_INTERCHAR_TIMEOUT 1500   //miliseconds
+#define DEFAULT_TIMEOUT              5    //seconds
+#define DEFAULT_INTERCHAR_TIMEOUT 1500    //miliseconds
 
 static SoftwareSerial SIM7000Serial(8,7); // RX, TX
 extern Stream *serialSIM7000;
@@ -34,7 +34,7 @@ class DFRobot_SIM7000
 {
 public:
   int      SIM7000Send(const char *str, int len);
-  int      SIM7000_check_readable();
+  int      SIM7000_check_readable(void);
   bool     setBaudRate(long rate);
   bool     init(void);
   bool     checkSignalQuality(void);
@@ -46,8 +46,8 @@ public:
   bool     SIM7000Connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeoutchartimeout = DEFAULT_INTERCHAR_TIMEOUT);
   bool     SIM7000Close(void);
   void     SIM7000_send_cmd(const char* cmd);
-  void     SIM7000_flush_serial();
-  void     SIM7000_send_End_Mark();
+  void     SIM7000_flush_serial(void);
+  void     SIM7000_send_End_Mark(void);
   void     SIM7000_send_byte(uint8_t data);
   void     SIM7000_clean_buffer(char *buffer, int count);
   void     SIM7000_read_buffer(char* buffer,int count,  unsigned int timeout = DEFAULT_TIMEOUT, unsigned int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
@@ -56,6 +56,5 @@ public:
 private:
   long     baudrate;
 };
-
 
 #endif  
