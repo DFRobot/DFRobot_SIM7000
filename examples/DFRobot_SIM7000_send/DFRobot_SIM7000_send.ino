@@ -3,7 +3,6 @@
   * @brief DFRobot's SIM7000 module
   * @n This example Send GPRS data(UDP)
   *
-  *
   * @copyright	[DFRobot](http://www.dfrobot.com), 2017
   * @copyright	GNU Lesser General Public License
   *
@@ -13,7 +12,6 @@
   * @https://github.com/DFRobot/DFRobot_SIM7000
   */
 
-
 #include <Wire.h>
 #include <DFRobot_SIM7000.h>
 
@@ -21,7 +19,7 @@ DFRobot_SIM7000 DS;
   
 void setup() {
   Serial.begin(115200);
-  DS.setBaudRate();                               //Set baud rate from 115200 to 38400
+  DS.setBaudRate(38400);                          //Set baud rate from 115200 to 38400
   DS.init();                                      //Init SIM7000
   DS.checkSIMStatus();                            //Check SIM card
   delay(100);
