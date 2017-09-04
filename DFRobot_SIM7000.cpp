@@ -43,8 +43,8 @@ bool DFRobot_SIM7000::init(void)
     while(count < 3){
         SIM7000_send_cmd("AT\r\n");
         SIM7000_read_buffer(gprsBuffer,32);
-        if((NULL != strstr(gprsBuffer,"OK"))){ 
-            Serial.println("AT command READY");        
+        if((NULL != strstr(gprsBuffer,"OK"))){
+            Serial.println("AT command READY");
             break;
         }
         count++;
@@ -65,7 +65,7 @@ bool DFRobot_SIM7000::checkSIMStatus(void)
         SIM7000_send_cmd("AT+CPIN?\r\n");
         SIM7000_read_buffer(gprsBuffer,32);
         if((NULL != strstr(gprsBuffer,"+CPIN: READY"))){ 
-            Serial.println("SIM card READY");        
+            Serial.println("SIM card READY");
             break;
         }
         count++;
@@ -84,7 +84,7 @@ bool DFRobot_SIM7000::getRevision(void)
     SIM7000_clean_buffer(gprsBuffer,90);
     while(count < 3){
         SIM7000_send_cmd("AT+CGMR\r\n");
-        SIM7000_read_buffer(gprsBuffer,90);    
+        SIM7000_read_buffer(gprsBuffer,90);
         if((NULL != strstr(gprsBuffer,"Revision"))){
             break;
         }
@@ -160,7 +160,7 @@ bool DFRobot_SIM7000::attacthService(void)
     SIM7000_send_cmd("AT+CGATT?\r\n");
     SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
     if(NULL != strstr(gprsBuffer, "+CGATT: 1")){
-        Serial.println("Attach service");    
+        Serial.println("Attach service");
     }else{
         Serial.println("Fail to attach service");
         return false;
@@ -180,7 +180,7 @@ bool DFRobot_SIM7000::attacthService(void)
     SIM7000_send_cmd("AT+CIICR\r\n");
     SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
     if(NULL != strstr(gprsBuffer, "OK")){
-        Serial.println("Bring up wireless connection");    
+        Serial.println("Bring up wireless connection");
     }else{
         Serial.println("Fail to bring up wireless connection");
         return false;
@@ -199,7 +199,7 @@ bool DFRobot_SIM7000::attacthService(void)
     return false;
 }
 
-bool DFRobot_SIM7000::SIM7000Connect(Protocol ptl,const char *host, int port, int timeout, int chartimeout)
+bool DFRobot_SIM7000::connect(Protocol ptl,const char *host, int port, int timeout, int chartimeout)
 {
     char num[4];
     char resp[96];
@@ -230,7 +230,7 @@ bool DFRobot_SIM7000::SIM7000Connect(Protocol ptl,const char *host, int port, in
     return false;
 }
 
-int DFRobot_SIM7000::SIM7000Send(const char *str, int len)
+int DFRobot_SIM7000::send(const char *str, int len)
 {
     char num[4],gprsBuffer[32];
     SIM7000_clean_buffer(gprsBuffer,32);
@@ -254,7 +254,7 @@ int DFRobot_SIM7000::SIM7000Send(const char *str, int len)
     }
 }
 
-bool DFRobot_SIM7000::SIM7000Close(void)
+bool DFRobot_SIM7000::close(void)
 {
     char gprsBuffer[32];
     SIM7000_clean_buffer(gprsBuffer,32);
@@ -296,7 +296,7 @@ boolean DFRobot_SIM7000::SIM7000_wait_for_resp(const char* resp, DataType type, 
     int len = strlen(resp);
     int sum = 0;
     char c[50];
-    unsigned long timerStart;//prevChar;  //prevChar is the time when the previous Char has been read.
+    unsigned long timerStart;
     timerStart = millis();
     while(1){
         if(SIM7000Serial.available()){

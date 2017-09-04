@@ -15,15 +15,15 @@ DFRobot_SIM7000	KEYWORD1
 
 setBaudRate	KEYWORD2	
 init	KEYWORD2
-checkSignalquality	KEYWORD2
+checkSignalQuality	KEYWORD2
 checkSIMStatus	KEYWORD2
 getRevision	KEYWORD2
 setNet	KEYWORD2
 attacthService	KEYWORD2
 bringupConnection	KEYWORD2
-SIM7000Connect	KEYWORD2
-SIM7000Send	KEYWORD2
-SIM7000Close	KEYWORD2
+connect	KEYWORD2
+send	KEYWORD2
+close	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
