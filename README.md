@@ -14,44 +14,37 @@ The library is used to Send and receive GPRS or NB-IOT data (TCP,UDP)
 
 ## Methods
 
-### Set baud rate to avoid garbled
- 
-    bool setBaudRate(long rate);
-	rate:1200 2400 4800 9600 19200 38400
+```C++
+
+#include <DFrobot_SIM7000.h>
+//Set baud rate to avoid garbled, rate:1200 2400 4800 9600 19200 38400
+bool setBaudRate(long rate);
+
+//Init SIM7000
+bool init(void);
+
+//Check SIM card
+bool checkSIMStatus(void);
     
-### Init SIM7000
+//Set net mod GPRS or NB-IOT, net:GPRS NB
+bool setNet(Net net);
+
+//Check signal quality
+bool checkSignalQuality(void);
    
-    bool init(void);
+//Open the connection
+bool attacthService(void);
 
-### Check SIM card
+//Start up TCP or UDP connection,ptl:UDP TCP
+bool connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeoutchartimeout = DEFAULT_INTERCHAR_TIMEOUT);
 
-    bool checkSIMStatus(void);
-    
-### Set net mod GPRS or NB-IOT
+//Send data through TCP or UDP connection
+int  send(const char *str);
 
-    bool setNet(Net net);
-    net:GPRS NB
+//End the connection
+bool close(void);
 
-### Check signal quality
-   
-    bool checkSignalQuality(void);
-   
-### Open the connection
-    
-    bool attacthService(void);
-
-### Start up TCP or UDP connection
-
-    bool connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeoutchartimeout = DEFAULT_INTERCHAR_TIMEOUT);
-    ptl:UDP TCP
-    
-### Send data through TCP or UDP connection
-
-    int  send(const char *str);
-
-### End the connection
-
-    bool close(void);
+```
 
 ## History
 
