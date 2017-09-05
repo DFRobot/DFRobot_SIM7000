@@ -21,8 +21,8 @@ enum Protocol {
 };
 
 enum Net{
-	GPRS,
-	NB,
+    GPRS,
+    NB,
 };
 
 enum DataType {
@@ -33,7 +33,7 @@ enum DataType {
 class DFRobot_SIM7000
 {
 public:
-  int      send(const char *str, int len);
+  int      send(const char *str);
   int      SIM7000_check_readable(void);
   bool     setBaudRate(long rate);
   bool     init(void);

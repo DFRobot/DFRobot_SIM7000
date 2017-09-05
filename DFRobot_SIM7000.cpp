@@ -221,7 +221,7 @@ bool DFRobot_SIM7000::connect(Protocol ptl,const char *host, int port, int timeo
         Serial.println("No such mode!");
         return false;
     }
-    SIM7000_read_buffer(resp, 96, timeout, chartimeout);  
+    SIM7000_read_buffer(resp, 96, timeout, chartimeout);
     if(NULL != strstr(resp,"CONNECT OK")){
         Serial.println("Connect OK!");
         return true;
@@ -230,9 +230,10 @@ bool DFRobot_SIM7000::connect(Protocol ptl,const char *host, int port, int timeo
     return false;
 }
 
-int DFRobot_SIM7000::send(const char *str, int len)
+int DFRobot_SIM7000::send(const char *str)
 {
     char num[4],gprsBuffer[32];
+    int len=sizeof(str);
     SIM7000_clean_buffer(gprsBuffer,32);
     if(len > 0){
         SIM7000_send_cmd("AT+CIPSEND=");

@@ -1,5 +1,5 @@
 # DFROBOT_SIM7000 Library for Arduino
-Provides an Arduino library for SIM7000
+Provides an Arduino library for NB-IOT SIM7000 Shield
 ## Table of Contents
 
 * [Summary](#summary)
@@ -14,9 +14,10 @@ The library is used to Send and receive GPRS or NB-IOT data (TCP,UDP)
 
 ## Methods
 
-### Set baud rate from 115200 to 38400 to avoid garbled
+### Set baud rate to avoid garbled
  
-    bool setBaudRate(void);
+    bool setBaudRate(long rate);
+	rate:1200 2400 4800 9600 19200 38400
     
 ### Init SIM7000
    
@@ -39,14 +40,14 @@ The library is used to Send and receive GPRS or NB-IOT data (TCP,UDP)
     
     bool attacthService(void);
 
-### Start Up TCP or UDP Connection
+### Start up TCP or UDP connection
 
     bool connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeoutchartimeout = DEFAULT_INTERCHAR_TIMEOUT);
     ptl:UDP TCP
     
-### Send Data Through TCP or UDP Connection
+### Send data through TCP or UDP connection
 
-    int  send(const char *str, int len);
+    int  send(const char *str);
 
 ### End the connection
 

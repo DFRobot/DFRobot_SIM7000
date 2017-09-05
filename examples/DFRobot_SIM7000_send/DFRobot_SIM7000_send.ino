@@ -20,7 +20,7 @@ void setup() {
   DS.checkSignalQuality();                        //Check signal quality
   DS.attacthService();                            //Open the connection
   DS.connect(UDP,"116.247.119.165",7016);         //Start Up TCP or UDP Connection
-  DS.send("1234",4);                              //Send Data Through TCP or UDP Connection 
+  DS.send("1234");                                //Send Data Through TCP or UDP Connection 
   DS.close();                                     //End the connection
 }
 
