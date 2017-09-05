@@ -1,7 +1,18 @@
-DFROBOT_SIM7000 Library for Arduino
----------------------------------------------------------
+# DFROBOT_SIM7000 Library for Arduino
+Provides an Arduino library for SIM7000
+## Table of Contents
 
+* [Summary](#summary)
+* [Methods](#methods)
+* [History](#history)
+* [Credits](#credits)
+<snippet>
+<content>
+
+## Summary
 The library is used to Send and receive GPRS or NB-IOT data (TCP,UDP)
+
+## Methods
 
 ### Set baud rate from 115200 to 38400 to avoid garbled
  
@@ -41,3 +52,11 @@ The library is used to Send and receive GPRS or NB-IOT data (TCP,UDP)
 
     bool close(void);
 
+## History
+
+- data 2017-8-30
+- version V1.0
+
+## Credits
+
+- author [Zhangjiawei<jiawei.zhang@dfrobot.com>]
