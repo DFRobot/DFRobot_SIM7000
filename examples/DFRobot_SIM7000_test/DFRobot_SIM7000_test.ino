@@ -10,6 +10,7 @@
 DFRobot_SIM7000 DS;
 
 void setup() {
+  char buff[100];
   Serial.begin(115200);
   if(DS.setBaudRate(38400))                                                           //Set baud rate from 115200 to 38400
       Serial.println("Set baud rate:38400");
@@ -32,10 +33,11 @@ void setup() {
   DS.checkSignalQuality();                                                            //Check signal quality
   delay(500);
   DS.attacthService();                                                                //Open the connection
-  DS.receive(ON);                                                                     //Turn on the receive function(ON/OFF)
   delay(200);
   DS.connect(TCP,"www.baidu.com",80);                                                 //Start Up TCP or UDP Connection
   DS.send("GET / HTTP/1.1\r\nHost:www.baidu.com\r\nConnection:keep-alive\r\n\r\n");   //Send Data Through TCP or UDP Connection 
+  DS.recv(buff,100);                                                                  //Receive data 
+  Serial.println(buff); 
   DS.close();                                                                         //End the connection
 }
 

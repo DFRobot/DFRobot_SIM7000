@@ -197,7 +197,7 @@ bool DFRobot_SIM7000::connect(Protocol ptl,const char *host, int port, int timeo
     return false;
 }
 
-int DFRobot_SIM7000::send(const char *str)
+void DFRobot_SIM7000::send(const char *str)
 {
     char num[4],gprsBuffer[32];
     int len=strlen(str);
@@ -209,26 +209,26 @@ int DFRobot_SIM7000::send(const char *str)
         SIM7000_send_cmd(num);
         SIM7000_send_cmd("\r\n");
         delay(500);
-        if(Rcmd){
-            SIM7000_send_cmd(str);
-            delay(500);
-            SIM7000_send_End_Mark();
-               Serial.println("Send OK");
-            return 0;
-        }else{
-            SIM7000_check_with_cmd(str,"OK",CMD);
-        }
+        SIM7000_send_cmd(str);
+        delay(500);
+        SIM7000_send_End_Mark();
     }
 }
 
-void DFRobot_SIM7000::receive(int cmd)
+void DFRobot_SIM7000::recv(char* buf,int maxlen)
 {
-    Rcmd=cmd;
+	char gprsBuffer[maxlen];
+    SIM7000_clean_buffer(gprsBuffer,maxlen);
+    SIM7000_read_buffer(gprsBuffer,maxlen, DEFAULT_TIMEOUT);
+	memcpy(buf,gprsBuffer,maxlen);
 }
 
 bool DFRobot_SIM7000::close(void)
 {
     char gprsBuffer[32];
+	while(SIM7000Serial.available()){
+	    delay(100);
+	}
     SIM7000_clean_buffer(gprsBuffer,32);
     SIM7000_send_cmd("AT+CIPCLOSE\r\n");
     SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
@@ -293,7 +293,7 @@ boolean DFRobot_SIM7000::SIM7000_wait_for_resp(const char* resp, DataType type, 
         }
         */
         if((unsigned long)(millis() - timerStart) > timeout*3000){
-            Serial.println("receive over");
+            //Serial.println("receive over");
             return false;
         }
     }
@@ -305,21 +305,19 @@ void DFRobot_SIM7000::SIM7000_read_buffer(char *buffer, int count, unsigned int 
     unsigned long timerStart, prevChar;
     timerStart = millis();
     prevChar = 0;
-    char c;
     while(1){
         while (SIM7000_check_readable()){
-            c = SIM7000Serial.read();
+            buffer[i++] = SIM7000Serial.read();
             prevChar = millis();
-            buffer[i++] = c;
             if(i >= count)
-                break;
+                return;
         }
         if((unsigned long) (millis() - timerStart) > timeout * 1000){
             //Serial.println("timeout");
             break;
         }       
         if(((unsigned long) (millis() - prevChar) > chartimeout) && (prevChar != 0)){
-            //Serial.println("timeout");
+            //Serial.println("timeout1");
             break;
         }
     }
