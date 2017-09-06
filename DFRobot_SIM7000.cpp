@@ -217,18 +217,18 @@ void DFRobot_SIM7000::send(const char *str)
 
 void DFRobot_SIM7000::recv(char* buf,int maxlen)
 {
-	char gprsBuffer[maxlen];
+    char gprsBuffer[maxlen];
     SIM7000_clean_buffer(gprsBuffer,maxlen);
     SIM7000_read_buffer(gprsBuffer,maxlen, DEFAULT_TIMEOUT);
-	memcpy(buf,gprsBuffer,maxlen);
+    memcpy(buf,gprsBuffer,maxlen);
 }
 
 bool DFRobot_SIM7000::close(void)
 {
     char gprsBuffer[32];
-	while(SIM7000Serial.available()){
-	    delay(100);
-	}
+    while(SIM7000Serial.available()){
+        delay(100);
+    }
     SIM7000_clean_buffer(gprsBuffer,32);
     SIM7000_send_cmd("AT+CIPCLOSE\r\n");
     SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
