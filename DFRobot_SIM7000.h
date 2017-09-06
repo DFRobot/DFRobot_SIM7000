@@ -11,6 +11,9 @@
 #define DEFAULT_TIMEOUT              5    //seconds
 #define DEFAULT_INTERCHAR_TIMEOUT 1500    //miliseconds
 
+#define ON  0
+#define OFF 1
+
 static SoftwareSerial SIM7000Serial(8,7); // RX, TX
 extern Stream *serialSIM7000;
 
@@ -39,12 +42,12 @@ public:
   bool     init(void);
   bool     checkSignalQuality(void);
   bool     checkSIMStatus(void);
-  bool     getRevision(void);
   bool     setNet(Net net);
   bool     attacthService(void);
   bool     bringupConnection(void);
   bool     connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
   bool     close(void);
+  void     receive(int cmd);
   void     SIM7000_send_cmd(const char* cmd);
   void     SIM7000_flush_serial(void);
   void     SIM7000_send_End_Mark(void);
@@ -55,6 +58,7 @@ public:
   boolean  SIM7000_wait_for_resp(const char* resp, DataType type, unsigned int timeout = DEFAULT_TIMEOUT, unsigned int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
 private:
   long     baudrate;
+  int      Rcmd=OFF;
 };
 
 #endif

@@ -23,6 +23,7 @@ attacthService	KEYWORD2
 bringupConnection	KEYWORD2
 connect	KEYWORD2
 send	KEYWORD2
+receive	KEYWORD2
 close	KEYWORD2
 
 #######################################
@@ -33,3 +34,5 @@ NB	LITERAL1
 GPRS	LITERAL1
 UDP	LITERAL1
 TCP	LITERAL1
+ON	LITERAL1
+OFF	LITERAL1

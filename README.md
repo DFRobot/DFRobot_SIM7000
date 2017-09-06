@@ -38,6 +38,9 @@ bool attacthService(void);
 //Start up TCP or UDP connection,ptl:UDP TCP
 bool connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeoutchartimeout = DEFAULT_INTERCHAR_TIMEOUT);
 
+//Control the received,cmd:NO OFF 
+void receive(int cmd);
+
 //Send data through TCP or UDP connection
 int  send(const char *str);
 
@@ -53,4 +56,4 @@ bool close(void);
 
 ## Credits
 
-- author [Zhangjiawei<jiawei.zhang@dfrobot.com>]
+- author [Zhangjiawei  <jiawei.zhang@dfrobot.com>]
