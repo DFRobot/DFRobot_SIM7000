@@ -36,7 +36,7 @@ bool checkSignalQuality(void);
 bool attacthService(void);
 
 //Start up TCP or UDP connection,ptl:UDP TCP
-bool connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeoutchartimeout = DEFAULT_INTERCHAR_TIMEOUT);
+bool connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
 
 //Receive data,maxlen from 1 to 300
 void recv(char* buf,int maxlen);
