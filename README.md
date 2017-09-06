@@ -38,7 +38,7 @@ bool attacthService(void);
 //Start up TCP or UDP connection,ptl:UDP TCP
 bool connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeoutchartimeout = DEFAULT_INTERCHAR_TIMEOUT);
 
-//Control the received,cmd:NO OFF 
+//Control reception,cmd:NO OFF 
 void receive(int cmd);
 
 //Send data through TCP or UDP connection
