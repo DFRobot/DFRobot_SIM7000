@@ -22,9 +22,9 @@ void setup() {
     else
         Serial.println("AT command ERROR");
     if(DS.checkSIMStatus())                                                             //Check SIM card
-         Serial.println("SIM card READY");
+        Serial.println("SIM card READY");
     else
-         Serial.println("SIM card ERROR");  
+        Serial.println("SIM card ERROR");
     delay(100);
     if(DS.setNet(GPRS))                                                                 //Set net mod GPRS or NB-IOT
         Serial.println("Set GPRS mode");
