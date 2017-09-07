@@ -36,26 +36,26 @@ enum DataType {
 class DFRobot_SIM7000
 {
 public:
-  int      SIM7000_check_readable(void);
-  bool     setBaudRate(long rate);
-  bool     init(void);
-  bool     checkSignalQuality(void);
-  bool     checkSIMStatus(void);
-  bool     setNet(Net net);
-  bool     attacthService(void);
-  bool     bringupConnection(void);
-  bool     connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
-  bool     close(void);
-  void     send(const char *str);
-  void     recv(char* buf,int maxlen);
-  void     SIM7000_send_cmd(const char* cmd);
-  void     SIM7000_flush_serial(void);
-  void     SIM7000_send_End_Mark(void);
-  void     SIM7000_send_byte(uint8_t data);
-  void     SIM7000_clean_buffer(char *buffer, int count);
-  void     SIM7000_read_buffer(char* buffer,int count,  unsigned int timeout = DEFAULT_TIMEOUT, unsigned int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
-  boolean  SIM7000_check_with_cmd(const char* cmd, const char *resp, DataType type, unsigned int timeout = DEFAULT_TIMEOUT, unsigned int chartimeout = DEFAULT_INTERCHAR_TIMEOUT*5);
-  boolean  SIM7000_wait_for_resp(const char* resp, DataType type, unsigned int timeout = DEFAULT_TIMEOUT, unsigned int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
+    int      SIM7000_check_readable(void);
+    int      recv(char* buf,int maxlen,int timeout);
+    int      SIM7000_read_buffer(char* buffer,int count,  unsigned int timeout = 0, unsigned int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
+    bool     init(void);
+    bool     setNet(Net net);
+    bool     checkSIMStatus(void);
+    bool     attacthService(void);
+    bool     setBaudRate(long rate);
+    bool     bringupConnection(void);
+    bool     checkSignalQuality(void);
+    bool     connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
+    bool     close(void);
+    void     send(const char *str);
+    void     SIM7000_flush_serial(void);
+    void     SIM7000_send_End_Mark(void);
+    void     SIM7000_send_cmd(const char* cmd);
+    void     SIM7000_send_byte(uint8_t data);
+    void     SIM7000_clean_buffer(char *buffer, int count);
+    boolean  SIM7000_check_with_cmd(const char* cmd, const char *resp, DataType type, unsigned int timeout = DEFAULT_TIMEOUT, unsigned int chartimeout = DEFAULT_INTERCHAR_TIMEOUT*5);
+    boolean  SIM7000_wait_for_resp(const char* resp, DataType type, unsigned int timeout = DEFAULT_TIMEOUT, unsigned int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
 private:
   long     baudrate;
 };

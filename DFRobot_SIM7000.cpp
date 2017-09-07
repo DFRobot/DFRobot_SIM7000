@@ -41,7 +41,7 @@ bool DFRobot_SIM7000::init(void)
     SIM7000_clean_buffer(gprsBuffer,32);
     while(count < 3){
         SIM7000_send_cmd("AT\r\n");
-        SIM7000_read_buffer(gprsBuffer,32);
+        SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
         if((NULL != strstr(gprsBuffer,"OK"))){
             
             break;
@@ -62,7 +62,7 @@ bool DFRobot_SIM7000::checkSIMStatus(void)
     SIM7000_clean_buffer(gprsBuffer,32);
     while(count < 3){
         SIM7000_send_cmd("AT+CPIN?\r\n");
-        SIM7000_read_buffer(gprsBuffer,32);
+        SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
         if((NULL != strstr(gprsBuffer,"+CPIN: READY"))){
             break;
         }
@@ -155,7 +155,7 @@ bool DFRobot_SIM7000::attacthService(void)
     delay(1000);
     SIM7000_clean_buffer(gprsBuffer,32);
     SIM7000_send_cmd("AT+CIFSR\r\n");
-    SIM7000_read_buffer(gprsBuffer,32);
+    SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
     if (NULL != strstr(gprsBuffer,"ERROR")){
         Serial.println("Can not get local IP address");
         return false;
@@ -188,7 +188,7 @@ bool DFRobot_SIM7000::connect(Protocol ptl,const char *host, int port, int timeo
         Serial.println("No such mode!");
         return false;
     }
-    SIM7000_read_buffer(resp, 96, timeout, chartimeout);
+    SIM7000_read_buffer(resp, 96, DEFAULT_TIMEOUT, chartimeout);
     if(NULL != strstr(resp,"CONNECT OK")){
         Serial.println("Connect OK!");
         return true;
@@ -215,12 +215,13 @@ void DFRobot_SIM7000::send(const char *str)
     }
 }
 
-void DFRobot_SIM7000::recv(char* buf,int maxlen)
+int DFRobot_SIM7000::recv(char* buf,int maxlen,int timeout)
 {
     char gprsBuffer[maxlen];
     SIM7000_clean_buffer(gprsBuffer,maxlen);
-    SIM7000_read_buffer(gprsBuffer,maxlen, DEFAULT_TIMEOUT);
-    memcpy(buf,gprsBuffer,maxlen);
+    int i=SIM7000_read_buffer(gprsBuffer,maxlen, timeout);
+    memcpy(buf,gprsBuffer,i);
+    return i;
 }
 
 bool DFRobot_SIM7000::close(void)
@@ -263,6 +264,33 @@ boolean DFRobot_SIM7000::SIM7000_check_with_cmd(const char* cmd, const char *res
         return false;
 }
 
+int DFRobot_SIM7000::SIM7000_read_buffer(char *buffer, int count, unsigned int timeout, unsigned int chartimeout)
+{
+    int i = 0;
+    unsigned long timerStart, prevChar;
+    timerStart = millis();
+    prevChar = 0;
+    while(1){
+        while(SIM7000_check_readable()){
+            buffer[i++] = SIM7000Serial.read();
+            prevChar = millis();
+            if(i >= count)
+                return i;
+        }
+        if(timeout){
+            if((unsigned long) (millis() - timerStart) > timeout * 1000){
+                Serial.println("Get head timeout");
+                break;
+            }
+        }
+        if(((unsigned long) (millis() - prevChar) > chartimeout) && (prevChar != 0)){
+            //Serial.println("timeout1");
+            break;
+        }
+    }
+    return i;
+}
+
 boolean DFRobot_SIM7000::SIM7000_wait_for_resp(const char* resp, DataType type, unsigned int timeout, unsigned int chartimeout)
 {
     int len = strlen(resp);
@@ -275,50 +303,10 @@ boolean DFRobot_SIM7000::SIM7000_wait_for_resp(const char* resp, DataType type, 
             while(SIM7000Serial.available()){
             Serial.write(SIM7000Serial.read());
             }
-            //return true;
         }
-        /*
-        if(SIM7000Serial.available()){
-        
-            while(SIM7000Serial.available()){
-            c[sum++]=SIM7000Serial.read();
-            }
-            
-        for(sum=0;sum<=len;sum++)
-        {
-            if(c[sum]!=resp[sum])
-                return false;
-        }
-        return true;
-        }
-        */
         if((unsigned long)(millis() - timerStart) > timeout*3000){
             //Serial.println("receive over");
             return false;
-        }
-    }
-}
-
-void DFRobot_SIM7000::SIM7000_read_buffer(char *buffer, int count, unsigned int timeout, unsigned int chartimeout)
-{
-    int i = 0;
-    unsigned long timerStart, prevChar;
-    timerStart = millis();
-    prevChar = 0;
-    while(1){
-        while (SIM7000_check_readable()){
-            buffer[i++] = SIM7000Serial.read();
-            prevChar = millis();
-            if(i >= count)
-                return;
-        }
-        if((unsigned long) (millis() - timerStart) > timeout * 1000){
-            //Serial.println("timeout");
-            break;
-        }       
-        if(((unsigned long) (millis() - prevChar) > chartimeout) && (prevChar != 0)){
-            //Serial.println("timeout1");
-            break;
         }
     }
 }
