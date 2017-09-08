@@ -4,7 +4,7 @@ bool DFRobot_SIM7000::setBaudRate(long rate)
 {
     char gprsBuffer[32];
     SIM7000_clean_buffer(gprsBuffer,32);
-    Serial.println("Ready to set baud rate");
+    Serial.println("Ready");
     baudrate=115200;
     SIM7000Serial.begin(baudrate);
     while(1){
