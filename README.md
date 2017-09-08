@@ -29,8 +29,8 @@ bool checkSIMStatus(void);
 //Set net mod GPRS or NB-IOT, net:GPRS NB
 bool setNet(Net net);
 
-//Check signal quality
-bool checkSignalQuality(void);
+//Check signal quality,return signal quality(0-99)
+int checkSignalQuality(void);
    
 //Open the connection
 bool attacthService(void);
@@ -38,8 +38,8 @@ bool attacthService(void);
 //Start up TCP or UDP connection,ptl:UDP TCP
 bool connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
 
-//Receive data,maxlen from 1 to 300,when timeout=0(default) keep receiving state
-void recv(char* buf,int maxlen,int timeout);
+//Receive data,maxlen from 1 to 300,when timeout=0(default) keep receiving state,return the actual number of received
+int recv(char* buf,int maxlen,int timeout);
 
 //Send data through TCP or UDP connection
 int  send(const char *str);
