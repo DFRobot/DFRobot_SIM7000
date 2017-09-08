@@ -8,42 +8,60 @@
 #include <DFRobot_SIM7000.h>
 
 DFRobot_SIM7000 DS;
+static char buff[300];
 
 void setup() {
-    char buff[300];
-    int dataNum;
+    int sig,dataNum;
     Serial.begin(115200);
-    if(DS.setBaudRate(38400))                                                           //Set baud rate from 115200 to 38400
+    if(DS.setBaudRate(38400)){                                                            //Set baud rate from 115200 to 38400
         Serial.println("Set baud rate:38400");
-    else
+    }else{
         Serial.println("faile to set baud rate");
-    if(DS.init())                                                                       //Init SIM7000
+    }
+    if(DS.init()){                                                                        //Init SIM7000
         Serial.println("AT command READY");
-    else
+    }else{
         Serial.println("AT command ERROR");
-    if(DS.checkSIMStatus())                                                             //Check SIM card
+    }
+    if(DS.checkSIMStatus()){                                                              //Check SIM card
         Serial.println("SIM card READY");
-    else
+    }else{
         Serial.println("SIM card ERROR");
-    delay(100);
-    if(DS.setNet(GPRS))                                                                 //Set net mod GPRS or NB-IOT
-        Serial.println("Set GPRS mode");
-    else 
-        Serial.println("Fail to set mode");  
-    delay(100);
-    DS.checkSignalQuality();                                                            //Check signal quality
+    }
     delay(500);
-    DS.attacthService();                                                                //Open the connection
+    if(DS.setNet(GPRS)){                                                                  //Set net mod GPRS or NB-IOT
+        Serial.println("Set GPRS mode");
+    }else{
+        Serial.println("Fail to set mode");
+    }
+    delay(500);
+    sig=DS.checkSignalQuality();                                                          //Check signal quality
+    Serial.print("sig =");
+    Serial.println(sig);
+    delay(500);
+    if(DS.attacthService()){                                                              //Open the connection
+    Serial.println("Attach service");
+    }else{
+    Serial.println("Fail to Attach service");
+    }
     delay(200);
-    DS.connect(TCP,"www.baidu.com",80);                                                 //Start Up TCP or UDP Connection
-    DS.send("GET / HTTP/1.1\r\nHost:www.baidu.com\r\nConnection:keep-alive\r\n\r\n");   //Send Data Through TCP or UDP Connection 
-    dataNum=DS.recv(buff,300,0);                                                        //Receive data 
+    if(DS.connect(TCP,"www.baidu.com",80)){                                               //Start Up TCP or UDP Connection
+    Serial.println("Connect OK");
+    }else{
+    Serial.println("Fail to connect");
+    }
+    DS.send("HEAD / HTTP/1.1\r\nHost:www.baidu.com\r\nConnection:keep-alive\r\n\r\n");    //Send Data Through TCP or UDP Connection 
+    dataNum=DS.recv(buff,300,0);                                                          //Receive data 
     Serial.print("dataNum=");
     Serial.println(dataNum);
     Serial.println(buff);
-    DS.close();                                                                         //End the connection
+    if(DS.close()){                                                                       //End the connection
+        Serial.println("Close connection");
+    }else{
+        Serial.println("Fail to close connection");
+    }
 }
 
 void loop() {
-  delay(1000);
+    delay(1000);
 }

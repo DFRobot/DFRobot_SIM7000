@@ -36,6 +36,7 @@ enum DataType {
 class DFRobot_SIM7000
 {
 public:
+    int      checkSignalQuality(void);
     int      SIM7000_check_readable(void);
     int      recv(char* buf,int maxlen,int timeout);
     int      SIM7000_read_buffer(char* buffer,int count,  unsigned int timeout = 0, unsigned int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
@@ -45,7 +46,6 @@ public:
     bool     attacthService(void);
     bool     setBaudRate(long rate);
     bool     bringupConnection(void);
-    bool     checkSignalQuality(void);
     bool     connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
     bool     close(void);
     void     send(const char *str);

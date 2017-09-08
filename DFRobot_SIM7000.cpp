@@ -14,17 +14,17 @@ bool DFRobot_SIM7000::setBaudRate(long rate)
         }
     }
     delay(2000);
-    if(rate==1200)
+    if( rate  ==  1200)
         SIM7000_send_cmd("AT+IPR=1200\r\n");
-    else if(rate==2400)
+    else if(rate == 2400)
         SIM7000_send_cmd("AT+IPR=2400\r\n");
-    else if(rate==4800)
+    else if(rate == 4800)
         SIM7000_send_cmd("AT+IPR=4800\r\n");
-    else if(rate==9600)
+    else if(rate == 9600)
         SIM7000_send_cmd("AT+IPR=9600\r\n");
-    else if(rate==19200)
+    else if(rate == 19200)
         SIM7000_send_cmd("AT+IPR=19200\r\n");
-    else if(rate==38400)
+    else if(rate == 38400)
         SIM7000_send_cmd("AT+IPR=38400\r\n");
     else{
         Serial.println("No such rate");
@@ -39,7 +39,7 @@ bool DFRobot_SIM7000::init(void)
     char gprsBuffer[32];
     int  count = 0;
     SIM7000_clean_buffer(gprsBuffer,32);
-    while(count < 3){
+    while( count < 3){
         SIM7000_send_cmd("AT\r\n");
         SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
         if((NULL != strstr(gprsBuffer,"OK"))){
@@ -78,30 +78,29 @@ bool DFRobot_SIM7000::checkSIMStatus(void)
 bool DFRobot_SIM7000::setNet(Net net)
 {
     char gprsBuffer[40];
-    if(net==NB){
+    if(net == NB){
         SIM7000_send_cmd("AT+CNVW=0,10,\"1E00\"\r\n");
         SIM7000_read_buffer(gprsBuffer, 40, DEFAULT_TIMEOUT);
         if(NULL != strstr(gprsBuffer, "OK"))
             return true;
         else
             return false;
-    }else if(net==GPRS){
+    }else if(net == GPRS){
         SIM7000_send_cmd("AT+CNVW=0,10,\"0D00\"\r\n");
         SIM7000_read_buffer(gprsBuffer, 40, DEFAULT_TIMEOUT);
         if(NULL != strstr(gprsBuffer, "OK")){
             return true;
         }else
             return false;
-        
     }else{
     Serial.println("No such mode!");
         return false;
     }
 }
 
-bool DFRobot_SIM7000::checkSignalQuality(void)
+int DFRobot_SIM7000::checkSignalQuality(void)
 {
-    char i = 0;
+    char i = 0,j=0;
     char gprsBuffer[26];
     char *p,*s;
     char buffers;
@@ -110,12 +109,13 @@ bool DFRobot_SIM7000::checkSignalQuality(void)
     SIM7000_send_cmd("AT+CSQ\r");
     SIM7000_read_buffer(gprsBuffer, 26, DEFAULT_TIMEOUT);
     if (NULL != (s = strstr(gprsBuffer, "+CSQ:"))){
-        Serial.print("signal strength:");
-        Serial.print(*(s+6));
-        Serial.println(*(s+7));
-        return true;
+        //Serial.print("signal strength:");
+        i=*(s+6);
+        i=i*10;
+        i+=*(s+7);
+        return i;
     }
-    return false;
+    return 99;
 }
 
 bool DFRobot_SIM7000::attacthService(void)
@@ -127,42 +127,36 @@ bool DFRobot_SIM7000::attacthService(void)
     SIM7000_send_cmd("AT+CGATT?\r\n");
     SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
     if(NULL != strstr(gprsBuffer, "+CGATT: 1")){
-        Serial.println("Attach service");
+        delay(100);
     }else{
         Serial.println("Fail to attach service");
         return false;
     }
-    delay(100);
     SIM7000_clean_buffer(gprsBuffer,32);
     SIM7000_send_cmd("AT+CSTT\r\n");
     SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
     if(NULL != strstr(gprsBuffer, "OK")){
-        Serial.println("Start task");    
+        delay(100);
     }else{
         Serial.println("Fail to start task");
         return false;
     }
-    delay(100);
     SIM7000_clean_buffer(gprsBuffer,32);
     SIM7000_send_cmd("AT+CIICR\r\n");
     SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT*100);
     if(NULL != strstr(gprsBuffer, "OK")){
-        Serial.println("Bring up wireless connection");
+        delay(500);
     }else{
         Serial.println("Fail to bring up wireless connection");
         return false;
     }
-    delay(1000);
-    SIM7000_clean_buffer(gprsBuffer,32);
+	SIM7000_clean_buffer(gprsBuffer,32);
     SIM7000_send_cmd("AT+CIFSR\r\n");
     SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
     if (NULL != strstr(gprsBuffer,"ERROR")){
         Serial.println("Can not get local IP address");
         return false;
     }
-    s=strstr(gprsBuffer,"\n");
-    Serial.print("Local IP address:");
-    Serial.println(s);
     return true;
 }
 
@@ -188,12 +182,10 @@ bool DFRobot_SIM7000::connect(Protocol ptl,const char *host, int port, int timeo
         Serial.println("No such mode!");
         return false;
     }
-    SIM7000_read_buffer(resp, 96, DEFAULT_TIMEOUT, chartimeout);
+    SIM7000_read_buffer(resp, 96, DEFAULT_TIMEOUT*100, chartimeout*50);
     if(NULL != strstr(resp,"CONNECT OK")){
-        Serial.println("Connect OK!");
         return true;
     }
-    Serial.println("Fail to connect");
     return false;
 }
 
@@ -234,13 +226,13 @@ bool DFRobot_SIM7000::close(void)
     SIM7000_send_cmd("AT+CIPCLOSE\r\n");
     SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
     if(NULL != strstr(gprsBuffer, "OK")){
-        Serial.println("Close connect");    
+        delay(500);
     }else{
         Serial.println("Fail to close connect");
         return false;
     }
-    delay(500);
     SIM7000_send_cmd("AT+CIPSHUT\r\n");
+    return true;
     delay(500);
 }
 
