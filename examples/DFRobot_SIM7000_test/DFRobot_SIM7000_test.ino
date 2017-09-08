@@ -11,7 +11,7 @@ DFRobot_SIM7000 DS;
 static char buff[300];
 
 void setup() {
-    int sig,dataNum;
+    int signalStrength,dataNum;
     Serial.begin(115200);
     if(DS.setBaudRate(38400)){                                                            //Set baud rate from 115200 to 38400
         Serial.println("Set baud rate:38400");
@@ -35,9 +35,9 @@ void setup() {
         Serial.println("Fail to set mode");
     }
     delay(500);
-    sig=DS.checkSignalQuality();                                                          //Check signal quality
-    Serial.print("sig =");
-    Serial.println(sig);
+    signalStrength=DS.checkSignalQuality();                                               //Check signal quality
+    Serial.print("signalStrength =");
+    Serial.println(signalStrength);
     delay(500);
     if(DS.attacthService()){                                                              //Open the connection
     Serial.println("Attach service");
@@ -45,12 +45,12 @@ void setup() {
     Serial.println("Fail to Attach service");
     }
     delay(200);
-    if(DS.connect(TCP,"www.baidu.com",80)){                                               //Start Up TCP or UDP Connection
+    if(DS.connect(TCP,"www.dfrobot.com",80)){                                             //Start Up TCP or UDP Connection
     Serial.println("Connect OK");
     }else{
     Serial.println("Fail to connect");
     }
-    DS.send("HEAD / HTTP/1.1\r\nHost:www.baidu.com\r\nConnection:keep-alive\r\n\r\n");    //Send Data Through TCP or UDP Connection 
+    DS.send("HEAD / HTTP/1.1\r\nHost:www.dfrobot.com\r\nConnection:keep-alive\r\n\r\n");  //Send Data Through TCP or UDP Connection 
     dataNum=DS.recv(buff,300,0);                                                          //Receive data 
     Serial.print("dataNum=");
     Serial.println(dataNum);

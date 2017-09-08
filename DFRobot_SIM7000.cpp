@@ -2,15 +2,22 @@
 
 bool DFRobot_SIM7000::setBaudRate(long rate)
 {
+    char gprsBuffer[32];
+    SIM7000_clean_buffer(gprsBuffer,32);
     Serial.println("Ready to set baud rate");
     baudrate=115200;
     SIM7000Serial.begin(baudrate);
     while(1){
         if(SIM7000Serial.available()){
             while(SIM7000Serial.available()){
-            Serial.write(SIM7000Serial.read());
+            SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
             }
+            if((NULL != strstr(gprsBuffer,"1"))){
             break;
+            }
+            if((NULL != strstr(gprsBuffer,"+"))){
+            break;
+            }
         }
     }
     delay(2000);
@@ -31,7 +38,7 @@ bool DFRobot_SIM7000::setBaudRate(long rate)
         return false;
     }
     baudrate=rate;
-     return true;
+    return true;
 }
 
 bool DFRobot_SIM7000::init(void)
@@ -43,7 +50,6 @@ bool DFRobot_SIM7000::init(void)
         SIM7000_send_cmd("AT\r\n");
         SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
         if((NULL != strstr(gprsBuffer,"OK"))){
-            
             break;
         }
         count++;
@@ -100,7 +106,7 @@ bool DFRobot_SIM7000::setNet(Net net)
 
 int DFRobot_SIM7000::checkSignalQuality(void)
 {
-    char i = 0,j=0;
+    int i=0,j=0,k=0;
     char gprsBuffer[26];
     char *p,*s;
     char buffers;
@@ -109,13 +115,12 @@ int DFRobot_SIM7000::checkSignalQuality(void)
     SIM7000_send_cmd("AT+CSQ\r");
     SIM7000_read_buffer(gprsBuffer, 26, DEFAULT_TIMEOUT);
     if (NULL != (s = strstr(gprsBuffer, "+CSQ:"))){
-        //Serial.print("signal strength:");
-        i=*(s+6);
-        i=i*10;
-        i+=*(s+7);
-        return i;
+        i=*(s + 6) - 48;
+        j=*(s + 7) - 48;
+        k=(i * 10) + j;
+        return k;
     }
-    return 99;
+    return 0;
 }
 
 bool DFRobot_SIM7000::attacthService(void)
@@ -126,7 +131,7 @@ bool DFRobot_SIM7000::attacthService(void)
     SIM7000_clean_buffer(gprsBuffer,32);
     SIM7000_send_cmd("AT+CGATT?\r\n");
     SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
-    if(NULL != strstr(gprsBuffer, "+CGATT: 1")){
+    if(NULL != strstr(gprsBuffer, "+CGATT:")){
         delay(100);
     }else{
         Serial.println("Fail to attach service");
@@ -193,7 +198,6 @@ void DFRobot_SIM7000::send(const char *str)
 {
     char num[4],gprsBuffer[32];
     int len=strlen(str);
-    Serial.println(len);
     SIM7000_clean_buffer(gprsBuffer,32);
     if(len > 0){
         SIM7000_send_cmd("AT+CIPSEND=");
