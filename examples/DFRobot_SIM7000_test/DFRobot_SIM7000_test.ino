@@ -59,7 +59,8 @@ void setup(){
     Serial.print("dataNum=");
     Serial.println(dataNum);
     Serial.println(buff);
-    DS.send("test\0",6);                                                                  //Send Data with specify the length
+    char buffer={"test\0"};
+    DS.send(buffer,6);                                                                    //Send Data with specify the length
     if(DS.close()){                                                                       //End the connection
         Serial.println("Close connection");
     }else{

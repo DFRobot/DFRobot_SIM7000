@@ -50,7 +50,7 @@ int recv(char* buf,int maxlen,int timeout);
 void send(const char *str);
 
 //Send data with specify the length
-void send(const char *str,int len);
+void send(void* buf,size_t len);
 
 //End the connection
 bool close(void);

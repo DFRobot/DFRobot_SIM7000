@@ -51,7 +51,7 @@ public:
     bool     turnON(void);
     bool     turnOFF(void);
     void     send(const char *str);
-    void     send(const char *str,int len);
+    void     send(void *buffer,size_t len);
     void     SIM7000_flush_serial(void);
     void     SIM7000_send_End_Mark(void);
     void     SIM7000_send_cmd(const char* cmd);

@@ -194,7 +194,7 @@ void DFRobot_SIM7000::send(const char *str)
     }
 }
 
-void DFRobot_SIM7000::send(const char *str,int len)
+void DFRobot_SIM7000::send(void *buffer,size_t len)
 {
     char num[4];
     SIM7000_send_cmd("AT+CIPSEND=");
@@ -202,7 +202,7 @@ void DFRobot_SIM7000::send(const char *str,int len)
     SIM7000_send_cmd(num);
     SIM7000_send_cmd("\r\n");
     delay(500);
-    SIM7000_send_cmd(str);
+    SIM7000_send_cmd(buffer);
     delay(500);
     SIM7000_send_End_Mark();
 
