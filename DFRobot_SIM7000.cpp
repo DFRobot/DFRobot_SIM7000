@@ -180,9 +180,8 @@ bool DFRobot_SIM7000::connect(Protocol ptl,const char *host, int port, int timeo
 
 void DFRobot_SIM7000::send(const char *str)
 {
-    char num[4],gprsBuffer[32];
+    char num[4];
     int len=strlen(str);
-    SIM7000_clean_buffer(gprsBuffer,32);
     if(len > 0){
         SIM7000_send_cmd("AT+CIPSEND=");
         itoa(len,num,10);
@@ -195,6 +194,19 @@ void DFRobot_SIM7000::send(const char *str)
     }
 }
 
+void DFRobot_SIM7000::send(const char *str,int len)
+{
+    char num[4];
+    SIM7000_send_cmd("AT+CIPSEND=");
+    itoa(len,num,10);
+    SIM7000_send_cmd(num);
+    SIM7000_send_cmd("\r\n");
+    delay(500);
+    SIM7000_send_cmd(str);
+    delay(500);
+    SIM7000_send_End_Mark();
+
+}
 int DFRobot_SIM7000::recv(char* buf,int maxlen,int timeout)
 {
     char gprsBuffer[maxlen];
@@ -315,7 +327,6 @@ void DFRobot_SIM7000::SIM7000_send_End_Mark(void)
 
 bool DFRobot_SIM7000::turnON(void)
 {
-    turnOFF();
     delay(300);
     char gprsBuffer[32];
     SIM7000_clean_buffer(gprsBuffer,32);

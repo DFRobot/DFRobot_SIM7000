@@ -20,6 +20,8 @@ The library is used to Send and receive GPRS or NB-IOT data (TCP,UDP)
 //Turn ON SIM7000
 bool turnON(void);
 
+//Turn OFF SIM7000
+bool turnOFF(void);
 //Set baud rate to avoid garbled, rate:1200 2400 4800 9600 19200 38400
 bool setBaudRate(long rate);
 
@@ -45,13 +47,13 @@ bool connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEO
 int recv(char* buf,int maxlen,int timeout);
 
 //Send data through TCP or UDP connection
-int  send(const char *str);
+void send(const char *str);
+
+//Send data with specify the length
+void send(const char *str,int len);
 
 //End the connection
 bool close(void);
-
-//Turn OFF SIM7000
-bool turnOFF(void);
 
 ```
 

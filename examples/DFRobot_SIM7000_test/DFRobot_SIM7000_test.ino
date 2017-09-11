@@ -13,6 +13,7 @@ static char buff[300];
 void setup(){
     int signalStrength,dataNum;
     Serial.begin(115200);
+    DS.turnOFF();
     if(DS.turnON()){                                                                      //Turn ON SIM7000
         Serial.println("Turn NO SIM7000");
     }
@@ -58,6 +59,7 @@ void setup(){
     Serial.print("dataNum=");
     Serial.println(dataNum);
     Serial.println(buff);
+    DS.send("test\0",6);                                                                  //Send Data with specify the length
     if(DS.close()){                                                                       //End the connection
         Serial.println("Close connection");
     }else{
