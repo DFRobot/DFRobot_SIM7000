@@ -17,6 +17,9 @@ The library is used to Send and receive GPRS or NB-IOT data (TCP,UDP)
 ```C++
 
 #include <DFrobot_SIM7000.h>
+//Turn ON SIM7000
+bool turnON(void);
+
 //Set baud rate to avoid garbled, rate:1200 2400 4800 9600 19200 38400
 bool setBaudRate(long rate);
 
@@ -46,6 +49,9 @@ int  send(const char *str);
 
 //End the connection
 bool close(void);
+
+//Turn OFF SIM7000
+bool turnOFF(void);
 
 ```
 

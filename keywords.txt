@@ -8,7 +8,6 @@
 
 DFRobot_SIM7000	KEYWORD1
 
-
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################	
@@ -25,6 +24,8 @@ connect	KEYWORD2
 send	KEYWORD2
 recv	KEYWORD2
 close	KEYWORD2
+turnON	KEYWORD2
+turnOFF	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

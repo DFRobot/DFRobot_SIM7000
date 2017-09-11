@@ -48,6 +48,8 @@ public:
     bool     bringupConnection(void);
     bool     connect(Protocol ptl,const char *host, int port, int timeout= DEFAULT_TIMEOUT, int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
     bool     close(void);
+    bool     turnON(void);
+    bool     turnOFF(void);
     void     send(const char *str);
     void     SIM7000_flush_serial(void);
     void     SIM7000_send_End_Mark(void);

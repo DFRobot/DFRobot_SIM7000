@@ -4,23 +4,7 @@ bool DFRobot_SIM7000::setBaudRate(long rate)
 {
     char gprsBuffer[32];
     SIM7000_clean_buffer(gprsBuffer,32);
-    Serial.println("Ready");
-    baudrate=115200;
-    SIM7000Serial.begin(baudrate);
-    while(1){
-        if(SIM7000Serial.available()){
-            while(SIM7000Serial.available()){
-            SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
-            }
-            if((NULL != strstr(gprsBuffer,"1"))){
-            break;
-            }
-            if((NULL != strstr(gprsBuffer,"+"))){
-            break;
-            }
-        }
-    }
-    delay(2000);
+    delay(500);
     if( rate  ==  1200)
         SIM7000_send_cmd("AT+IPR=1200\r\n");
     else if(rate == 2400)
@@ -106,7 +90,7 @@ bool DFRobot_SIM7000::setNet(Net net)
 
 int DFRobot_SIM7000::checkSignalQuality(void)
 {
-    int i=0,j=0,k=0;
+    int i = 0,j = 0,k = 0;
     char gprsBuffer[26];
     char *p,*s;
     char buffers;
@@ -115,9 +99,9 @@ int DFRobot_SIM7000::checkSignalQuality(void)
     SIM7000_send_cmd("AT+CSQ\r");
     SIM7000_read_buffer(gprsBuffer, 26, DEFAULT_TIMEOUT);
     if (NULL != (s = strstr(gprsBuffer, "+CSQ:"))){
-        i=*(s + 6) - 48;
-        j=*(s + 7) - 48;
-        k=(i * 10) + j;
+        i = *(s + 6) - 48;
+        j = *(s + 7) - 48;
+        k = (i * 10) + j;
         return k;
     }
     return 0;
@@ -155,7 +139,7 @@ bool DFRobot_SIM7000::attacthService(void)
         Serial.println("Fail to bring up wireless connection");
         return false;
     }
-	SIM7000_clean_buffer(gprsBuffer,32);
+    SIM7000_clean_buffer(gprsBuffer,32);
     SIM7000_send_cmd("AT+CIFSR\r\n");
     SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
     if (NULL != strstr(gprsBuffer,"ERROR")){
@@ -280,7 +264,6 @@ int DFRobot_SIM7000::SIM7000_read_buffer(char *buffer, int count, unsigned int t
             }
         }
         if(((unsigned long) (millis() - prevChar) > chartimeout) && (prevChar != 0)){
-            //Serial.println("timeout1");
             break;
         }
     }
@@ -301,7 +284,6 @@ boolean DFRobot_SIM7000::SIM7000_wait_for_resp(const char* resp, DataType type, 
             }
         }
         if((unsigned long)(millis() - timerStart) > timeout*3000){
-            //Serial.println("receive over");
             return false;
         }
     }
@@ -329,4 +311,44 @@ void DFRobot_SIM7000::SIM7000_send_byte(uint8_t data)
 void DFRobot_SIM7000::SIM7000_send_End_Mark(void)
 {
     SIM7000_send_byte((char)26);
+}
+
+bool DFRobot_SIM7000::turnON(void)
+{
+    turnOFF();
+    delay(300);
+    char gprsBuffer[32];
+    SIM7000_clean_buffer(gprsBuffer,32);
+    baudrate = 115200;
+    SIM7000Serial.begin(baudrate);
+    pinMode(12,OUTPUT);
+    while(1){
+        digitalWrite(12, HIGH);
+        delay(2000);
+        digitalWrite(12, LOW);
+        while(1){
+            if(SIM7000Serial.available()){
+                while(SIM7000Serial.available()){
+                SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
+                }
+                if((NULL != strstr(gprsBuffer,"1"))){
+                return true;
+                }
+                if((NULL != strstr(gprsBuffer,"+"))){
+                return true;
+                }
+            }
+        }
+    }
+}
+
+bool DFRobot_SIM7000::turnOFF(void){
+    char gprsBuffer[32];
+    SIM7000_clean_buffer(gprsBuffer,32);
+    SIM7000_send_cmd("AT+CPOWD=1\r\n");
+    SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
+    if((NULL != strstr(gprsBuffer,"DOWN"))){
+            return true;
+    }
+
 }

@@ -10,9 +10,12 @@
 DFRobot_SIM7000 DS;
 static char buff[300];
 
-void setup() {
+void setup(){
     int signalStrength,dataNum;
     Serial.begin(115200);
+    if(DS.turnON()){                                                                      //Turn ON SIM7000
+        Serial.println("Turn NO SIM7000");
+    }
     if(DS.setBaudRate(38400)){                                                            //Set baud rate from 115200 to 38400
         Serial.println("Set baud rate:38400");
     }else{
@@ -59,6 +62,9 @@ void setup() {
         Serial.println("Close connection");
     }else{
         Serial.println("Fail to close connection");
+    }
+    if(DS.turnOFF()){                                                                     //Turn OFF SIM7000
+        Serial.println("Turn OFF SIM7000");
     }
 }
 
