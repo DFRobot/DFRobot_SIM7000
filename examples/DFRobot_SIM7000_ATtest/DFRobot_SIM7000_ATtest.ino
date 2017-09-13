@@ -1,3 +1,8 @@
+ /*
+  * file DFRobot_SIM7000_ATtest.ino
+  * brief DFRobot's SIM7000 module
+  * This example use the serial port to send AT commands to control the SIM7000
+  */
 #include <DFRobot_SIM7000.h>
 
 SoftwareSerial mySerial(8,7);                                  // RX, TX

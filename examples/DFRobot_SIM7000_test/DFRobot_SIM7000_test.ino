@@ -1,7 +1,7 @@
  /*
   * file DFRobot_SIM7000_test.ino
   * brief DFRobot's SIM7000 module
-  * This example Send an HTTP request to www.baidu.com and receive the return data
+  * This example Send an HTTP request to www.dfrobot.com and receive the return data
   */
 
 #include <Wire.h>
