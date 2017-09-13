@@ -25,13 +25,13 @@ void setup() {
 }
 
 void loop() {
-  mySerial.listen();
-  while(mySerial.available()){
-    Serial.write(mySerial.read());
-  }
-  mySerial.flush();
-  while(Serial.available()){
-    mySerial.write(Serial.read());
-  }
-  delay(20);
+    mySerial.listen();
+    while(mySerial.available()){
+        Serial.write(mySerial.read());
+    }
+    mySerial.flush();
+    while(Serial.available()){
+        mySerial.write(Serial.read());
+    }
+    delay(20);
 }
