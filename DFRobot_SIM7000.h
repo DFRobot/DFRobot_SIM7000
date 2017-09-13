@@ -60,7 +60,7 @@ public:
     boolean  SIM7000_check_with_cmd(const char* cmd, const char *resp, DataType type, unsigned int timeout = DEFAULT_TIMEOUT, unsigned int chartimeout = DEFAULT_INTERCHAR_TIMEOUT*5);
     boolean  SIM7000_wait_for_resp(const char* resp, DataType type, unsigned int timeout = DEFAULT_TIMEOUT, unsigned int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
 private:
-  long     baudrate;
+  long     baudrate=38400;
 };
 
 #endif

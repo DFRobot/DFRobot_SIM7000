@@ -5,6 +5,7 @@ bool DFRobot_SIM7000::setBaudRate(long rate)
     char gprsBuffer[32];
     SIM7000_clean_buffer(gprsBuffer,32);
     delay(500);
+    baudrate = 115200;
     if( rate  ==  1200)
         SIM7000_send_cmd("AT+IPR=1200\r\n");
     else if(rate == 2400)
@@ -219,9 +220,7 @@ int DFRobot_SIM7000::recv(char* buf,int maxlen,int timeout)
 bool DFRobot_SIM7000::close(void)
 {
     char gprsBuffer[32];
-    while(SIM7000Serial.available()){
-        delay(100);
-    }
+    delay(1000);
     SIM7000_clean_buffer(gprsBuffer,32);
     SIM7000_send_cmd("AT+CIPCLOSE\r\n");
     SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
@@ -271,7 +270,7 @@ int DFRobot_SIM7000::SIM7000_read_buffer(char *buffer, int count, unsigned int t
         }
         if(timeout){
             if((unsigned long) (millis() - timerStart) > timeout * 1000){
-                Serial.println("Get head timeout");
+                //Serial.println("Get head timeout");
                 break;
             }
         }
@@ -359,7 +358,7 @@ bool DFRobot_SIM7000::turnOFF(void){
     SIM7000_send_cmd("AT+CPOWD=1\r\n");
     SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
     if((NULL != strstr(gprsBuffer,"DOWN"))){
-            return true;
+        return true;
     }
 
 }
