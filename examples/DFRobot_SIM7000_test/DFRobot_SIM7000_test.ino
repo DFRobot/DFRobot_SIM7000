@@ -45,15 +45,15 @@ void setup(){
     Serial.println(signalStrength);
     delay(500);
     if(sim7000.attacthService()){                                                              //Open the connection
-    Serial.println("Attach service");
+        Serial.println("Attach service");
     }else{
-    Serial.println("Fail to Attach service");
+        Serial.println("Fail to Attach service");
     }
     delay(200);
     if(sim7000.connect(TCP,"www.dfrobot.com",80)){                                             //Start Up TCP or UDP Connection
-    Serial.println("Connect OK");
+        Serial.println("Connect OK");
     }else{
-    Serial.println("Fail to connect");
+        Serial.println("Fail to connect");
     }
     sim7000.send("HEAD / HTTP/1.1\r\nHost:www.dfrobot.com\r\nConnection:keep-alive\r\n\r\n");  //Send Data Through TCP or UDP Connection 
     dataNum=sim7000.recv(buff,300,0);                                                          //Receive data 
