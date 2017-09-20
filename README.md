@@ -1,6 +1,6 @@
 # NB-IOT SIM7000 Shield
 
-Communicate Shield via GPRS and NB-IOT
+Communication Shield supports GPRS and NBIOT
 
 ![SVG1](https://raw.githubusercontent.com/DFRobot/binaryfiles/master/DFR0505/DFR0505svg1.png)
 
