@@ -1,9 +1,16 @@
+# NB-IOT SIM7000 Shield
+
+Communicate Shield via GPRS and NB-IOT
+
+![SVG1](https://raw.githubusercontent.com/DFRobot/binaryfiles/master/DFR0505/DFR0505svg1.png)
+
 # DFROBOT_SIM7000 Library for Arduino
 Provides an Arduino library for NB-IOT SIM7000 Shield
 ## Table of Contents
 
 * [Summary](#summary)
 * [Methods](#methods)
+* [Compatibility](#Compatibility)
 * [History](#history)
 * [Credits](#credits)
 <snippet>
@@ -56,6 +63,14 @@ void send(void* buf,size_t len);
 bool close(void);
 
 ```
+
+## Compatibility
+
+MCU                | Work Well | Work Wrong | Untested  | Remarks
+------------------ | :----------: | :----------: | :---------: | -----
+Arduino Uno  |      √       |             |            | 
+Leonardo  |      √       |             |            | 
+Meag2560 |      √       |             |            | 
 
 ## History
 
