@@ -13,8 +13,14 @@
 
 #define ON  0
 #define OFF 1
+ 
 
-static SoftwareSerial SIM7000Serial(8,7); // RX, TX
+#if defined ARDUINO_AVR_MEGA2560 || ARDUINO_AVR_MEGA
+        static SoftwareSerial SIM7000Serial(10,7); // RX, TX
+#else
+        static SoftwareSerial SIM7000Serial(8,7);  //RX,TX
+#endif
+
 extern Stream *serialSIM7000;
 
 enum Protocol {

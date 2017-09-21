@@ -2,6 +2,7 @@
   * file DFRobot_SIM7000_test.ino
   * brief DFRobot's SIM7000 module
   * This example Send an HTTP request to www.dfrobot.com and receive the return data
+  * If you use Mega please connect PIN8 PIN10
   */
 
 #include <Wire.h>

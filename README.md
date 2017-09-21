@@ -172,6 +172,8 @@ Arduino Uno  |      √       |             |            |
 Leonardo  |      √       |             |            | 
 Meag2560 |      √       |             |            | 
 
+If you use Mega please connect PIN8 PIN10
+
 ## History
 
 - data 2017-8-30
