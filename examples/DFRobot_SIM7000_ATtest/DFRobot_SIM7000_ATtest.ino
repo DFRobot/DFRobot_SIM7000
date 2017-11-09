@@ -5,7 +5,7 @@
   */
 #include <DFRobot_SIM7000.h>
 
-// Set software serial(RX=8,TX=7) if you use Mega please set RX=10 and connect PIN8 PIN10
+// Set software serial(RX=8,TX=7) if you use Mega please set RX=10 and connect PIN8 PIN10 and set mySerial(10,7)
 SoftwareSerial mySerial(8,7);
 
 DFRobot_SIM7000 sim7000;

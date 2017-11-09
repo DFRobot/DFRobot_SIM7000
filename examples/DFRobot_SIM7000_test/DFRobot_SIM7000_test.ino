@@ -10,7 +10,7 @@
 
 DFRobot_SIM7000 sim7000;
 static char buff[300];
-SoftwareSerial mySerial(8,7);                                                                  //Set serial please dont use PIN12
+SoftwareSerial mySerial(8,7);                                                                  //Set serial
 
 void setup(){
     int signalStrength,dataNum;
