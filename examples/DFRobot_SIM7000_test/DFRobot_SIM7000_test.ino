@@ -2,7 +2,7 @@
   * file DFRobot_SIM7000_test.ino
   * brief DFRobot's SIM7000 module
   * This example Send an HTTP request to www.dfrobot.com and receive the return data
-  * If you use Mega please connect PIN8 PIN10
+  * If you use Mega please connect PIN8 PIN10 and set mySerial(10,7);
   */
 
 #include <Wire.h>
@@ -10,10 +10,12 @@
 
 DFRobot_SIM7000 sim7000;
 static char buff[300];
+SoftwareSerial mySerial(8,7);                                                                  //Set serial please dont use PIN12
 
 void setup(){
     int signalStrength,dataNum;
     Serial.begin(115200);
+    sim7000.begin(mySerial);
     sim7000.turnOFF();
     delay(500);
     if(sim7000.turnON()){                                                                      //Turn ON SIM7000

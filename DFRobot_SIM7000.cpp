@@ -1,5 +1,12 @@
 #include <DFrobot_SIM7000.h>
 
+static SoftwareSerial* SIM7000Serial;
+
+void DFRobot_SIM7000::begin(Stream &s_)
+{
+    SIM7000Serial = &s_;
+}
+
 bool DFRobot_SIM7000::setBaudRate(long rate)
 {
     char gprsBuffer[32];
@@ -237,13 +244,13 @@ bool DFRobot_SIM7000::close(void)
 
 int DFRobot_SIM7000::SIM7000_check_readable(void)
 {
-    return SIM7000Serial.available();
+    return SIM7000Serial->available();
 }
 
 void DFRobot_SIM7000::SIM7000_send_cmd(const char* cmd)
 {
-    SIM7000Serial.begin(baudrate);
-    SIM7000Serial.write(cmd);
+    SIM7000Serial->begin(baudrate);
+    SIM7000Serial->write(cmd);
 }
 
 boolean DFRobot_SIM7000::SIM7000_check_with_cmd(const char* cmd, const char *resp, DataType type,unsigned int timeout, unsigned int chartimeout)
@@ -263,7 +270,7 @@ int DFRobot_SIM7000::SIM7000_read_buffer(char *buffer, int count, unsigned int t
     prevChar = 0;
     while(1){
         while(SIM7000_check_readable()){
-            buffer[i++] = SIM7000Serial.read();
+            buffer[i++] = SIM7000Serial->read();
             prevChar = millis();
             if(i >= count)
                 return i;
@@ -289,9 +296,9 @@ boolean DFRobot_SIM7000::SIM7000_wait_for_resp(const char* resp, DataType type, 
     unsigned long timerStart;
     timerStart = millis();
     while(1){
-        if(SIM7000Serial.available()){
-            while(SIM7000Serial.available()){
-            Serial.write(SIM7000Serial.read());
+        if(SIM7000Serial->available()){
+            while(SIM7000Serial->available()){
+            Serial.write(SIM7000Serial->read());
             }
         }
         if((unsigned long)(millis() - timerStart) > timeout*3000){
@@ -309,14 +316,14 @@ void DFRobot_SIM7000::SIM7000_clean_buffer(char *buffer, int count)
 
 void DFRobot_SIM7000::SIM7000_flush_serial(void)
 {
-    while(SIM7000Serial.available()){
-        SIM7000Serial.read();
+    while(SIM7000Serial->available()){
+        SIM7000Serial->read();
     }
 }
 
 void DFRobot_SIM7000::SIM7000_send_byte(uint8_t data)
 {
-    SIM7000Serial.write(data);
+    SIM7000Serial->write(data);
 }
 
 void DFRobot_SIM7000::SIM7000_send_End_Mark(void)
@@ -330,15 +337,15 @@ bool DFRobot_SIM7000::turnON(void)
     char gprsBuffer[32];
     SIM7000_clean_buffer(gprsBuffer,32);
     baudrate = 115200;
-    SIM7000Serial.begin(baudrate);
+    SIM7000Serial->begin(baudrate);
     pinMode(12,OUTPUT);
     while(1){
         digitalWrite(12, HIGH);
         delay(2000);
         digitalWrite(12, LOW);
         while(1){
-            if(SIM7000Serial.available()){
-                while(SIM7000Serial.available()){
+            if(SIM7000Serial->available()){
+                while(SIM7000Serial->available()){
                 SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
                 }
                 if((NULL != strstr(gprsBuffer,"1"))){

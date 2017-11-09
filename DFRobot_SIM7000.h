@@ -13,13 +13,6 @@
 
 #define ON  0
 #define OFF 1
- 
-
-#if defined ARDUINO_AVR_MEGA2560 || ARDUINO_AVR_MEGA
-        static SoftwareSerial SIM7000Serial(10,7); // RX, TX
-#else
-        static SoftwareSerial SIM7000Serial(8,7);  //RX,TX
-#endif
 
 extern Stream *serialSIM7000;
 
@@ -56,6 +49,7 @@ public:
     bool     close(void);
     bool     turnON(void);
     bool     turnOFF(void);
+    void     begin(Stream &s_);
     void     send(const char *str);
     void     send(void *buffer,size_t len);
     void     SIM7000_flush_serial(void);
@@ -66,7 +60,7 @@ public:
     boolean  SIM7000_check_with_cmd(const char* cmd, const char *resp, DataType type, unsigned int timeout = DEFAULT_TIMEOUT, unsigned int chartimeout = DEFAULT_INTERCHAR_TIMEOUT*5);
     boolean  SIM7000_wait_for_resp(const char* resp, DataType type, unsigned int timeout = DEFAULT_TIMEOUT, unsigned int chartimeout = DEFAULT_INTERCHAR_TIMEOUT);
 private:
-  long     baudrate=38400;
+    long     baudrate=38400;
 };
 
 #endif

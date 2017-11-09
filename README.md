@@ -22,6 +22,12 @@ The library is used to Send and receive GPRS or NB-IOT data (TCP,UDP)
 ## Methods
 
 ```C++
+/*
+ * @brief Set SIM7000 software serial
+ *
+ * @Param &s_ SoftwareSerial
+ */
+void begin(Stream &s_);
 
 /*
  * @brief Turn ON SIM7000
