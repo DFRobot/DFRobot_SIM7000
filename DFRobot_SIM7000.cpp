@@ -41,7 +41,7 @@ bool DFRobot_SIM7000::init(void)
     while( count < 3){
         SIM7000_send_cmd("AT\r\n");
         SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
-        if((NULL != strstr(gprsBuffer,"OK"))){
+        if(NULL != strstr(gprsBuffer,"OK")){
             break;
         }
         count++;
@@ -77,7 +77,13 @@ bool DFRobot_SIM7000::setNet(Net net)
 {
     char gprsBuffer[40];
     if(net == NB){
-        SIM7000_send_cmd("AT+CNVW=0,10,\"1E00\"\r\n");
+        SIM7000_send_cmd("AT+CNMP=38\r\n");
+        SIM7000_read_buffer(gprsBuffer, 40, DEFAULT_TIMEOUT);
+        if(NULL != strstr(gprsBuffer, "OK"))
+            delay(300);
+        else
+            return false;
+        SIM7000_send_cmd("AT+CMNB=2\r\n");
         SIM7000_read_buffer(gprsBuffer, 40, DEFAULT_TIMEOUT);
         if(NULL != strstr(gprsBuffer, "OK"))
             return true;
@@ -100,7 +106,7 @@ int DFRobot_SIM7000::checkSignalQuality(void)
 {
     int i = 0,j = 0,k = 0;
     char gprsBuffer[26];
-    char *p,*s;
+    char *s;
     char buffers;
     SIM7000_flush_serial();
     SIM7000_clean_buffer(gprsBuffer, 26);
@@ -121,13 +127,16 @@ bool DFRobot_SIM7000::attacthService(void)
     char *s;
     char gprsBuffer[32];
     SIM7000_clean_buffer(gprsBuffer,32);
-    SIM7000_send_cmd("AT+CGATT?\r\n");
-    SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
-    if(NULL != strstr(gprsBuffer, "+CGATT:")){
-        delay(100);
-    }else{
-        Serial.println("Fail to attach service");
-        return false;
+    SIM7000_send_cmd("AT+CGATT=1\r\n");
+    while(1){
+        SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
+        if(NULL != strstr(gprsBuffer, "OK")){
+            delay(100);
+            break;
+        }
+        if(NULL != strstr(gprsBuffer, "ERROR")){
+            return false;
+        }
     }
     SIM7000_clean_buffer(gprsBuffer,32);
     SIM7000_send_cmd("AT+CSTT\r\n");
@@ -140,7 +149,7 @@ bool DFRobot_SIM7000::attacthService(void)
     }
     SIM7000_clean_buffer(gprsBuffer,32);
     SIM7000_send_cmd("AT+CIICR\r\n");
-    SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT*100);
+    SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT*100, DEFAULT_INTERCHAR_TIMEOUT*10);
     if(NULL != strstr(gprsBuffer, "OK")){
         delay(500);
     }else{

@@ -8,13 +8,11 @@
 #include <HardwareSerial.h>
 #include <Wire.h>
 
-#define DEFAULT_TIMEOUT              5    //seconds
-#define DEFAULT_INTERCHAR_TIMEOUT 1500    //miliseconds
+#define DEFAULT_TIMEOUT                 5    //seconds
+#define DEFAULT_INTERCHAR_TIMEOUT    1500    //miliseconds
 
 #define ON  0
 #define OFF 1
-
-extern Stream *serialSIM7000;
 
 enum Protocol {
     CLOSED = 0,
