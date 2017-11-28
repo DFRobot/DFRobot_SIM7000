@@ -86,6 +86,12 @@ bool DFRobot_SIM7000::setNet(Net net)
         SIM7000_send_cmd("AT+CMNB=2\r\n");
         SIM7000_read_buffer(gprsBuffer, 40, DEFAULT_TIMEOUT);
         if(NULL != strstr(gprsBuffer, "OK"))
+            delay(300);
+        else
+            return false;
+        SIM7000_send_cmd("AT+NBSC=1\r\n");
+        SIM7000_read_buffer(gprsBuffer, 40, DEFAULT_TIMEOUT);
+        if(NULL != strstr(gprsBuffer, "OK"))
             return true;
         else
             return false;
@@ -139,7 +145,23 @@ bool DFRobot_SIM7000::attacthService(void)
         }
     }
     SIM7000_clean_buffer(gprsBuffer,32);
-    SIM7000_send_cmd("AT+CSTT\r\n");
+    SIM7000_send_cmd("AT+CGNAPN\r\n");
+    SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
+    if(NULL != strstr(gprsBuffer,"+CGNAPN")){
+        delay(300);
+    }else{
+        return false;
+    }
+    SIM7000_clean_buffer(gprsBuffer,32);
+    SIM7000_send_cmd("AT+CIPSHUT\r\n");
+    SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
+    if(NULL != strstr(gprsBuffer,"OK")){
+        delay(300);
+    }else{
+        return false;
+    }
+    SIM7000_clean_buffer(gprsBuffer,32);
+    SIM7000_send_cmd("AT+CSTT=\"ctnb\"\r\n");
     SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
     if(NULL != strstr(gprsBuffer, "OK")){
         delay(100);
@@ -240,15 +262,9 @@ bool DFRobot_SIM7000::close(void)
     SIM7000_clean_buffer(gprsBuffer,32);
     SIM7000_send_cmd("AT+CIPCLOSE\r\n");
     SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
-    if(NULL != strstr(gprsBuffer, "OK")){
-        delay(500);
-    }else{
-        Serial.println("Fail to close connect");
-        return false;
-    }
+    delay(500);
     SIM7000_send_cmd("AT+CIPSHUT\r\n");
     return true;
-    delay(500);
 }
 
 int DFRobot_SIM7000::SIM7000_check_readable(void)
