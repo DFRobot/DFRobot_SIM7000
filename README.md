@@ -11,6 +11,7 @@ Provides an Arduino library for NB-IOT SIM7000 Shield
 * [Summary](#summary)
 * [Methods](#methods)
 * [Compatibility](#Compatibility)
+* [Depends](#depends)
 * [History](#history)
 * [Credits](#credits)
 <snippet>
@@ -179,6 +180,12 @@ Leonardo  |      √       |             |            |
 Meag2560 |      √       |             |            | 
 
 If you use Mega please connect PIN8 PIN10
+
+## Depends
+
+Projects           |                     URL                       | Remarks
+------------------ | :-------------------------------------------: | -----------
+DFRobot_SIM        |  https://github.com/DFRobot/DFRobot_SIM       | must
 
 ## History
 

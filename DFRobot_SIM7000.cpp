@@ -1,396 +1,395 @@
-#include <DFrobot_SIM7000.h>
-
-static SoftwareSerial* SIM7000Serial;
-
-void DFRobot_SIM7000::begin(Stream &s_)
-{
-    SIM7000Serial = &s_;
-}
+#include <DFRobot_SIM7000.h>
 
 bool DFRobot_SIM7000::setBaudRate(long rate)
 {
-    char gprsBuffer[32];
-    SIM7000_clean_buffer(gprsBuffer,32);
-    delay(500);
-    baudrate = 115200;
-    if( rate  ==  1200)
-        SIM7000_send_cmd("AT+IPR=1200\r\n");
-    else if(rate == 2400)
-        SIM7000_send_cmd("AT+IPR=2400\r\n");
-    else if(rate == 4800)
-        SIM7000_send_cmd("AT+IPR=4800\r\n");
-    else if(rate == 9600)
-        SIM7000_send_cmd("AT+IPR=9600\r\n");
-    else if(rate == 19200)
-        SIM7000_send_cmd("AT+IPR=19200\r\n");
-    else if(rate == 38400)
-        SIM7000_send_cmd("AT+IPR=38400\r\n");
-    else{
-        Serial.println("No such rate");
-        return false;
-    }
-    baudrate=rate;
-    return true;
-}
-
-bool DFRobot_SIM7000::init(void)
-{
-    char gprsBuffer[32];
+    SIMcore.baudrate = 115200;
     int  count = 0;
-    SIM7000_clean_buffer(gprsBuffer,32);
-    while( count < 3){
-        SIM7000_send_cmd("AT\r\n");
-        SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
-        if(NULL != strstr(gprsBuffer,"OK")){
-            break;
+    while(count <3){
+        if( rate  ==  1200){
+            if(SIMcore.check_send_cmd("AT+IPR=1200\r\n","OK")){
+                break;
+            }else{
+                count++;
+                delay(200);
+            }
+        }else if(rate == 2400){
+            if(SIMcore.check_send_cmd("AT+IPR=2400\r\n","OK")){
+                break;
+            }else{
+                count++;
+                delay(200);
+            }
+        }else if(rate == 4800){
+            if(SIMcore.check_send_cmd("AT+IPR=4800\r\n","OK")){
+                break;
+            }else{
+                count++;
+                delay(200);
+            }
+        }else if(rate == 9600){
+            if(SIMcore.check_send_cmd("AT+IPR=9600\r\n","OK")){
+                break;
+            }else{
+                count++;
+                delay(200);
+            }
+        }else if(rate == 19200){
+            if(SIMcore.check_send_cmd("AT+IPR=19200\r\n","OK")){
+                break;
+            }else{
+                count++;
+                delay(200);
+            }
+        }else if(rate == 38400){
+            if(SIMcore.check_send_cmd("AT+IPR=38400\r\n","OK")){
+                break;
+            }else{
+                count++;
+                delay(200);
+            }
+        }else{
+            Serial.println("No such rate");
+            return false;
         }
-        count++;
-        delay(300);
     }
     if(count == 3){
+        SIMcore.closeCommand();
         return false;
     }
+    SIMcore.baudrate = rate;
+    SIMcore.setCommandCounter(1);
     return true;
 }
 
 bool DFRobot_SIM7000::checkSIMStatus(void)
 {
-    char gprsBuffer[32];
-    int  count = 0;
-    SIM7000_clean_buffer(gprsBuffer,32);
-    while(count < 3){
-        SIM7000_send_cmd("AT+CPIN?\r\n");
-        SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
-        if((NULL != strstr(gprsBuffer,"+CPIN: READY"))){
-            break;
+    if(SIMcore.getCommandCounter() == 1){
+        int count = 0;
+        while(count < 3){
+            if(check_send_cmd("AT\r\n","OK")){
+                break;
+            }else{
+                count++;
+                delay(300);
+            }
         }
-        count++;
-        delay(300);
-    }
-    if(count == 3){
+        if(count == 3){
+            SIMcore.closeCommand();
+            return false;
+        }
+        count = 0;
+        while(count < 3){
+            if(check_send_cmd("AT+CPIN?\r\n","READY")){
+                break;
+            }else{
+                count++;
+                delay(300);
+            }
+        }
+        if(count == 3){
+            SIMcore.closeCommand();
+            return false;
+        }
+        SIMcore.setCommandCounter(2);
+        return true;
+    }else{
+        SIMcore.closeCommand();
         return false;
     }
-    return true;
 }
 
 bool DFRobot_SIM7000::setNet(Net net)
 {
-    char gprsBuffer[40];
-    if(net == NB){
-        SIM7000_send_cmd("AT+CNMP=38\r\n");
-        SIM7000_read_buffer(gprsBuffer, 40, DEFAULT_TIMEOUT);
-        if(NULL != strstr(gprsBuffer, "OK"))
-            delay(300);
-        else
+    if(SIMcore.getCommandCounter() == 2){
+        if(net == NB){
+            if(SIMcore.check_send_cmd("AT+CNMP=38\r\n","OK")){
+                delay(300);
+                if(SIMcore.check_send_cmd("AT+CMNB=2\r\n","OK")){
+					SIMcore.setCommandCounter(3);
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }else if(net == GPRS){
+            if(SIMcore.check_send_cmd("AT+CNVW=0,10,\"0D00\"\r\n","OK")){
+				SIMcore.setCommandCounter(3);
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            Serial.println("No such mode!");
             return false;
-        SIM7000_send_cmd("AT+CMNB=2\r\n");
-        SIM7000_read_buffer(gprsBuffer, 40, DEFAULT_TIMEOUT);
-        if(NULL != strstr(gprsBuffer, "OK"))
-            delay(300);
-        else
-            return false;
-        SIM7000_send_cmd("AT+NBSC=1\r\n");
-        SIM7000_read_buffer(gprsBuffer, 40, DEFAULT_TIMEOUT);
-        if(NULL != strstr(gprsBuffer, "OK"))
-            return true;
-        else
-            return false;
-    }else if(net == GPRS){
-        SIM7000_send_cmd("AT+CNVW=0,10,\"0D00\"\r\n");
-        SIM7000_read_buffer(gprsBuffer, 40, DEFAULT_TIMEOUT);
-        if(NULL != strstr(gprsBuffer, "OK")){
-            return true;
-        }else
-            return false;
+        }
     }else{
-    Serial.println("No such mode!");
         return false;
     }
-}
-
-int DFRobot_SIM7000::checkSignalQuality(void)
-{
-    int i = 0,j = 0,k = 0;
-    char gprsBuffer[26];
-    char *s;
-    char buffers;
-    SIM7000_flush_serial();
-    SIM7000_clean_buffer(gprsBuffer, 26);
-    SIM7000_send_cmd("AT+CSQ\r");
-    SIM7000_read_buffer(gprsBuffer, 26, DEFAULT_TIMEOUT);
-    if (NULL != (s = strstr(gprsBuffer, "+CSQ:"))){
-        i = *(s + 6) - 48;
-        j = *(s + 7) - 48;
-        k = (i * 10) + j;
-        return k;
-    }
-    return 0;
 }
 
 bool DFRobot_SIM7000::attacthService(void)
 {
-    char i;
-    char *s;
-    char gprsBuffer[32];
-    SIM7000_clean_buffer(gprsBuffer,32);
-    SIM7000_send_cmd("AT+CGATT=1\r\n");
-    while(1){
-        SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
-        if(NULL != strstr(gprsBuffer, "OK")){
-            delay(100);
-            break;
-        }
-        if(NULL != strstr(gprsBuffer, "ERROR")){
-            return false;
-        }
-    }
-    SIM7000_clean_buffer(gprsBuffer,32);
-    SIM7000_send_cmd("AT+CGNAPN\r\n");
-    SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
-    if(NULL != strstr(gprsBuffer,"+CGNAPN")){
-        delay(300);
-    }else{
-        return false;
-    }
-    SIM7000_clean_buffer(gprsBuffer,32);
-    SIM7000_send_cmd("AT+CIPSHUT\r\n");
-    SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
-    if(NULL != strstr(gprsBuffer,"OK")){
-        delay(300);
-    }else{
-        return false;
-    }
-    SIM7000_clean_buffer(gprsBuffer,32);
-    SIM7000_send_cmd("AT+CSTT=\"ctnb\"\r\n");
-    SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
-    if(NULL != strstr(gprsBuffer, "OK")){
-        delay(100);
-    }else{
-        Serial.println("Fail to start task");
-        return false;
-    }
-    SIM7000_clean_buffer(gprsBuffer,32);
-    SIM7000_send_cmd("AT+CIICR\r\n");
-    SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT*100, DEFAULT_INTERCHAR_TIMEOUT*10);
-    if(NULL != strstr(gprsBuffer, "OK")){
-        delay(500);
-    }else{
-        Serial.println("Fail to bring up wireless connection");
-        return false;
-    }
-    SIM7000_clean_buffer(gprsBuffer,32);
-    SIM7000_send_cmd("AT+CIFSR\r\n");
-    SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
-    if (NULL != strstr(gprsBuffer,"ERROR")){
-        Serial.println("Can not get local IP address");
-        return false;
-    }
-    return true;
+    if(SIMcore.getCommandCounter() == 3){
+		char i;
+		char *s;
+		char gprsBuffer[32];
+		SIMcore.cleanBuffer(gprsBuffer,32);
+		SIMcore.send_cmd("AT+CGATT=1\r\n");
+		while(1){
+			SIMcore.readBuffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
+			if(NULL != strstr(gprsBuffer, "OK")){
+				delay(100);
+				break;
+			}
+			if(NULL != strstr(gprsBuffer, "ERROR")){
+				return false;
+			}
+		}
+		SIMcore.cleanBuffer(gprsBuffer,32);
+		if(SIMcore.check_send_cmd("AT+CSTT\r\n","OK")){
+			delay(100);
+		}else{
+			return false;
+		}
+		SIMcore.send_cmd("AT+CIICR\r\n");
+		while(1){
+			SIMcore.readBuffer(gprsBuffer, 32);
+			if(NULL != strstr(gprsBuffer, "OK")){
+				delay(200);
+				break;
+			}else if(NULL != strstr(gprsBuffer,"ERROR")){
+				return false;
+			}
+		}
+		if(SIMcore.check_send_cmd("AT+CIFSR\r\n","ERROR")){
+			return false;
+		}
+		SIMcore.setCommandCounter(4);
+		return true;
+	}else{
+		return false;
+	}
 }
 
-bool DFRobot_SIM7000::connect(Protocol ptl,const char *host, int port, int timeout, int chartimeout)
+int    DFRobot_SIM7000::checkSignalQuality(void)
 {
-    char num[4];
-    char resp[96];
-    if(ptl == TCP){
-        SIM7000_send_cmd("AT+CIPSTART=\"TCP\",\"");
-        SIM7000_send_cmd(host);
-        SIM7000_send_cmd("\",");
-        itoa(port, num, 10);
-        SIM7000_send_cmd(num);
-        SIM7000_send_cmd("\r\n");
-    }else if(ptl == UDP){
-        SIM7000_send_cmd("AT+CIPSTART=\"UDP\",\"");
-        SIM7000_send_cmd(host);
-        SIM7000_send_cmd("\",");
-        itoa(port, num, 10);
-        SIM7000_send_cmd(num);
-        SIM7000_send_cmd("\r\n");
-    }else{
-        Serial.println("No such mode!");
-        return false;
-    }
-    SIM7000_read_buffer(resp, 96, DEFAULT_TIMEOUT*100, chartimeout*50);
-    if(NULL != strstr(resp,"CONNECT OK")){
-        return true;
-    }
-    return false;
+	if(SIMcore.getCommandCounter() > 1){
+		char  signalBuffer[26];
+		int i = 0,j = 0,k = 0;
+		char *signalQuality;
+		SIMcore.cleanBuffer(signalBuffer,26);
+		SIMcore.send_cmd("AT+CSQ\r\n");
+		SIMcore.readBuffer(signalBuffer,26);
+		if (NULL != (signalQuality = strstr(signalBuffer, "+CSQ:"))){
+			i = *(signalQuality + 6) - 48;
+			j = *(signalQuality + 7) - 48;
+			k = (i * 10) + j;
+		}else{
+			SIMcore.closeCommand();
+			return 0;
+		}
+		if( k == 99){
+			SIMcore.closeCommand();
+			return 0;
+		}else{
+			return k;
+		}
+	}else{
+		return 0;
+	}
 }
 
-void DFRobot_SIM7000::send(const char *str)
+bool DFRobot_SIM7000::connect(Protocol ptl,const char *host, int port)
 {
-    char num[4];
-    int len=strlen(str);
-    if(len > 0){
-        SIM7000_send_cmd("AT+CIPSEND=");
-        itoa(len,num,10);
-        SIM7000_send_cmd(num);
-        SIM7000_send_cmd("\r\n");
-        delay(500);
-        SIM7000_send_cmd(str);
-        delay(500);
-        SIM7000_send_End_Mark();
-    }
-}
-
-void DFRobot_SIM7000::send(void *buffer,size_t len)
-{
-    char num[4];
-    SIM7000_send_cmd("AT+CIPSEND=");
-    itoa(len,num,10);
-    SIM7000_send_cmd(num);
-    SIM7000_send_cmd("\r\n");
-    delay(500);
-    SIM7000_send_cmd(buffer);
-    delay(500);
-    SIM7000_send_End_Mark();
-
-}
-int DFRobot_SIM7000::recv(char* buf,int maxlen,int timeout)
-{
-    char gprsBuffer[maxlen];
-    SIM7000_clean_buffer(gprsBuffer,maxlen);
-    int i=SIM7000_read_buffer(gprsBuffer,maxlen, timeout);
-    memcpy(buf,gprsBuffer,i);
-    return i;
-}
-
-bool DFRobot_SIM7000::close(void)
-{
-    char gprsBuffer[32];
-    delay(1000);
-    SIM7000_clean_buffer(gprsBuffer,32);
-    SIM7000_send_cmd("AT+CIPCLOSE\r\n");
-    SIM7000_read_buffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
-    delay(500);
-    SIM7000_send_cmd("AT+CIPSHUT\r\n");
-    return true;
-}
-
-int DFRobot_SIM7000::SIM7000_check_readable(void)
-{
-    return SIM7000Serial->available();
-}
-
-void DFRobot_SIM7000::SIM7000_send_cmd(const char* cmd)
-{
-    SIM7000Serial->begin(baudrate);
-    SIM7000Serial->write(cmd);
-}
-
-boolean DFRobot_SIM7000::SIM7000_check_with_cmd(const char* cmd, const char *resp, DataType type,unsigned int timeout, unsigned int chartimeout)
-{
-    SIM7000_send_cmd(cmd);
-    if(SIM7000_wait_for_resp(resp,type,timeout,chartimeout))
-        return true;
-    else
-        return false;
-}
-
-int DFRobot_SIM7000::SIM7000_read_buffer(char *buffer, int count, unsigned int timeout, unsigned int chartimeout)
-{
-    int i = 0;
-    unsigned long timerStart, prevChar;
-    timerStart = millis();
-    prevChar = 0;
-    while(1){
-        while(SIM7000_check_readable()){
-            buffer[i++] = SIM7000Serial->read();
-            prevChar = millis();
-            if(i >= count)
-                return i;
-        }
-        if(timeout){
-            if((unsigned long) (millis() - timerStart) > timeout * 1000){
-                //Serial.println("Get head timeout");
-                break;
-            }
-        }
-        if(((unsigned long) (millis() - prevChar) > chartimeout) && (prevChar != 0)){
-            break;
-        }
-    }
-    return i;
-}
-
-boolean DFRobot_SIM7000::SIM7000_wait_for_resp(const char* resp, DataType type, unsigned int timeout, unsigned int chartimeout)
-{
-    int len = strlen(resp);
-    int sum = 0;
-    char c[50];
-    unsigned long timerStart;
-    timerStart = millis();
-    while(1){
-        if(SIM7000Serial->available()){
-            while(SIM7000Serial->available()){
-            Serial.write(SIM7000Serial->read());
-            }
-        }
-        if((unsigned long)(millis() - timerStart) > timeout*3000){
-            return false;
-        }
-    }
-}
-
-void DFRobot_SIM7000::SIM7000_clean_buffer(char *buffer, int count)
-{
-    for(int i=0; i < count; i++){
-        buffer[i] = '\0';
-    }
-}
-
-void DFRobot_SIM7000::SIM7000_flush_serial(void)
-{
-    while(SIM7000Serial->available()){
-        SIM7000Serial->read();
-    }
-}
-
-void DFRobot_SIM7000::SIM7000_send_byte(uint8_t data)
-{
-    SIM7000Serial->write(data);
-}
-
-void DFRobot_SIM7000::SIM7000_send_End_Mark(void)
-{
-    SIM7000_send_byte((char)26);
+	if(SIMcore.getCommandCounter() > 3){
+		char num[4];
+		char resp[96];
+		if(ptl == TCP){
+			SIMcore.send_cmd("AT+CIPSTART=\"TCP\",\"");
+			SIMcore.send_cmd(host);
+			SIMcore.send_cmd("\",");
+			itoa(port, num, 10);
+			SIMcore.send_cmd(num);
+			SIMcore.send_cmd("\r\n");
+		}else if(ptl == UDP){
+			SIMcore.send_cmd("AT+CIPSTART=\"UDP\",\"");
+			SIMcore.send_cmd(host);
+			SIMcore.send_cmd("\",");
+			itoa(port, num, 10);
+			SIMcore.send_cmd(num);
+			SIMcore.send_cmd("\r\n");
+		}else{
+			Serial.println("No such mode!");
+			return false;
+		}
+		while(1){
+			while(SIMcore.checkReadable()){
+				SIMcore.readBuffer(resp, 96);
+				if(NULL != strstr(resp,"CONNECT OK")){
+					SIMcore.setCommandCounter(9);
+					return true;
+				}
+				if(NULL != strstr(resp,"CONNECT FAIL")){
+					return false;
+				}
+			}
+		}
+	}else{
+		return false;
+	}
 }
 
 bool DFRobot_SIM7000::turnON(void)
 {
     delay(300);
     char gprsBuffer[32];
-    SIM7000_clean_buffer(gprsBuffer,32);
-    baudrate = 115200;
-    SIM7000Serial->begin(baudrate);
+    SIMcore.cleanBuffer(gprsBuffer,32);
+    SIMcore.baudrate = 115200;
+    SIMcore.setRate(SIMcore.baudrate);
     pinMode(12,OUTPUT);
     while(1){
         digitalWrite(12, HIGH);
         delay(2000);
         digitalWrite(12, LOW);
-        while(1){
-            if(SIM7000Serial->available()){
-                while(SIM7000Serial->available()){
-                SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
-                }
-                if((NULL != strstr(gprsBuffer,"1"))){
+        while(SIMcore.checkReadable()){
+            SIMcore.readBuffer(gprsBuffer,32,DEFAULT_TIMEOUT);
+            if((NULL != strstr(gprsBuffer,"1"))){
                 return true;
-                }
-                if((NULL != strstr(gprsBuffer,"+"))){
+            }
+            if((NULL != strstr(gprsBuffer,"+"))){
                 return true;
-                }
             }
         }
     }
 }
 
-bool DFRobot_SIM7000::turnOFF(void){
-    char gprsBuffer[32];
-    SIM7000_clean_buffer(gprsBuffer,32);
-    SIM7000_send_cmd("AT+CPOWD=1\r\n");
-    SIM7000_read_buffer(gprsBuffer,32,DEFAULT_TIMEOUT);
-    if((NULL != strstr(gprsBuffer,"DOWN"))){
+bool DFRobot_SIM7000::initPos(void)
+{
+    if(SIMcore.check_send_cmd("AT+CGNSPWR=1\r\n","OK")){
+        delay(50);
+        SIMcore.setCommandCounter(3);
         return true;
+    }else{
+        return false;
     }
 
+}
+
+bool   DFRobot_SIM7000::send(char *data){
+    if(SIMcore.getCommandCounter() == 9){
+        char num[4];
+        char resp[20];
+        int len = strlen(data);
+        itoa(len, num, 10);
+        SIMcore.send_cmd("AT+CIPSEND=");
+        SIMcore.send_cmd(num);
+        if(SIMcore.check_send_cmd("\r\n",">")){
+            SIMcore.send_cmd(data);
+            while(1){
+                while(SIMcore.checkReadable()){
+                    SIMcore.readBuffer(resp,20);
+                    if(NULL != strstr(resp,"OK")){
+                        return true;
+                    }
+                    if(NULL != strstr(resp,"ERROR")){
+                        return false;
+                    }
+                }
+            }
+        }else{
+            return false;
+        }
+    }else{
+        return false;
+    }
+}
+
+bool   DFRobot_SIM7000::send(void *buffer,size_t len)
+{
+    if(SIMcore.getCommandCounter() == 9){
+        char num[4];
+        itoa(len, num, 10);
+        SIMcore.send_cmd("AT+CIPSEND=");
+        SIMcore.send_cmd(num);
+        if(SIMcore.check_send_cmd("\r\n",">")){
+            if(SIMcore.check_send_cmd(buffer,"OK")){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }else{
+        return false;
+    }
+}
+
+int DFRobot_SIM7000::recv(char* buf,int maxlen,int timeout)
+{
+    char gprsBuffer[maxlen];
+    SIMcore.cleanBuffer(gprsBuffer,maxlen);
+    int i=SIMcore.readBuffer(gprsBuffer,maxlen, timeout);
+    memcpy(buf,gprsBuffer,i);
+    return i;
+}
+
+bool DFRobot_SIM7000::getPosition(void)
+{
+    char  posBuffer[50];
+    char *pLongitude,*pLatitude;
+    SIMcore.cleanBuffer(posBuffer,50);
+    if(SIMcore.getCommandCounter() == 3){
+        SIMcore.send_cmd("AT+CGNSINF\r\n");
+        SIMcore.readBuffer(posBuffer,50);
+        if(NULL != strstr(posBuffer,"+CGNSINF")){
+            SIMcore.setCommandCounter(4);
+        }else{
+            return false;
+        }
+    }else{
+        return false;
+    }
+    if(SIMcore.getCommandCounter() == 4){
+        
+        SIMcore.setCommandCounter(5);
+        return true;
+    }else{
+        return false;
+    }
+}
+
+char* DFRobot_SIM7000::getLatitude(void)
+{
+    if(SIMcore.getCommandCounter() == 5){
+        
+    }else{
+        return "error";
+    }
+}
+
+char* DFRobot_SIM7000::getLongitude(void)
+{
+    if(SIMcore.getCommandCounter() == 5){
+        
+    }else{
+        return "error";
+    }
+}
+
+bool   DFRobot_SIM7000::close(void)
+{
+    if(SIMcore.getCommandCounter() > 3){
+        if(SIMcore.check_send_cmd("AT+CIPSHUT\r\n","OK")){
+            SIMcore.setCommandCounter(4);
+            return true;
+        }else{
+            SIMcore.setCommandCounter(4);
+            return false;
+        }
+    }else{
+        return false;
+    }
 }
