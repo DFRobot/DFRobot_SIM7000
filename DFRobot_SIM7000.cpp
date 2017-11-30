@@ -148,7 +148,7 @@ bool DFRobot_SIM7000::attacthService(void)
             }
         }
         SIMcore.cleanBuffer(gprsBuffer,32);
-        if(SIMcore.check_send_cmd("AT+CSTT\r\n","OK")){
+        if(SIMcore.check_send_cmd("AT+CSTT=\"ctnb\"\r\n","OK")){
             delay(100);
         }else{
             return false;
