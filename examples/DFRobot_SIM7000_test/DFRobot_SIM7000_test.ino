@@ -8,9 +8,11 @@
 #include <Wire.h>
 #include <DFRobot_SIM7000.h>
 
-static char     buff[400];
-DFRobot_SIM7000 sim7000;
-SoftwareSerial  mySerial(8,7);                                                                  //Set serial
+#define PIN_TX     7
+#define PIN_RX     8
+SoftwareSerial     mySerial(PIN_RX,PIN_TX);
+DFRobot_SIM7000    sim7000;
+static char        buff[450];
 
 void setup(){
     int signalStrength,dataNum;
@@ -25,11 +27,6 @@ void setup(){
         Serial.println("Set baud rate:19200");
     }else{
         Serial.println("faile to set baud rate");
-    }
-    if(sim7000.init()){                                                                        //Init SIM7000
-        Serial.println("AT command READY");
-    }else{
-        Serial.println("AT command ERROR");
     }
     if(sim7000.checkSIMStatus()){                                                              //Check SIM card
         Serial.println("SIM card READY");
@@ -61,7 +58,7 @@ void setup(){
         Serial.println("Fail to connect");
     }
     sim7000.send("HEAD/HTTP/1.1\r\nHost:www.sina.com\r\nConnection:keep-alive\r\n\r\n");       //Send Data Through TCP or UDP Connection 
-    dataNum=sim7000.recv(buff,400,0);                                                          //Receive data 
+    dataNum=sim7000.recv(buff,450,0);                                                          //Receive data 
     Serial.print("dataNum=");
     Serial.println(dataNum);
     Serial.println(buff);

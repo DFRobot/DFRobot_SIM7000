@@ -9,8 +9,10 @@
 #include <Wire.h>
 #include <DFRobot_SIM7000.h>
 
-DFRobot_SIM7000 sim7000;
-SoftwareSerial  mySerial(8,7);                                     //Set serial
+#define PIN_TX     7
+#define PIN_RX     8
+SoftwareSerial     mySerial(PIN_RX,PIN_TX);
+DFRobot_SIM7000    sim7000;
 
 void setup(){
     int signalStrength,dataNum;
