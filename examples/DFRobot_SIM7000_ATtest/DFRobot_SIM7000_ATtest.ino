@@ -18,7 +18,7 @@ void setup() {
     sim7000.turnOFF();
     delay(5000);
     if(sim7000.turnON()){                                      //Turn ON SIM7000
-        Serial.println("Turn NO SIM7000");
+        Serial.println("Turn ON SIM7000");
     }
     if(sim7000.setBaudRate(19200)){                            //Set baud rate from 115200 to 19200
         Serial.println("Set baud rate:19200");
