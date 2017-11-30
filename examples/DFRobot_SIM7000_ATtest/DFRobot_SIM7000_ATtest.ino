@@ -1,11 +1,12 @@
  /*
-  * file DFRobot_SIM7000_ATtest.ino
-  * brief DFRobot's SIM7000 module
+  * file  : DFRobot_SIM7000_ATtest.ino
+  * brief : DFRobot's SIM7000 module
+  * Power : SIM7000 needs 7-12V DC power supply
   * This example use the serial port to send AT commands to control the SIM7000
+  * If you use Mega please connect PIN8 PIN10 and set mySerial(10,7);
   */
 #include <DFRobot_SIM7000.h>
 
-// Set software serial(RX=8,TX=7) if you use Mega please set RX=10 and connect PIN8 PIN10 and set mySerial(10,7)
 #define PIN_TX     7
 #define PIN_RX     8
 SoftwareSerial     mySerial(PIN_RX,PIN_TX);

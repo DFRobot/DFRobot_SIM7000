@@ -1,6 +1,7 @@
  /*
-  * file DFRobot_SIM7000_test.ino
-  * brief DFRobot's SIM7000 module
+  * file  : DFRobot_SIM7000_TCP.ino
+  * brief : DFRobot's SIM7000 module
+  * Power : SIM7000 needs 7-12V DC power supply
   * This example Send an HTTP request to www.dfrobot.com and receive the return data
   * If you use Mega please connect PIN8 PIN10 and set mySerial(10,7);
   */
@@ -20,27 +21,34 @@ void setup(){
     sim7000.begin(mySerial);
     sim7000.turnOFF();
     delay(5000);
+    Serial.println("Turn ON SIM7000......");
     if(sim7000.turnON()){                                                                      //Turn ON SIM7000
-        Serial.println("Turn NO SIM7000");
+        Serial.println("Turn ON !");
     }
+    Serial.println("Set baud rate......");
     if(sim7000.setBaudRate(19200)){                                                            //Set baud rate from 115200 to 19200
         Serial.println("Set baud rate:19200");
     }else{
-        Serial.println("faile to set baud rate");
+        Serial.println("Faile to set baud rate");
+        while(1);
     }
+    Serial.println("Check SIM card......");
     if(sim7000.checkSIMStatus()){                                                              //Check SIM card
         Serial.println("SIM card READY");
     }else{
         Serial.println("SIM card ERROR");
+        while(1);
     }
     delay(500);
-    if(sim7000.setNet(NB)){                                                                    //Set net mod GPRS or NB-IOT
+    Serial.println("Set net mod......");
+    if(sim7000.setNet(NB)){                                                                    //Set net mod NB-IOT
         Serial.println("Set NB-IOT mode");
     }else{
         Serial.println("Fail to set mode");
     }
+    Serial.println("Get signal quality......");
     delay(500);
-    signalStrength=sim7000.checkSignalQuality();                                               //Check signal quality
+    signalStrength=sim7000.checkSignalQuality();                                               //Check signal quality from (0-30)
     Serial.print("signalStrength =");
     Serial.println(signalStrength);
     delay(500);
@@ -49,6 +57,7 @@ void setup(){
         Serial.println("Attach service");
     }else{
         Serial.println("Fail to Attach service");
+        while(1);
     }
     delay(200);
     Serial.println("Connecting......");
@@ -56,6 +65,7 @@ void setup(){
         Serial.println("Connect OK");
     }else{
         Serial.println("Fail to connect");
+        while(1);
     }
     sim7000.send("HEAD/HTTP/1.1\r\nHost:www.taobao.com\r\nConnection:keep-alive\r\n\r\n");     //Send Data Through TCP or UDP Connection 
     dataNum=sim7000.recv(buff,350,0);                                                          //Receive data 

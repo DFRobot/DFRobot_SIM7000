@@ -1,6 +1,7 @@
  /*
-  * file DFRobot_SIM7000_test.ino
-  * brief DFRobot's SIM7000 module
+  * file  : DFRobot_SIM7000_getposition.ino
+  * brief : DFRobot's SIM7000 module
+  * Power : SIM7000 needs 7-12V DC power supply
   * This example use for get longitude and latitude
   * The positioning function only available in outdoor
   * If you use Mega please connect PIN8 PIN10 and set mySerial(10,7);
