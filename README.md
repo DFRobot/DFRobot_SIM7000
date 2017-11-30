@@ -169,6 +169,39 @@ void send(void* buf,size_t len);
  */
 bool close(void);
 
+/*
+ * @brief Init SIM7000 positioning module
+ *
+ * @return
+ *     ture   Success
+ *     false  Failed
+ */
+bool initPos(void);
+
+/*
+ * @brief Get the current position
+ *
+ * @return
+ *     ture   Success
+ *     false  Failed
+ */
+bool getPosition(void);
+
+/*
+ * @brief Get longitude
+ *
+ * @return
+ *     Longitude value
+ */
+char* getLongitude(void);
+
+/*
+ * @brief Get latitude
+ *
+ * @return
+ *     Latitude value
+ */
+char* getLatitude(void);
 ```
 
 ## Compatibility

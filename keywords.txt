@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map For Grove - Distance Measuring Sensor Unit
+# Syntax Coloring Map For DFRobot_SIM7000
 #######################################
 
 #######################################
@@ -26,6 +26,11 @@ recv	KEYWORD2
 close	KEYWORD2
 turnON	KEYWORD2
 turnOFF	KEYWORD2
+initPos	KEYWORD2
+getTime	KEYWORD2
+getPosition	KEYWORD2
+getLatitude	KEYWORD2
+getLongitude	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

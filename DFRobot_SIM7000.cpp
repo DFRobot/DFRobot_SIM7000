@@ -105,7 +105,7 @@ bool DFRobot_SIM7000::setNet(Net net)
             if(SIMcore.check_send_cmd("AT+CNMP=38\r\n","OK")){
                 delay(300);
                 if(SIMcore.check_send_cmd("AT+CMNB=2\r\n","OK")){
-					SIMcore.setCommandCounter(3);
+                    SIMcore.setCommandCounter(3);
                     return true;
                 }else{
                     return false;
@@ -115,7 +115,7 @@ bool DFRobot_SIM7000::setNet(Net net)
             }
         }else if(net == GPRS){
             if(SIMcore.check_send_cmd("AT+CNVW=0,10,\"0D00\"\r\n","OK")){
-				SIMcore.setCommandCounter(3);
+                SIMcore.setCommandCounter(3);
                 return true;
             }else{
                 return false;
@@ -132,113 +132,113 @@ bool DFRobot_SIM7000::setNet(Net net)
 bool DFRobot_SIM7000::attacthService(void)
 {
     if(SIMcore.getCommandCounter() == 3){
-		char i;
-		char *s;
-		char gprsBuffer[32];
-		SIMcore.cleanBuffer(gprsBuffer,32);
-		SIMcore.send_cmd("AT+CGATT=1\r\n");
-		while(1){
-			SIMcore.readBuffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
-			if(NULL != strstr(gprsBuffer, "OK")){
-				delay(100);
-				break;
-			}
-			if(NULL != strstr(gprsBuffer, "ERROR")){
-				return false;
-			}
-		}
-		SIMcore.cleanBuffer(gprsBuffer,32);
-		if(SIMcore.check_send_cmd("AT+CSTT\r\n","OK")){
-			delay(100);
-		}else{
-			return false;
-		}
-		SIMcore.send_cmd("AT+CIICR\r\n");
-		while(1){
-			SIMcore.readBuffer(gprsBuffer, 32);
-			if(NULL != strstr(gprsBuffer, "OK")){
-				delay(200);
-				break;
-			}else if(NULL != strstr(gprsBuffer,"ERROR")){
-				return false;
-			}
-		}
-		if(SIMcore.check_send_cmd("AT+CIFSR\r\n","ERROR")){
-			return false;
-		}
-		SIMcore.setCommandCounter(4);
-		return true;
-	}else{
-		return false;
-	}
+        char i;
+        char *s;
+        char gprsBuffer[32];
+        SIMcore.cleanBuffer(gprsBuffer,32);
+        SIMcore.send_cmd("AT+CGATT=1\r\n");
+        while(1){
+            SIMcore.readBuffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
+            if(NULL != strstr(gprsBuffer, "OK")){
+                delay(100);
+                break;
+            }
+            if(NULL != strstr(gprsBuffer, "ERROR")){
+                return false;
+            }
+        }
+        SIMcore.cleanBuffer(gprsBuffer,32);
+        if(SIMcore.check_send_cmd("AT+CSTT\r\n","OK")){
+            delay(100);
+        }else{
+            return false;
+        }
+        SIMcore.send_cmd("AT+CIICR\r\n");
+        while(1){
+            SIMcore.readBuffer(gprsBuffer, 32);
+            if(NULL != strstr(gprsBuffer, "OK")){
+                delay(200);
+                break;
+            }else if(NULL != strstr(gprsBuffer,"ERROR")){
+                return false;
+            }
+        }
+        if(SIMcore.check_send_cmd("AT+CIFSR\r\n","ERROR")){
+            return false;
+        }
+        SIMcore.setCommandCounter(4);
+        return true;
+    }else{
+        return false;
+    }
 }
 
 int    DFRobot_SIM7000::checkSignalQuality(void)
 {
-	if(SIMcore.getCommandCounter() > 1){
-		char  signalBuffer[26];
-		int i = 0,j = 0,k = 0;
-		char *signalQuality;
-		SIMcore.cleanBuffer(signalBuffer,26);
-		SIMcore.send_cmd("AT+CSQ\r\n");
-		SIMcore.readBuffer(signalBuffer,26);
-		if (NULL != (signalQuality = strstr(signalBuffer, "+CSQ:"))){
-			i = *(signalQuality + 6) - 48;
-			j = *(signalQuality + 7) - 48;
-			k = (i * 10) + j;
-		}else{
-			SIMcore.closeCommand();
-			return 0;
-		}
-		if( k == 99){
-			SIMcore.closeCommand();
-			return 0;
-		}else{
-			return k;
-		}
-	}else{
-		return 0;
-	}
+    if(SIMcore.getCommandCounter() > 1){
+        char  signalBuffer[26];
+        int i = 0,j = 0,k = 0;
+        char *signalQuality;
+        SIMcore.cleanBuffer(signalBuffer,26);
+        SIMcore.send_cmd("AT+CSQ\r\n");
+        SIMcore.readBuffer(signalBuffer,26);
+        if (NULL != (signalQuality = strstr(signalBuffer, "+CSQ:"))){
+            i = *(signalQuality + 6) - 48;
+            j = *(signalQuality + 7) - 48;
+            k = (i * 10) + j;
+        }else{
+            SIMcore.closeCommand();
+            return 0;
+        }
+        if( k == 99){
+            SIMcore.closeCommand();
+            return 0;
+        }else{
+            return k;
+        }
+    }else{
+        return 0;
+    }
 }
 
 bool DFRobot_SIM7000::connect(Protocol ptl,const char *host, int port)
 {
-	if(SIMcore.getCommandCounter() > 3){
-		char num[4];
-		char resp[96];
-		if(ptl == TCP){
-			SIMcore.send_cmd("AT+CIPSTART=\"TCP\",\"");
-			SIMcore.send_cmd(host);
-			SIMcore.send_cmd("\",");
-			itoa(port, num, 10);
-			SIMcore.send_cmd(num);
-			SIMcore.send_cmd("\r\n");
-		}else if(ptl == UDP){
-			SIMcore.send_cmd("AT+CIPSTART=\"UDP\",\"");
-			SIMcore.send_cmd(host);
-			SIMcore.send_cmd("\",");
-			itoa(port, num, 10);
-			SIMcore.send_cmd(num);
-			SIMcore.send_cmd("\r\n");
-		}else{
-			Serial.println("No such mode!");
-			return false;
-		}
-		while(1){
-			while(SIMcore.checkReadable()){
-				SIMcore.readBuffer(resp, 96);
-				if(NULL != strstr(resp,"CONNECT OK")){
-					SIMcore.setCommandCounter(9);
-					return true;
-				}
-				if(NULL != strstr(resp,"CONNECT FAIL")){
-					return false;
-				}
-			}
-		}
-	}else{
-		return false;
-	}
+    if(SIMcore.getCommandCounter() > 3){
+        char num[4];
+        char resp[96];
+        if(ptl == TCP){
+            SIMcore.send_cmd("AT+CIPSTART=\"TCP\",\"");
+            SIMcore.send_cmd(host);
+            SIMcore.send_cmd("\",");
+            itoa(port, num, 10);
+            SIMcore.send_cmd(num);
+            SIMcore.send_cmd("\r\n");
+        }else if(ptl == UDP){
+            SIMcore.send_cmd("AT+CIPSTART=\"UDP\",\"");
+            SIMcore.send_cmd(host);
+            SIMcore.send_cmd("\",");
+            itoa(port, num, 10);
+            SIMcore.send_cmd(num);
+            SIMcore.send_cmd("\r\n");
+        }else{
+            Serial.println("No such mode!");
+            return false;
+        }
+        while(1){
+            while(SIMcore.checkReadable()){
+                SIMcore.readBuffer(resp, 96);
+                if(NULL != strstr(resp,"CONNECT OK")){
+                    SIMcore.setCommandCounter(9);
+                    return true;
+                }
+                if(NULL != strstr(resp,"CONNECT FAIL")){
+                    return false;
+                }
+            }
+        }
+    }else{
+        return false;
+    }
 }
 
 bool DFRobot_SIM7000::turnON(void)
@@ -338,13 +338,13 @@ int DFRobot_SIM7000::recv(char* buf,int maxlen,int timeout)
 
 bool DFRobot_SIM7000::getPosition(void)
 {
-    char  posBuffer[50];
-    char *pLongitude,*pLatitude;
-    SIMcore.cleanBuffer(posBuffer,50);
-    if(SIMcore.getCommandCounter() == 3){
+    char  posBuffer[150];
+    char *position;
+    SIMcore.cleanBuffer(posBuffer,150);
+    if(SIMcore.getCommandCounter() == 3 || SIMcore.getCommandCounter() == 6){
         SIMcore.send_cmd("AT+CGNSINF\r\n");
-        SIMcore.readBuffer(posBuffer,50);
-        if(NULL != strstr(posBuffer,"+CGNSINF")){
+        SIMcore.readBuffer(posBuffer,150);
+        if(NULL != strstr(posBuffer,"+CGNSINF: 1,1")){
             SIMcore.setCommandCounter(4);
         }else{
             return false;
@@ -353,7 +353,9 @@ bool DFRobot_SIM7000::getPosition(void)
         return false;
     }
     if(SIMcore.getCommandCounter() == 4){
-        
+        position  = strstr(posBuffer,".000");
+        memcpy(latitude , position+5 , 7);
+        memcpy(longitude, position+15, 7);
         SIMcore.setCommandCounter(5);
         return true;
     }else{
@@ -363,8 +365,9 @@ bool DFRobot_SIM7000::getPosition(void)
 
 char* DFRobot_SIM7000::getLatitude(void)
 {
-    if(SIMcore.getCommandCounter() == 5){
-        
+    if(SIMcore.getCommandCounter() >= 5){
+        SIMcore.setCommandCounter(6);
+        return latitude;
     }else{
         return "error";
     }
@@ -372,8 +375,9 @@ char* DFRobot_SIM7000::getLatitude(void)
 
 char* DFRobot_SIM7000::getLongitude(void)
 {
-    if(SIMcore.getCommandCounter() == 5){
-        
+    if(SIMcore.getCommandCounter() >= 5){
+        SIMcore.setCommandCounter(6);
+        return longitude;
     }else{
         return "error";
     }
