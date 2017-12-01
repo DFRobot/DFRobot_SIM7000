@@ -105,6 +105,7 @@ void setup(){
 void loop(){
     delay(1000);
 }
+
 int readSerial(char result[]){
     int i = 0;
     while(1){
