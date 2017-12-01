@@ -45,7 +45,7 @@ void setup(){
     }
     delay(500);
 
-    Serial.println("Set net mod......");
+    Serial.println("Set net mode......");
     if(sim7000.setNet(NB)){                                                                    //Set net mod NB-IOT
         Serial.println("Set NB-IOT mode");
     }else{
