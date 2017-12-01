@@ -22,7 +22,7 @@ it has wireless communication capabilities even in a similar basement and the li
 
 ## Summary
 ### The library provide some application rely on SIM7000:
-####   Use GPRS mode or NB-IOT mod to send and receive data by UDP or TCP
+####   Use GPRS mode or NB-IOT mode to send and receive data by UDP or TCP
 ####   Positioning current position by GNSS, this function works better on outdoor
 ####   We also provide a way to send AT command directly to SIM7000
 
