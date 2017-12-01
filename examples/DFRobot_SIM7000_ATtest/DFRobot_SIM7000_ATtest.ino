@@ -6,6 +6,7 @@
   * AT command list:
   * https://github.com/DFRobot/binaryfiles/raw/master/DFR0505/doc/SIM7000%20Series_AT%20Command%20Manual_V1.01.pdf
   * Note  : If you use Mega please connect PIN8 PIN10 and set PIN_RX = 10
+  *         The AT command must end with CRLF
   */
 #include <DFRobot_SIM7000.h>
 
@@ -19,10 +20,12 @@ void setup() {
     sim7000.begin(mySerial);
     sim7000.turnOFF();
     delay(5000);
+
     Serial.println("Turn ON SIM7000......");
     if(sim7000.turnON()){                             //Turn ON SIM7000
         Serial.println("Turn ON !");
     }
+
     Serial.println("Set baud rate......");
     if(sim7000.setBaudRate(19200)){                   //Set baud rate from 115200 to 19200
         Serial.println("Set baud rate:19200");
@@ -30,13 +33,9 @@ void setup() {
         Serial.println("Faile to set baud rate");
         while(1);
     }
+
     mySerial.begin(19200);
-    Serial.println("Example :");
-    mySerial.listen();
-    mySerial.write("AT\r\n");                         //AT command end with Carriage Return and Line Feed
-    while(mySerial.available()){
-        Serial.write(mySerial.read());
-    }
+    Serial.println("For example, if you type AT\\r\\n, OK\\r\\n will be responsed!");
     Serial.println("Enter your AT command :");
 }
 
@@ -45,9 +44,11 @@ void loop() {
     while(mySerial.available()){
         Serial.write(mySerial.read());
     }
+
     mySerial.flush();
     while(Serial.available()){
         mySerial.write(Serial.read());
     }
+
     delay(20);
 }

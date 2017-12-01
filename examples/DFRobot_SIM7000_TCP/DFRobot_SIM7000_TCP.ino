@@ -27,6 +27,7 @@ void setup(){
     if(sim7000.turnON()){                                                                      //Turn ON SIM7000
         Serial.println("Turn ON !");
     }
+
     Serial.println("Set baud rate......");
     if(sim7000.setBaudRate(19200)){                                                            //Set baud rate from 115200 to 19200
         Serial.println("Set baud rate:19200");
@@ -34,6 +35,7 @@ void setup(){
         Serial.println("Faile to set baud rate");
         while(1);
     }
+
     Serial.println("Check SIM card......");
     if(sim7000.checkSIMStatus()){                                                              //Check SIM card
         Serial.println("SIM card READY");
@@ -42,18 +44,21 @@ void setup(){
         while(1);
     }
     delay(500);
+
     Serial.println("Set net mod......");
     if(sim7000.setNet(NB)){                                                                    //Set net mod NB-IOT
         Serial.println("Set NB-IOT mode");
     }else{
         Serial.println("Fail to set mode");
     }
+
     Serial.println("Get signal quality......");
     delay(500);
     signalStrength=sim7000.checkSignalQuality();                                               //Check signal quality from (0-30)
     Serial.print("signalStrength =");
     Serial.println(signalStrength);
     delay(500);
+
     Serial.println("Attaching service......");
     if(sim7000.attacthService()){                                                              //Open the connection
         Serial.println("Attach service");
@@ -62,6 +67,7 @@ void setup(){
         while(1);
     }
     delay(200);
+
     Serial.println("Connecting......");
     if(sim7000.connect(TCP,"www.taobao.com",80)){                                              //Start Up TCP Connection
         Serial.println("Connect OK");
@@ -69,6 +75,7 @@ void setup(){
         Serial.println("Fail to connect");
         while(1);
     }
+
     sim7000.send("HEAD/HTTP/1.1\r\nHost:www.taobao.com\r\nConnection:keep-alive\r\n\r\n");     //Send Data
     dataNum=sim7000.recv(buff,350,0);                                                          //Receive data 
     Serial.print("dataNum=");
@@ -76,12 +83,14 @@ void setup(){
     Serial.println(buff);
     delay(500);
     Serial.println("Close connection......");
+
     if(sim7000.close()){                                                                       //End the connection
         Serial.println("Closed !");
     }else{
         Serial.println("Fail to close connection");
     }
     delay(2000);
+
     sim7000.turnOFF();                                                                         //Turn OFF SIM7000
 }
 

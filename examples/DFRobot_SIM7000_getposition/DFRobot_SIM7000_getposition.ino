@@ -23,10 +23,12 @@ void setup(){
     sim7000.begin(mySerial);
     sim7000.turnOFF();
     delay(5000);
+
     Serial.println("Turn ON SIM7000......");
     if(sim7000.turnON()){                                          //Turn ON SIM7000
         Serial.println("Turn ON !");
     }
+
     Serial.println("Set baud rate......");
     if(sim7000.setBaudRate(19200)){                                //Set baud rate from 115200 to 19200
         Serial.println("Set baud rate:19200");
@@ -34,6 +36,7 @@ void setup(){
         Serial.println("Faile to set baud rate");
         while(1);
     }
+
     Serial.println("Check SIM card......");
     if(sim7000.checkSIMStatus()){                                  //Check SIM card
         Serial.println("SIM card READY");
@@ -41,6 +44,7 @@ void setup(){
         Serial.println("SIM card ERROR");
         while(1);
     }
+
     Serial.println("Init positioning function......");
     while(1){
         if(sim7000.initPos()){
