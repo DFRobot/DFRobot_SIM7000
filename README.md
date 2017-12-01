@@ -1,13 +1,12 @@
 # NB-IOT SIM7000 Shield
 
-  SIM7000 is the first LTE CAT-M1 / NB-IoT module, it supports multiple frequency bands of LTE-TDD / LTE-FDD / GSM / GPRS / EDGE
-The upstream and downstream data flow peak 375kbps, it a stable low-power communications module.NB-IoT has 20dB + coverage gain, so
-it has wireless communication capabilities even in a similar basement and the like.
-
 ![SVG1](https://raw.githubusercontent.com/DFRobot/binaryfiles/master/DFR0505/DFR0505svg1.png)
 
 # DFROBOT_SIM7000 Library for Arduino
-Provides an Arduino library for NB-IOT SIM7000 Shield
+  Provides an Arduino library for NB-IOT SIM7000 Shield
+  SIM7000 is the first LTE CAT-M1 / NB-IoT module, it supports multiple frequency bands of LTE-TDD / LTE-FDD / GSM / GPRS / EDGE
+The upstream and downstream data flow peak 375kbps, it a stable low-power communications module.NB-IoT has 20dB + coverage gain, so
+it has wireless communication capabilities even in a similar basement and the like.
 ## Table of Contents
 
 * [Summary](#summary)
