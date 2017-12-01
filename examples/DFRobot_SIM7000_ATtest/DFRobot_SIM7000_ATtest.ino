@@ -1,9 +1,11 @@
  /*
-  * file  : DFRobot_SIM7000_ATtest.ino
-  * brief : DFRobot's SIM7000 module
+  * File  : DFRobot_SIM7000_ATtest.ino
   * Power : SIM7000 needs 7-12V DC power supply
-  * This example use the serial port to send AT commands to control the SIM7000
-  * If you use Mega please connect PIN8 PIN10 and set mySerial(10,7);
+  * Brief : This example use the serial port to send AT command to control the SIM7000
+  *         With initialization completed, we can enter AT command to SIM7000 directly
+  * AT command list:
+  * https://github.com/DFRobot/binaryfiles/raw/master/DFR0505/doc/SIM7000%20Series_AT%20Command%20Manual_V1.01.pdf
+  * Note  : If you use Mega please connect PIN8 PIN10 and set PIN_RX = 10
   */
 #include <DFRobot_SIM7000.h>
 

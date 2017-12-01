@@ -43,6 +43,7 @@ public:
 private:
     char     latitude[8];
     char     longitude[8];
+    long     SIM7000baudrate;
 };
 
 #endif

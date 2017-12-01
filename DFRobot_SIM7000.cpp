@@ -7,6 +7,7 @@ bool DFRobot_SIM7000::setBaudRate(long rate)
     while(count <3){
         if( rate  ==  1200){
             if(SIMcore.check_send_cmd("AT+IPR=1200\r\n","OK")){
+                SIMcore.baudrate = 1200;
                 break;
             }else{
                 count++;
@@ -14,6 +15,7 @@ bool DFRobot_SIM7000::setBaudRate(long rate)
             }
         }else if(rate == 2400){
             if(SIMcore.check_send_cmd("AT+IPR=2400\r\n","OK")){
+                SIMcore.baudrate = 2400;
                 break;
             }else{
                 count++;
@@ -21,6 +23,7 @@ bool DFRobot_SIM7000::setBaudRate(long rate)
             }
         }else if(rate == 4800){
             if(SIMcore.check_send_cmd("AT+IPR=4800\r\n","OK")){
+                SIMcore.baudrate = 4800;
                 break;
             }else{
                 count++;
@@ -28,6 +31,7 @@ bool DFRobot_SIM7000::setBaudRate(long rate)
             }
         }else if(rate == 9600){
             if(SIMcore.check_send_cmd("AT+IPR=9600\r\n","OK")){
+                SIMcore.baudrate = 9600;
                 break;
             }else{
                 count++;
@@ -35,6 +39,7 @@ bool DFRobot_SIM7000::setBaudRate(long rate)
             }
         }else if(rate == 19200){
             if(SIMcore.check_send_cmd("AT+IPR=19200\r\n","OK")){
+                SIMcore.baudrate = 19200;
                 break;
             }else{
                 count++;
@@ -42,6 +47,7 @@ bool DFRobot_SIM7000::setBaudRate(long rate)
             }
         }else if(rate == 38400){
             if(SIMcore.check_send_cmd("AT+IPR=38400\r\n","OK")){
+                SIMcore.baudrate = 38400;
                 break;
             }else{
                 count++;
@@ -52,11 +58,11 @@ bool DFRobot_SIM7000::setBaudRate(long rate)
             return false;
         }
     }
+    SIMcore.setRate(SIMcore.baudrate);
     if(count == 3){
         SIMcore.closeCommand();
         return false;
     }
-    SIMcore.baudrate = rate;
     SIMcore.setCommandCounter(1);
     return true;
 }

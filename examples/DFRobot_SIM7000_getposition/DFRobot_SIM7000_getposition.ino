@@ -1,10 +1,12 @@
  /*
-  * file  : DFRobot_SIM7000_getposition.ino
-  * brief : DFRobot's SIM7000 module
+  * file  : DFRobot_SIM7000_getPosition.ino
   * Power : SIM7000 needs 7-12V DC power supply
-  * This example use for get longitude and latitude
-  * The positioning function only available in outdoor
-  * If you use Mega please connect PIN8 PIN10 and set mySerial(10,7);
+  * Brief : This example use for get longitude and latitude
+  *         With initialization completed, we use getPosition() to positioning current position
+            Use getLongitude() to get longitude(-180,180), negative is west positive is east
+            Use getLatitude() to get latitude(-90,90), negative is south positive is north
+  * Note  : If you use Mega please connect PIN8 PIN10 and set PIN_RX = 10
+  *       : The positioning function only available in outdoor
   */
 
 #include <Wire.h>

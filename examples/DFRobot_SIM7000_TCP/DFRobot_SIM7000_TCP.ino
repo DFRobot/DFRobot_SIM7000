@@ -1,9 +1,11 @@
  /*
-  * file  : DFRobot_SIM7000_TCP.ino
-  * brief : DFRobot's SIM7000 module
+  * File  : DFRobot_SIM7000_TCP.ino
   * Power : SIM7000 needs 7-12V DC power supply
-  * This example Send an HTTP request to www.dfrobot.com and receive the return data
-  * If you use Mega please connect PIN8 PIN10 and set mySerial(10,7);
+  * Brief : This example verify TCP connection over a HTTP request
+  *         With initialization completed, we use connect(TCP,"www.taobao.com",80) to set TCP connection
+  *         Then send a HTTP request to get the HEAD of taobao.com
+  *         Thus we finished the TCP send and receive verification
+  * Note  : If you use Mega please connect PIN8 PIN10 and setPIN_RX = 10
   */
 
 #include <Wire.h>
@@ -61,13 +63,13 @@ void setup(){
     }
     delay(200);
     Serial.println("Connecting......");
-    if(sim7000.connect(TCP,"www.taobao.com",80)){                                              //Start Up TCP or UDP Connection
+    if(sim7000.connect(TCP,"www.taobao.com",80)){                                              //Start Up TCP Connection
         Serial.println("Connect OK");
     }else{
         Serial.println("Fail to connect");
         while(1);
     }
-    sim7000.send("HEAD/HTTP/1.1\r\nHost:www.taobao.com\r\nConnection:keep-alive\r\n\r\n");     //Send Data Through TCP or UDP Connection 
+    sim7000.send("HEAD/HTTP/1.1\r\nHost:www.taobao.com\r\nConnection:keep-alive\r\n\r\n");     //Send Data
     dataNum=sim7000.recv(buff,350,0);                                                          //Receive data 
     Serial.print("dataNum=");
     Serial.println(dataNum);
