@@ -19,16 +19,25 @@ void setup() {
     sim7000.begin(mySerial);
     sim7000.turnOFF();
     delay(5000);
-    if(sim7000.turnON()){                                      //Turn ON SIM7000
-        Serial.println("Turn ON SIM7000");
+    Serial.println("Turn ON SIM7000......");
+    if(sim7000.turnON()){                             //Turn ON SIM7000
+        Serial.println("Turn ON !");
     }
-    if(sim7000.setBaudRate(19200)){                            //Set baud rate from 115200 to 19200
+    Serial.println("Set baud rate......");
+    if(sim7000.setBaudRate(19200)){                   //Set baud rate from 115200 to 19200
         Serial.println("Set baud rate:19200");
-        Serial.println("Enter your AT commands : ");
     }else{
-        Serial.println("faile to set baud rate");
+        Serial.println("Faile to set baud rate");
+        while(1);
     }
     mySerial.begin(19200);
+    Serial.println("Example :");
+    mySerial.listen();
+    mySerial.write("AT\r\n");                         //AT command end with Carriage Return and Line Feed
+    while(mySerial.available()){
+        Serial.write(mySerial.read());
+    }
+    Serial.println("Enter your AT command :");
 }
 
 void loop() {

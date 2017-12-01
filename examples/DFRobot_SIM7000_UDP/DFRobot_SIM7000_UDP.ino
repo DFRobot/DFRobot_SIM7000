@@ -83,8 +83,9 @@ void setup(){
         Serial.println("Failed to send");
     }
     delay(500);
+    Serial.println("Close connection......");
     if(sim7000.close()){                                            //End the connection
-        Serial.println("Close connection");
+        Serial.println("Closed !");
     }else{
         Serial.println("Fail to close connection");
     }
