@@ -1,12 +1,14 @@
+
+# DFROBOT_SIM7000 Library for Arduino
+-  Provides an Arduino library for NB-IOT SIM7000 Shield
+-  SIM7000 is the first LTE CAT-M1 / NB-IoT module, it supports multiple frequency bands of LTE-TDD / LTE-FDD / GSM / GPRS / EDGE
+The upstream and downstream data flow peak 375kbps, it a stable low-power communications module.NB-IoT has 20dB + coverage gain, so
+it has wireless communication capabilities even in a similar basement and the like.
+
 # NB-IOT SIM7000 Shield
 
 ![SVG1](https://raw.githubusercontent.com/DFRobot/binaryfiles/master/DFR0505/DFR0505svg1.png)
 
-# DFROBOT_SIM7000 Library for Arduino
-  Provides an Arduino library for NB-IOT SIM7000 Shield
-  SIM7000 is the first LTE CAT-M1 / NB-IoT module, it supports multiple frequency bands of LTE-TDD / LTE-FDD / GSM / GPRS / EDGE
-The upstream and downstream data flow peak 375kbps, it a stable low-power communications module.NB-IoT has 20dB + coverage gain, so
-it has wireless communication capabilities even in a similar basement and the like.
 ## Table of Contents
 
 * [Summary](#summary)
@@ -19,10 +21,10 @@ it has wireless communication capabilities even in a similar basement and the li
 <content>
 
 ## Summary
-The library provide some application rely on SIM7000:
-   Use GPRS mode or NB-IOT mod to send and receive data by UDP or TCP
-   Positioning current position by GNSS, this function works better on outdoor
-   We also provide a way to send AT command directly to SIM7000
+###The library provide some application rely on SIM7000:
+####   Use GPRS mode or NB-IOT mod to send and receive data by UDP or TCP
+####   Positioning current position by GNSS, this function works better on outdoor
+####   We also provide a way to send AT command directly to SIM7000
 
 ## Methods
 
