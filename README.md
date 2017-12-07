@@ -7,12 +7,15 @@ it has wireless communication capabilities even in a similar basement and the li
 ![SVG1](https://raw.githubusercontent.com/DFRobot/binaryfiles/master/DFR0505/DFR0505svg1.png)
 
 # DFROBOT_SIM7000 Library for Arduino
--  Provides an Arduino library for NB-IOT SIM7000 Shield
-
+##  This library relise on the DFROBOT_SIM library
+##  Provides an Arduino library for NB-IOT SIM7000 Shield
+##  The library provide some application rely on SIM7000:
+###   Use GPRS mode or NB-IOT mode to send and receive data by UDP or TCP
+###   Positioning current position by GNSS, this function works better on outdoor
+###   We also provide a way to send AT command directly to SIM7000
 
 ## Table of Contents
 
-* [Summary](#summary)
 * [Methods](#methods)
 * [Compatibility](#Compatibility)
 * [Depends](#depends)
@@ -20,12 +23,6 @@ it has wireless communication capabilities even in a similar basement and the li
 * [Credits](#credits)
 <snippet>
 <content>
-
-## Summary
-### The library provide some application rely on SIM7000:
-####   Use GPRS mode or NB-IOT mode to send and receive data by UDP or TCP
-####   Positioning current position by GNSS, this function works better on outdoor
-####   We also provide a way to send AT command directly to SIM7000
 
 ## Methods
 
