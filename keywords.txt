@@ -35,6 +35,7 @@ MQTTconnect	KEYWORD2
 MQTTsend	KEYWORD2
 MQTTsubscribe	KEYWORD2
 MQTTunsubscribe	KEYWORD2
+MQTTrecv	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

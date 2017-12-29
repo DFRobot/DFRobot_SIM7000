@@ -257,6 +257,21 @@ bool MQTTsend(char* iot_topic, char* iot_data);
 bool MQTTsubscribe(char* iot_topic);
 
 /*
+ * @brief Receive data from subscribed topic
+ *
+ * @param iot_topic The subscribed topic
+ *
+ * @param buff      The buffer to store data
+ *
+ * @param maxlen    The maximum length of the buffer
+ *
+ * @return
+ *     ture   Success
+ *     false  Failed
+ */
+bool     MQTTrecv(char* iot_topic, char* buff,int maxlen);
+
+/*
  * @brief MQTT unsubscribe request
  *
  * @param iot_topic The topic you want to unsubscribe
