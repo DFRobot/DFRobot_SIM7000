@@ -1,11 +1,11 @@
  /*
-  * File  : DFRobot_SIM7000_TCP.ino
+  * File  : DFRobot_SIM7000_HTTP.ino
   * Power : SIM7000 needs 7-12V DC power supply
   * Brief : This example verify TCP connection over a HTTP request
   *         With initialization completed, we use connect(TCP,"www.taobao.com",80) to set TCP connection
   *         Then send a HTTP request to get the HEAD of taobao.com
   *         Thus we finished the TCP send and receive verification
-  * Note  : If you use Mega please connect PIN8 PIN10 and setPIN_RX = 10
+  * Note  : If you use Mega please connect PIN8 PIN10 and set PIN_RX = 10
   */
 
 #include <Wire.h>

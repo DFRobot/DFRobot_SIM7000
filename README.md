@@ -1,22 +1,17 @@
 
-
-# NB-IOT SIM7000 Shield
+# DFROBOT_SIM7000 Library for Arduino
+-  Provides an Arduino library for NB-IOT SIM7000 Shield
 -  SIM7000 is the first LTE CAT-M1 / NB-IoT module, it supports multiple frequency bands of LTE-TDD / LTE-FDD / GSM / GPRS / EDGE
 The upstream and downstream data flow peak 375kbps, it a stable low-power communications module.NB-IoT has 20dB + coverage gain, so
 it has wireless communication capabilities even in a similar basement and the like.
 
-![SVG1](https://raw.githubusercontent.com/DFRobot/binaryfiles/master/DFR0505/DFR0505svg1.png)
+# NB-IOT SIM7000 Shield
 
-# DFROBOT_SIM7000 Library for Arduino
--  This library relise on the DFRobot_SIM library
--  Provides an Arduino library for NB-IOT SIM7000 Shield
--  The library provide some application rely on SIM7000:
--  Use GPRS mode or NB-IOT mode to send and receive data by UDP or TCP
--  Positioning current position by GNSS, this function works better on outdoor
--  Provide a way to send AT command directly to SIM7000
+![SVG1](https://raw.githubusercontent.com/DFRobot/binaryfiles/master/DFR0505/DFR0505svg1.png)
 
 ## Table of Contents
 
+* [Summary](#summary)
 * [Methods](#methods)
 * [Compatibility](#Compatibility)
 * [Depends](#depends)
@@ -24,6 +19,12 @@ it has wireless communication capabilities even in a similar basement and the li
 * [Credits](#credits)
 <snippet>
 <content>
+
+## Summary
+### The library provide some application rely on SIM7000:
+####   Use GPRS mode or NB-IOT mod to send and receive data by UDP or TCP
+####   Positioning current position by GNSS, this function works better on outdoor
+####   We also provide a way to send AT command directly to SIM7000
 
 ## Methods
 
@@ -106,6 +107,14 @@ bool setNet(Net net);
  *     0-99:Signal quality
  */
 int checkSignalQuality(void);
+
+/*
+ * @brief Get battery power
+ *
+ * @return
+ *     0-99:Battery power
+ */
+int batteryPower(void);
 
 /*
  * @brief Open the connection
@@ -207,6 +216,57 @@ char* getLongitude(void);
  *     Latitude value
  */
 char* getLatitude(void);
+
+/*
+ * @brief MQTT connect request
+ *
+ * @param iot_client Client name user-defined
+ *
+ * @param iot_username The user name identifies the name of the user who is connecting
+ *
+ * @param iot_key The password for user
+ *
+ * @return
+ *     ture   Success
+ *     false  Failed
+ */
+bool MQTTconnect(char* iot_client, char* iot_username, char* iot_key);
+
+/*
+ * @brief MQTT send command
+ *
+ * @param iot_topic Target topic
+ *
+ * @param iot_data  The data you want to send
+ *
+ * @return
+ *     ture   Success
+ *     false  Failed
+ */
+bool MQTTsend(char* iot_topic, char* iot_data);
+
+/*
+ * @brief MQTT subscribe request
+ *
+ * @param iot_topic The topic you want to subscribe
+ *
+ * @return
+ *     ture   Success
+ *     false  Failed
+ */
+bool MQTTsubscribe(char* iot_topic);
+
+/*
+ * @brief MQTT unsubscribe request
+ *
+ * @param iot_topic The topic you want to unsubscribe
+ *
+ * @return
+ *     ture   Success
+ *     false  Failed
+ */
+bool MQTTunsubscribe(char* iot_topic);
+
 ```
 
 ## Compatibility

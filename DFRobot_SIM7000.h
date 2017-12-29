@@ -25,25 +25,34 @@ enum DataType {
 class DFRobot_SIM7000 : public DFRobot_SIMcore
 {
 public:
-    int      recv(char* buf,int maxlen,int timeout);
+    int      recv(char* buf, int maxlen, int timeout);
     int      checkSignalQuality(void);
+    int      batteryPower(void);
     bool     setNet(Net net);
     bool     attacthService(void);
     bool     setBaudRate(long rate);
     bool     checkSIMStatus(void);
-    bool     connect(Protocol ptl,const char *host, int port);
+    bool     connect(Protocol ptl, const char *host, int port);
     bool     close(void);
     bool     turnON(void);
     bool     initPos(void);
+    bool     MQTTconnect(char* iot_client, char* iot_username, char* iot_key);
+    bool     MQTTsend(char* iot_topic, char* iot_data);
+    bool     MQTTsubscribe(char* iot_topic);
+    bool     MQTTunsubscribe(char* iot_topic);
+    bool     MQTTrecv(char* iot_topic, char* buf,int maxlen);
+    bool     MQTTdisconnect(void);
     bool     send(void *buffer,size_t len);
     bool     send(char *data);
     bool     getPosition(void);
     char*    getLatitude(void);
     char*    getLongitude(void);
+
 private:
+
     char     latitude[8];
     char     longitude[8];
-    long     SIM7000baudrate;
-};
+    char     battery[3];
+ };
 
 #endif

@@ -31,6 +31,10 @@ getTime	KEYWORD2
 getPosition	KEYWORD2
 getLatitude	KEYWORD2
 getLongitude	KEYWORD2
+MQTTconnect	KEYWORD2
+MQTTsend	KEYWORD2
+MQTTsubscribe	KEYWORD2
+MQTTunsubscribe	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
