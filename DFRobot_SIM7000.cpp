@@ -153,7 +153,7 @@ bool  DFRobot_SIM7000::attacthService(void)
             }
         }
         cleanBuffer(gprsBuffer,32);
-        if(check_send_cmd("AT+CSTT=\"ctnb\"\r\n","OK")){
+        if(check_send_cmd("AT+CSTT\r\n","OK")){
             delay(100);
         }else{
             return false;
