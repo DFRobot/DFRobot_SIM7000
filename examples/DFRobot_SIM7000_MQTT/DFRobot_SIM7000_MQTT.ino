@@ -23,7 +23,7 @@ SoftwareSerial           mySerial(PIN_RX,PIN_TX);
 DFRobot_SIM7000          sim7000;
 
 void setup(){
-    int signalQuality;
+    int signalStrength;
     Serial.begin(115200);
     delay(2000);
     sim7000.begin(mySerial);
@@ -79,7 +79,7 @@ void loop(){
     char  sendData[100];
     Serial.print("Connect to :");
     Serial.println(serverIP);
-    if(sim7000.connect(serverIP, TCP, 1883)){                    //Connect to server
+    if(sim7000.connect(TCP,serverIP,1883)){                      //Connect to server
         Serial.println("Connected !");
     }else{
         Serial.println("Failed to connect");

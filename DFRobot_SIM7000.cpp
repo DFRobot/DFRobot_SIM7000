@@ -2,7 +2,6 @@
 
 bool  DFRobot_SIM7000::setBaudRate(long rate)
 {
-    baudrate = 115200;
     int  count = 0;
     while(count <3){
         if( rate  ==  1200){
@@ -268,6 +267,11 @@ bool  DFRobot_SIM7000::turnON(void)
             if((NULL != strstr(gprsBuffer,"+"))){
                 return true;
             }
+        }
+        delay(5000);
+        delay(5000);
+        if(check_send_cmd("AT\r\n","OK")){
+            return true;
         }
     }
 }
