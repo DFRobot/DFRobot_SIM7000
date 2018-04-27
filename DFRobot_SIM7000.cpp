@@ -252,24 +252,20 @@ bool  DFRobot_SIM7000::turnON(void)
     delay(300);
     char gprsBuffer[32];
     cleanBuffer(gprsBuffer,32);
-    baudrate = 19200;
-    setRate(baudrate);
     pinMode(12,OUTPUT);
+    digitalWrite(12, HIGH);
+    delay(2000);
+    digitalWrite(12, LOW);
     while(1){
-        digitalWrite(12, HIGH);
         delay(2000);
-        digitalWrite(12, LOW);
-        while(checkReadable()){
-            readBuffer(gprsBuffer,32,DEFAULT_TIMEOUT);
-            if((NULL != strstr(gprsBuffer,"1"))){
-                return true;
-            }
-            if((NULL != strstr(gprsBuffer,"+"))){
-                return true;
-            }
+        baudrate = 115200;
+        setRate(baudrate);
+        if(check_send_cmd("AT\r\n","OK")){
+            return true;
         }
-        delay(5000);
-        delay(5000);
+        delay(2000);
+        baudrate = 19200;
+        setRate(baudrate);
         if(check_send_cmd("AT\r\n","OK")){
             return true;
         }
@@ -343,8 +339,7 @@ bool  DFRobot_SIM7000::MQTTconnect(char* iot_client, char* iot_username, char* i
 {
     if(getCommandCounter() == 9){
         if(check_send_cmd("AT+CIPSEND\r\n",">")){
-            char     MQTThead[10]={0x00,0x04,0x4d,0x51,0x54,0x54,0x04,0xc2,0x0b,0xb8};
-            
+            char MQTThead[10]={0x00,0x04,0x4d,0x51,0x54,0x54,0x04,0xc2,0x0b,0xb8};
             char MQTTbuff[50]={0};
             MQTTbuff[0] = 0x10;
             send_buff(MQTTbuff,1);
