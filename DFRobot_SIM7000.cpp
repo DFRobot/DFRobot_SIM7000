@@ -256,18 +256,31 @@ bool  DFRobot_SIM7000::turnON(void)
     digitalWrite(12, HIGH);
     delay(2000);
     digitalWrite(12, LOW);
+    int i=3;
     while(1){
+        i = 3;
         delay(2000);
         baudrate = 115200;
         setRate(baudrate);
-        if(check_send_cmd("AT\r\n","OK")){
-            return true;
+        send_cmd("AT\r\n");
+        while(i){
+            if(check_send_cmd("AT\r\n","OK")){
+                return true;
+            }
+            delay(200);
+            i--;
         }
         delay(2000);
+        i = 3;
         baudrate = 19200;
         setRate(baudrate);
-        if(check_send_cmd("AT\r\n","OK")){
-            return true;
+        send_cmd("AT\r\n");
+        while(i){
+            if(check_send_cmd("AT\r\n","OK")){
+                return true;
+            }
+            delay(200);
+            i--;
         }
     }
 }
