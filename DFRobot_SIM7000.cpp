@@ -136,46 +136,43 @@ bool  DFRobot_SIM7000::setNet(Net net)
 
 bool  DFRobot_SIM7000::attacthService(void)
 {
-    if(getCommandCounter() == 3){
-        char  i;
-        char *s;
-        char gprsBuffer[32];
-        cleanBuffer(gprsBuffer,32);
-        send_cmd("AT+CGATT=1\r\n");
-        while(1){
-            readBuffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
-            if(NULL != strstr(gprsBuffer, "OK")){
-                delay(100);
-                break;
-            }
-            if(NULL != strstr(gprsBuffer, "ERROR")){
-                return false;
-            }
-        }
-        cleanBuffer(gprsBuffer,32);
-        if(check_send_cmd("AT+CSTT\r\n","OK")){
+
+    char  i;
+    char *s;
+    char gprsBuffer[32];
+    cleanBuffer(gprsBuffer,32);
+    send_cmd("AT+CGATT=1\r\n");
+    while(1){
+        readBuffer(gprsBuffer, 32, DEFAULT_TIMEOUT);
+        if(NULL != strstr(gprsBuffer, "OK")){
             delay(100);
-        }else{
+            break;
+        }
+        if(NULL != strstr(gprsBuffer, "ERROR")){
             return false;
         }
-        send_cmd("AT+CIICR\r\n");
-        while(1){
-            readBuffer(gprsBuffer, 32);
-            if(NULL != strstr(gprsBuffer, "OK")){
-                delay(200);
-                break;
-            }else if(NULL != strstr(gprsBuffer,"ERROR")){
-                return false;
-            }
-        }
-        if(check_send_cmd("AT+CIFSR\r\n","ERROR")){
-            return false;
-        }
-        setCommandCounter(4);
-        return true;
+    }
+    cleanBuffer(gprsBuffer,32);
+    if(check_send_cmd("AT+CSTT\r\n","OK")){
+        delay(100);
     }else{
         return false;
     }
+    send_cmd("AT+CIICR\r\n");
+    while(1){
+        readBuffer(gprsBuffer, 32);
+        if(NULL != strstr(gprsBuffer, "OK")){
+            delay(200);
+            break;
+        }else if(NULL != strstr(gprsBuffer,"ERROR")){
+            return false;
+        }
+    }
+    if(check_send_cmd("AT+CIFSR\r\n","ERROR")){
+        return false;
+    }
+    setCommandCounter(4);
+    return true;
 }
 
 int   DFRobot_SIM7000::checkSignalQuality(void)
