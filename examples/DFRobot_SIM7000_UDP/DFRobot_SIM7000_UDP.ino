@@ -6,6 +6,8 @@
   *         Then enter data send to server and will receive the data same as entered
   *         Thus we finished the UDP send and receive verification
   * Note  : If you use Mega please connect PIN8 PIN10 and set PIN_RX = 10
+  *         The server in this example is provided by the chip supplier for UDP test
+  *
   */
 
 #include <Wire.h>
@@ -29,27 +31,34 @@ void setup(){
     }
 
     Serial.println("Set baud rate......");
-    if(sim7000.setBaudRate(19200)){                             //Set baud rate from 115200 to 19200
-        Serial.println("Set baud rate:19200");
-    }else{
-        Serial.println("Faile to set baud rate");
-        return;
+    while(1){
+        if(sim7000.setBaudRate(19200)){                         //Set SIM7000 baud rate from 115200 to 19200 reduce the baud rate to avoid distortion
+            Serial.println("Set baud rate:19200");
+            break;
+        }else{
+            Serial.println("Faile to set baud rate");
+            delay(1000);
+        }
     }
 
     Serial.println("Check SIM card......");
     if(sim7000.checkSIMStatus()){                               //Check SIM card
         Serial.println("SIM card READY");
+        break;
     }else{
-        Serial.println("SIM card ERROR");
-        return;
+        Serial.println("SIM card ERROR, Check if you have insert SIM card and restar SIM7000");
+        while(1);
     }
-    delay(500);
 
     Serial.println("Set net mode......");
-    if(sim7000.setNetMode(NB)){                                 //Set net mod NB-IOT
-        Serial.println("Set NB-IOT mode");
-    }else{
-        Serial.println("Fail to set mode");
+    while(1){
+        if(sim7000.setNetMode(NB)){                             //Set net mod NB-IOT
+            Serial.println("Set NB-IOT mode");
+            break;
+        }else{
+            Serial.println("Fail to set mode");
+            delay(1000);
+        }
     }
 
     Serial.println("Get signal quality......");
@@ -60,14 +69,20 @@ void setup(){
     delay(500);
 
     Serial.println("Attaching service......");
-    if(sim7000.attacthService()){                               //Open the connection
-        Serial.println("Attach service");
-    }else{
-        Serial.println("Fail to Attach service");
-        return;
+    while(1){
+        if(sim7000.attacthService()){                           //Open the connection
+            Serial.println("Attach service");
+            break;
+        }else{
+            Serial.println("Fail to Attach service");
+            delay(1000);
+        }
     }
-    delay(200);
 
+}
+
+void loop(){
+    delay(2000);
     Serial.println("Connecting......");
     if(sim7000.openNetwork(UDP,"112.74.93.163",9933)){          //Start Up UDP Connection
         Serial.println("Connect OK");
@@ -84,7 +99,6 @@ void setup(){
         sim7000.recv(buff,350,0);
         Serial.println("Send data, recive :");
         Serial.println(buff);
-
     }else{
         Serial.println("Failed to send");
     }
@@ -96,12 +110,6 @@ void setup(){
     }else{
         Serial.println("Fail to close connection");
     }
-    delay(2000);
-    sim7000.turnOFF();                                          //Turn OFF SIM7000
-}
-
-void loop(){
-    delay(1000);
 }
 
 int readSerial(char result[]){

@@ -104,7 +104,7 @@ bool setNetMode(Net net);
  * @brief Check signal quality
  *
  * @return
- *     0-99:Signal quality
+ *     0-30:Signal quality
  */
 int checkSignalQuality(void);
 

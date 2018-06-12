@@ -30,39 +30,56 @@ void setup() {
     if(sim7000.turnON()){                                        //Turn ON SIM7000
         Serial.println("Turn ON !");
     }
+
     Serial.println("Set baud rate......");
-    if(sim7000.setBaudRate(19200)){                              //Set baud rate from 115200 to 19200
-        Serial.println("Set baud rate:19200");
-    }else{
-        Serial.println("Faile to set baud rate");
-        return;
+    while(1){
+        if(sim7000.setBaudRate(19200)){                          //Set SIM7000 baud rate from 115200 to 19200 reduce the baud rate to avoid distortion
+            Serial.println("Set baud rate:19200");
+            break;
+        }else{
+            Serial.println("Faile to set baud rate");
+            delay(1000);
+        }
     }
+
     Serial.println("Check SIM card......");
-    if(sim7000.checkSIMStatus()){                                //Check SIM card
-        Serial.println("SIM card READY");
-    }else{
-        Serial.println("SIM card ERROR");
-        return;
+    while(1){
+        if(sim7000.checkSIMStatus()){                            //Check SIM card
+            Serial.println("SIM card READY");
+            break;
+        }else{
+            Serial.println("SIM card ERROR");
+            delay(1000);
+        }
     }
+
     Serial.println("Set net mode......");
-    if(sim7000.setNetMode(NB)){                                  //Set net mod NB-IOT
-        Serial.println("Set NB-IOT mode");
-    }else{
-        Serial.println("Fail to set mode");
+    while(1){
+        if(sim7000.setNetMode(NB)){                              //Set net mod NB-IOT
+            Serial.println("Set NB-IOT mode");
+            break;
+        }else{
+            Serial.println("Fail to set mode");
+            delay(1000);
+        }
     }
+
     Serial.println("Get signal quality......");
     int  signalStrength=sim7000.checkSignalQuality();            //Check signal quality from (0-30)
     Serial.print("signalStrength =");
     Serial.println(signalStrength);
     delay(500);
+
     Serial.println("Attaching service......");
-    if(sim7000.attacthService()){                                //Open the connection
-        Serial.println("Attach service");
-    }else{
-        Serial.println("Fail to Attach service");
-        return;
+    while(1){
+        if(sim7000.attacthService()){                            //Open the connection
+            Serial.println("Attach service");
+            break;
+        }else{
+            Serial.println("Fail to Attach service");
+            delay(1000);
+        }
     }
-    delay(200);
 }
 
 void loop()
