@@ -30,11 +30,14 @@ void setup() {
     }
 
     Serial.println("Set baud rate......");
-    if(sim7000.setBaudRate(19200)){                   //Set baud rate from 115200 to 19200
-        Serial.println("Set baud rate:19200");
-    }else{
-        Serial.println("Faile to set baud rate");
-        return;
+    while(1){
+        if(sim7000.setBaudRate(19200)){               //Set SIM7000 baud rate from 115200 to 19200 reduce the baud rate to avoid distortion
+            Serial.println("Set baud rate:19200");
+            break;
+        }else{
+            Serial.println("Faile to set baud rate");
+            delay(1000);
+        }
     }
     mySerial.begin(19200);
     Serial.println("For example, if you type AT\\r\\n, OK\\r\\n will be responsed!");
