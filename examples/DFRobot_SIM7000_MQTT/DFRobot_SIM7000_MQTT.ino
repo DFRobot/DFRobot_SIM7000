@@ -13,7 +13,7 @@
 #include <Wire.h>
 #include <DFRobot_SIM7000.h>
 
-//Login website to register an account ,fill the following information based on your account
+//Login website (http://iot.dfrobot.com.cn) to register an account ,fill the following information based on your account
 #define serverIP        "iot.dfrobot.com.cn"
 #define IOT_CLIENT      " CLIENT NAME "
 #define IOT_USERNAME    " USER   NAME "
@@ -52,7 +52,7 @@ void setup(){
         Serial.println("SIM card READY");
         break;
     }else{
-        Serial.println("SIM card ERROR, Check if you have insert SIM card and restar SIM7000");
+        Serial.println("SIM card ERROR, Check if you have insert SIM card and restart SIM7000");
         while(1);
     }
 

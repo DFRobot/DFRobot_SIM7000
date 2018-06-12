@@ -120,8 +120,6 @@ bool  DFRobot_SIM7000::setNetMode(Net net)
 
 bool  DFRobot_SIM7000::attacthService(void)
 {
-    char  i;
-    char *s;
     char gprsBuffer[32];
     cleanBuffer(gprsBuffer,32);
     send_cmd("AT+CGATT=1\r\n");

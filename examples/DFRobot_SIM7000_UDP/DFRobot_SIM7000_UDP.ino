@@ -46,7 +46,7 @@ void setup(){
         Serial.println("SIM card READY");
         break;
     }else{
-        Serial.println("SIM card ERROR, Check if you have insert SIM card and restar SIM7000");
+        Serial.println("SIM card ERROR, Check if you have insert SIM card and restart SIM7000");
         while(1);
     }
 

@@ -43,7 +43,7 @@ void setup(){
         Serial.println("SIM card READY");
         break;
     }else{
-        Serial.println("SIM card ERROR, Check if you have insert SIM card and restar SIM7000");
+        Serial.println("SIM card ERROR, Check if you have insert SIM card and restart SIM7000");
         while(1);
     }
 
@@ -59,7 +59,6 @@ void setup(){
     }
 
     Serial.println("Get signal quality......");
-    delay(500);
     signalStrength=sim7000.checkSignalQuality();                                               //Check signal quality from (0-30)
     Serial.print("signalStrength =");
     Serial.println(signalStrength);

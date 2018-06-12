@@ -6,7 +6,7 @@
   *         Use getLongitude() to get longitude(-180,180), negative is west positive is east
   *         Use getLatitude() to get latitude(-90,90), negative is south positive is north
   * Note  : If you use Mega please connect PIN8 PIN10 and set PIN_RX = 10
-  *       : The positioning function only available in outdoor
+  *         The positioning function only available in outdoor
   */
 
 #include <Wire.h>
@@ -48,10 +48,9 @@ void setup(){
         Serial.println("SIM card READY");
         break;
     }else{
-        Serial.println("SIM card ERROR, Check if you have insert SIM card and restar SIM7000");
+        Serial.println("SIM card ERROR, Check if you h ave insert SIM card and restart SIM7000");
         while(1);
     }
-
 
     Serial.println("Init positioning function......");
     while(1){
