@@ -98,7 +98,7 @@ bool checkSIMStatus(void);
  *     ture   Success
  *     false  Failed
  */
-bool setNet(Net net);
+bool setNetMode(Net net);
 
 /*
  * @brief Check signal quality
@@ -140,7 +140,7 @@ bool attacthService(void);
  *     ture   Success
  *     false  Failed
  */
-bool connect(Protocol ptl,const char *host, int port);
+bool openNetwork(Protocol ptl,const char *host, int port);
 
 /*
  * @brief Receive data
@@ -243,44 +243,7 @@ bool MQTTconnect(char* iot_client, char* iot_username, char* iot_key);
  *     ture   Success
  *     false  Failed
  */
-bool MQTTsend(char* iot_topic, char* iot_data);
-
-/*
- * @brief MQTT subscribe request
- *
- * @param iot_topic The topic you want to subscribe
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool MQTTsubscribe(char* iot_topic);
-
-/*
- * @brief Receive data from subscribed topic
- *
- * @param iot_topic The subscribed topic
- *
- * @param buff      The buffer to store data
- *
- * @param maxlen    The maximum length of the buffer
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool     MQTTrecv(char* iot_topic, char* buff,int maxlen);
-
-/*
- * @brief MQTT unsubscribe request
- *
- * @param iot_topic The topic you want to unsubscribe
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool MQTTunsubscribe(char* iot_topic);
+bool MQTTpublish(char* iot_topic, String iot_data);
 
 ```
 

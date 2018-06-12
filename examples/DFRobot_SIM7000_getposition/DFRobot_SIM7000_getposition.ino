@@ -21,8 +21,12 @@ void setup(){
     int signalStrength,dataNum;
     Serial.begin(115200);
     sim7000.begin(mySerial);
-    sim7000.turnOFF();
     delay(5000);
+
+    Serial.println("Enter anything to get positioning ");
+    char loge[10];
+    readSerial(loge);
+    Serial.println("Getting position......");
 
     Serial.println("Turn ON SIM7000......");
     if(sim7000.turnON()){                                          //Turn ON SIM7000
@@ -34,7 +38,7 @@ void setup(){
         Serial.println("Set baud rate:19200");
     }else{
         Serial.println("Faile to set baud rate");
-        while(1);
+        return;
     }
 
     Serial.println("Check SIM card......");
@@ -42,7 +46,7 @@ void setup(){
         Serial.println("SIM card READY");
     }else{
         Serial.println("SIM card ERROR");
-        while(1);
+        return;
     }
 
     Serial.println("Init positioning function......");
@@ -52,7 +56,7 @@ void setup(){
             break;
         }else{
             Serial.println("Fail to init positioning function");
-            delay(500);
+            delay(2000);
         }
     }
 }

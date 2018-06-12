@@ -33,7 +33,7 @@ void setup(){
         Serial.println("Set baud rate:19200");
     }else{
         Serial.println("Faile to set baud rate");
-        while(1);
+        return;
     }
 
     Serial.println("Check SIM card......");
@@ -41,12 +41,12 @@ void setup(){
         Serial.println("SIM card READY");
     }else{
         Serial.println("SIM card ERROR");
-        while(1);
+        return;
     }
     delay(500);
 
     Serial.println("Set net mode......");
-    if(sim7000.setNet(NB)){                                                                    //Set net mod NB-IOT
+    if(sim7000.setNetMode(GPRS)){                                                              //Set net mod NB-IOT
         Serial.println("Set NB-IOT mode");
     }else{
         Serial.println("Fail to set mode");
@@ -64,16 +64,16 @@ void setup(){
         Serial.println("Attach service");
     }else{
         Serial.println("Fail to Attach service");
-        while(1);
+        return;
     }
     delay(200);
 
     Serial.println("Connecting......");
-    if(sim7000.connect(TCP,"www.taobao.com",80)){                                              //Start Up TCP Connection
+    if(sim7000.openNetwork(TCP,"www.taobao.com",80)){                                          //Start Up TCP Connection
         Serial.println("Connect OK");
     }else{
         Serial.println("Fail to connect");
-        while(1);
+        return;
     }
 
     sim7000.send("HEAD/HTTP/1.1\r\nHost:www.taobao.com\r\nConnection:keep-alive\r\n\r\n");     //Send Data
@@ -90,7 +90,6 @@ void setup(){
         Serial.println("Fail to close connection");
     }
     delay(2000);
-
     sim7000.turnOFF();                                                                         //Turn OFF SIM7000
 }
 

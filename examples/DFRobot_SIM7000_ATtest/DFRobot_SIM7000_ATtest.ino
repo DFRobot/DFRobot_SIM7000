@@ -3,8 +3,13 @@
   * Power : SIM7000 needs 7-12V DC power supply
   * Brief : This example use the serial port to send AT command to control the SIM7000
   *         With initialization completed, we can enter AT command to SIM7000 directly
-  * AT command list:
-  * https://github.com/DFRobot/binaryfiles/raw/master/DFR0505/doc/SIM7000%20Series_AT%20Command%20Manual_V1.01.pdf
+  *         Common AT commands : 
+  *         AT+CPIN? : Check SIM card
+  *         AT+CSQ   : Check signal quality
+  *         AT+CGATT?: Check net attached state
+  *         AT+CSTT  : Start net connect task
+  *         AT+CIFSR : Get local IP
+  *         Get the AT command table in Resource folder :SIM7000 Series_AT Command Manual_V1.01.pdf
   * Note  : If you use Mega please connect PIN8 PIN10 and set PIN_RX = 10
   *         The AT command must end with CRLF
   */
@@ -20,7 +25,6 @@ void setup() {
     sim7000.begin(mySerial);
     sim7000.turnOFF();
     delay(5000);
-
     Serial.println("Turn ON SIM7000......");
     if(sim7000.turnON()){                             //Turn ON SIM7000
         Serial.println("Turn ON !");
@@ -31,9 +35,8 @@ void setup() {
         Serial.println("Set baud rate:19200");
     }else{
         Serial.println("Faile to set baud rate");
-        while(1);
+        return;
     }
-
     mySerial.begin(19200);
     Serial.println("For example, if you type AT\\r\\n, OK\\r\\n will be responsed!");
     Serial.println("Enter your AT command :");
@@ -44,11 +47,8 @@ void loop() {
     while(mySerial.available()){
         Serial.write(mySerial.read());
     }
-
     mySerial.flush();
     while(Serial.available()){
         mySerial.write(Serial.read());
     }
-
-    delay(20);
 }

@@ -17,10 +17,10 @@ init	KEYWORD2
 checkSignalQuality	KEYWORD2
 checkSIMStatus	KEYWORD2
 getRevision	KEYWORD2
-setNet	KEYWORD2
+setNetMode	KEYWORD2
 attacthService	KEYWORD2
 bringupConnection	KEYWORD2
-connect	KEYWORD2
+openNetwork	KEYWORD2
 send	KEYWORD2
 recv	KEYWORD2
 close	KEYWORD2
@@ -32,7 +32,7 @@ getPosition	KEYWORD2
 getLatitude	KEYWORD2
 getLongitude	KEYWORD2
 MQTTconnect	KEYWORD2
-MQTTsend	KEYWORD2
+MQTTpublish	KEYWORD2
 MQTTsubscribe	KEYWORD2
 MQTTunsubscribe	KEYWORD2
 MQTTrecv	KEYWORD2
