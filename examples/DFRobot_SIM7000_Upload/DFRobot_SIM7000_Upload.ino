@@ -43,14 +43,11 @@ void setup() {
     }
 
     Serial.println("Check SIM card......");
-    while(1){
-        if(sim7000.checkSIMStatus()){                            //Check SIM card
-            Serial.println("SIM card READY");
-            break;
-        }else{
-            Serial.println("SIM card ERROR, Check if you have insert SIM card and restart SIM7000");
-            delay(1000);
-        }
+    if(sim7000.checkSIMStatus()){                                //Check SIM card
+        Serial.println("SIM card READY");
+    }else{
+        Serial.println("SIM card ERROR, Check if you have insert SIM card and restart SIM7000");
+        while(1);
     }
 
     Serial.println("Set net mode......");
