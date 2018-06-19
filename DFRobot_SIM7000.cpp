@@ -361,9 +361,15 @@ bool  DFRobot_SIM7000::MQTTpublish(char* iot_topic, String iot_data)
         MQTTbuff[0] = strlen(iot_topic);
         send_buff(MQTTbuff,1);
         send_cmd(iot_topic);
+        Serial.print(" MQTT buff11 = ");
+        Serial.write(MQTTdata);
         send_buff(MQTTdata,2);
         iot_data.toCharArray(MQTTbuff,iot_data.length());
-        send_buff(MQTTdata,iot_data.length());
+        send_String(iot_data);
+        Serial.print(" length = ");
+        Serial.println(iot_data.length());
+        Serial.print(" MQTT buff = ");
+        Serial.print(iot_data);
         if(check_send_cmd("","CLOSED")){
             return false;
         }else{

@@ -69,9 +69,9 @@ void loop(){
     readSerial(loge);
     Serial.println("Getting position......");
     if(sim7000.getPosition()){                                     //Get the current position
-        Serial.print("Longtude :");
+        Serial.print(" Longitude : ");
         Serial.println(sim7000.getLongitude());                    //Get longitude
-        Serial.print("Latitude :");
+        Serial.print(" Latitude : ");
         Serial.println(sim7000.getLatitude());                     //Get latitude
     }else{
         Serial.println("Wrong data try again");

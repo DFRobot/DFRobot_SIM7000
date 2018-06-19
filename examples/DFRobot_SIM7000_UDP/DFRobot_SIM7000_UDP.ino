@@ -83,7 +83,7 @@ void setup(){
 void loop(){
     delay(2000);
     Serial.println("Connecting......");
-    if(sim7000.openNetwork(UDP,"112.74.93.163",9933)){          //Start Up UDP Connection
+    if(sim7000.openNetwork(UDP,"112.74.93.163",9933)){          //Start up UDP connection
         Serial.println("Connect OK");
     }else{
         Serial.println("Fail to connect");
