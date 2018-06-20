@@ -215,7 +215,6 @@ bool  DFRobot_SIM7000::openNetwork(Protocol ptl,const char *host, int port)
 
 bool  DFRobot_SIM7000::turnON(void)
 {
-    delay(300);
     baudrate = 115200;
     setRate(baudrate);
     send_cmd("AT\r\n");
@@ -230,8 +229,8 @@ bool  DFRobot_SIM7000::turnON(void)
     digitalWrite(12, LOW);
     int i=3;
     while(1){
-        i = 3;
-        delay(2000);
+        i = 2;
+        delay(200);
         baudrate = 115200;
         setRate(baudrate);
         send_cmd("AT\r\n");
@@ -242,8 +241,8 @@ bool  DFRobot_SIM7000::turnON(void)
             delay(200);
             i--;
         }
-        delay(2000);
-        i = 3;
+        i = 2;
+        delay(200);
         baudrate = 19200;
         setRate(baudrate);
         send_cmd("AT\r\n");

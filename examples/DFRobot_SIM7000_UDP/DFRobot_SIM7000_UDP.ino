@@ -2,7 +2,7 @@
   * File  : DFRobot_SIM7000_UDP.ino
   * Power : SIM7000 needs 7-12V DC power supply
   * Brief : This example verify UDP connection over a test server
-  *         With initialization completed, we use connect(UDP,"112.74.93.163",9933) to set UDP connection
+  *         With initialization completed, we use connect(UDP,"112.74.93.163",5232) to set UDP connection
   *         Then enter data send to server and will receive the data same as entered
   *         Thus we finished the UDP send and receive verification
   * Note  : If you use Mega please connect PIN8 PIN10 and set PIN_RX = 10
@@ -13,12 +13,14 @@
 #include <Wire.h>
 #include <DFRobot_SIM7000.h>
 
-#define PIN_TX     7
-#define PIN_RX     8
-SoftwareSerial     mySerial(PIN_RX,PIN_TX);
-DFRobot_SIM7000    sim7000;
-char               sendData[100];
-char               buff[100];
+#define serverIP    "112.74.93.163"
+#define serverPort   5232
+#define PIN_TX       7
+#define PIN_RX       8
+SoftwareSerial       mySerial(PIN_RX,PIN_TX);
+DFRobot_SIM7000      sim7000;
+char                 sendData[100];
+char                 buff[100];
 
 void setup(){
     int signalStrength,dataNum;
@@ -83,7 +85,7 @@ void setup(){
 void loop(){
     delay(2000);
     Serial.println("Connecting......");
-    if(sim7000.openNetwork(UDP,"112.74.93.163",4509)){          //Start up UDP connection
+    if(sim7000.openNetwork(UDP,serverIP,serverPort)){           //Start up UDP connection
         Serial.println("Connect OK");
     }else{
         Serial.println("Fail to connect");

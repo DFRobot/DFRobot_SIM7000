@@ -4,10 +4,10 @@
   * Brief : This example verify MQTT send verification
   *         With initialization completed, we connect to iot.dfrobot.com.cn
   *         Then send data to a topic
-  *         Thus we finished the MQTT send verification 
+  *         Thus we finished the MQTT send verification
   * Note  : If you use Mega please connect PIN8 PIN10 and set PIN_RX = 10
   *         If you select another IOT, please confirm that the IOT is in the whitelist of your NB card
-  *
+  *         The maximum length of data transmitted each time is 50
   */
 
 #include <Wire.h>
@@ -108,7 +108,7 @@ void loop(){
     }
     delay(200);
 
-    Serial.println("Input data end with CRLF: ");
+    Serial.println("Input data end with CRLF : ");
     sendData = readSerial(sendData);
     Serial.print("Send data : ");
     Serial.print(sendData);
@@ -132,16 +132,24 @@ void loop(){
 }
 
 String readSerial(String result){
+    int i = 0;
     while(1){
         while(Serial.available() > 0){
             char inChar = Serial.read();
             if(inChar == '\n'){
                 result += '\0';
-                Serial.flush();
+                while(Serial.read() >= 0);
+                return result;
+            }
+            if(i == 50){
+                Serial.println("The data is too long");
+                result += '\0';
+                while(Serial.read() >= 0);
                 return result;
             }
             if(inChar != '\r'){
                 result += inChar;
+                i++;
             }
         }
     }
