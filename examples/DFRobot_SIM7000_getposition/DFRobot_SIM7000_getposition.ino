@@ -20,8 +20,8 @@ DFRobot_SIM7000    sim7000;
 void setup(){
     int signalStrength,dataNum;
     Serial.begin(115200);
+    while(!Serial);
     sim7000.begin(mySerial);
-    delay(5000);
     Serial.println("Enter anything to get positioning ");
     char loge[10];
     readSerial(loge);
@@ -64,7 +64,7 @@ void setup(){
 }
 
 void loop(){
-    Serial.println("Enter anything to get positioning ");
+    Serial.println("Enter anything end with CRLF to get positioning ");
     char loge[10];
     readSerial(loge);
     Serial.println("Getting position......");

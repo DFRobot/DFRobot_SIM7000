@@ -23,8 +23,8 @@ char               buff[100];
 void setup(){
     int signalStrength,dataNum;
     Serial.begin(115200);
+    while(!Serial);
     sim7000.begin(mySerial);
-    delay(5000);
     Serial.println("Turn ON SIM7000......");
     if(sim7000.turnON()){                                       //Turn ON SIM7000
         Serial.println("Turn ON !");
@@ -83,7 +83,7 @@ void setup(){
 void loop(){
     delay(2000);
     Serial.println("Connecting......");
-    if(sim7000.openNetwork(UDP,"112.74.93.163",9933)){          //Start up UDP connection
+    if(sim7000.openNetwork(UDP,"112.74.93.163",4509)){          //Start up UDP connection
         Serial.println("Connect OK");
     }else{
         Serial.println("Fail to connect");

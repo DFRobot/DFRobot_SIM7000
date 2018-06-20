@@ -29,8 +29,8 @@ DFRobot_SIM7000         sim7000;
 void setup(){
     int signalStrength;
     Serial.begin(115200);
+    while(!Serial);
     sim7000.begin(mySerial);
-    delay(5000);
     Serial.println("Turn ON SIM7000......");
     if(sim7000.turnON()){                                        //Turn ON SIM7000
         Serial.println("Turn ON !");
@@ -87,7 +87,7 @@ void setup(){
 }
 
 void loop(){
-    char  sendData[100];
+    String  sendData;
     Serial.print("Connect to :");
     Serial.println(serverIP);
     if(sim7000.openNetwork(TCP,serverIP,1883)){                  //Connect to server
@@ -108,8 +108,8 @@ void loop(){
     }
     delay(200);
 
-    Serial.println("Input data : ");
-    readSerial(sendData);
+    Serial.println("Input data end with CRLF: ");
+    sendData = readSerial(sendData);
     Serial.print("Send data : ");
     Serial.print(sendData);
     Serial.println(" ......");
@@ -131,19 +131,17 @@ void loop(){
     delay(2000);
 }
 
-int readSerial(char result[]){
-    int i = 0;
+String readSerial(String result){
     while(1){
         while(Serial.available() > 0){
             char inChar = Serial.read();
             if(inChar == '\n'){
-                result[i] = '\0';
+                result += '\0';
                 Serial.flush();
-                return 0;
+                return result;
             }
             if(inChar != '\r'){
-                result[i] = inChar;
-                i++;
+                result += inChar;
             }
         }
     }

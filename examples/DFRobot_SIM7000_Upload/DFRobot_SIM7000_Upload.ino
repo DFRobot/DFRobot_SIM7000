@@ -24,8 +24,8 @@ DFRobot_SIM7000         sim7000;
 
 void setup() {
     Serial.begin(115200);
+    while(!Serial);
     sim7000.begin(mySerial);
-    delay(5000);
     Serial.println("Turn ON SIM7000......");
     if(sim7000.turnON()){                                        //Turn ON SIM7000
         Serial.println("Turn ON !");
