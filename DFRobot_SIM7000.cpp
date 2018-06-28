@@ -107,10 +107,13 @@ bool  DFRobot_SIM7000::setNetMode(Net net)
             return false;
         }
     }else if(net == GPRS){
-        if(check_send_cmd("AT+CNVW=0,10,\"0D00\"\r\n","OK")){
-            return true;
-        }else{
-            return false;
+       if(check_send_cmd("AT+CNMP=13\r\n","OK")){
+            delay(300);
+            if(check_send_cmd("AT+CMNB=3\r\n","OK")){
+                return true;
+            }else{
+                return false;
+            }
         }
     }else{
         Serial.println("No such mode!");
@@ -443,6 +446,84 @@ bool  DFRobot_SIM7000::MQTTdisconnect(void)
     }
 }
 
+bool  DFRobot_SIM7000::HTTPinit(Net mode)
+{
+    if(mode == NB){
+        if(!check_send_cmd("AT+SAPBR=3,1,\"APN\",\"ctnb\"\r\n","OK")){
+            return false;
+        }
+    }else if(mode == GPRS){
+        if(!check_send_cmd("AT+SAPBR=3,1,\"APN\",\"cmnet\"\r\n","OK")){
+            return false;
+        }
+    }
+    if(!check_send_cmd("AT+SAPBR=1,1\r\n","OK")){
+        return false;
+    }
+    if(!check_send_cmd("AT+SAPBR=2,1\r\n","OK")){
+        return false;
+    }
+    return true;
+}
+
+bool  DFRobot_SIM7000::HTTPconnect(const char *Host)
+{
+    check_send_cmd("AT+HTTPTERM\r\n","OK");
+    if(!check_send_cmd("AT+HTTPINIT\r\n","OK")){
+        return false;
+    }
+    if(!check_send_cmd("AT+HTTPPARA=\"CID\",\"1\"\r\n","OK")){
+        return false;
+    }
+    send_cmd("AT+HTTPPARA=\"URL\",\"");
+    send_cmd(Host);
+    if(!check_send_cmd("\"\r\n","OK")){
+        return false;
+    }
+    return true;
+}
+
+bool  DFRobot_SIM7000::HTTPpost(String data)
+{
+    char resp[40];
+    send_cmd("AT+HTTPDATA=");
+    String    length ;
+    length += data.length();
+    send_String(length);
+    if(!check_send_cmd(",10000\r\n","DOWNLOAD")){
+        return false;
+    }
+    send_String(data);
+    while(1){
+        readBuffer(resp,20);
+        if(NULL != strstr(resp,"OK")){
+            break;
+        }
+        if(NULL != strstr(resp,"ERROR")){
+            return false;
+        }
+    }
+    if(check_send_cmd("AT+HTTPACTION=1\r\n","601")){
+        return false;
+    }
+    return true;
+}
+
+void  DFRobot_SIM7000::HTTPget(void)
+{
+    if(check_send_cmd("AT+HTTPACTION=0\r\n","601")){
+        data += 0;
+        return data;
+    }
+    send_cmd("AT+HTTPREAD\r\n");
+    get_String(data);
+}
+
+void  DFRobot_SIM7000::HTTPdisconnect(void)
+{
+    send_cmd("AT+HTTPTERM\r\n");
+}
+
 int   DFRobot_SIM7000::recv(char* buf, int maxlen, int timeout)
 {
     char gprsBuffer[maxlen];
@@ -495,7 +576,7 @@ char* DFRobot_SIM7000::getLongitude(void)
     }
 }
 
-bool  DFRobot_SIM7000::close(void)
+bool  DFRobot_SIM7000::closeNetwork(void)
 {
     if(check_send_cmd("AT+CIPSHUT\r\n","OK")){
         return true;

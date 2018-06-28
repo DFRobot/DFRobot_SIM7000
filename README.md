@@ -109,14 +109,6 @@ bool setNetMode(Net net);
 int checkSignalQuality(void);
 
 /*
- * @brief Get battery power
- *
- * @return
- *     0-99:Battery power
- */
-int batteryPower(void);
-
-/*
  * @brief Open the connection
  *
  * @return
@@ -143,22 +135,6 @@ bool attacthService(void);
 bool openNetwork(Protocol ptl,const char *host, int port);
 
 /*
- * @brief Receive data
- *
- * @param buf The buffer to store data
- *
- * @param maxlen The max length of data 
- *    The maximum value:300
- *
- * @param timeout Maximum waiting time
- *    Default time = 0 keep receiving state
- *
- * @return
- *    The byte of received data
- */
-int recv(char* buf,int maxlen,int timeout);
-
-/*
  * @brief Send data
  *
  * @param *str The data to send
@@ -181,7 +157,7 @@ void send(void* buf,size_t len);
  *     ture   Success
  *     false  Failed
  */
-bool close(void);
+bool closeNetwork(void);
 
 /*
  * @brief Init SIM7000 positioning module
@@ -244,6 +220,54 @@ bool MQTTconnect(char* iot_client, char* iot_username, char* iot_key);
  *     false  Failed
  */
 bool MQTTpublish(char* iot_topic, String iot_data);
+
+/*
+ * @brief Initialize HTTP service
+ *
+ * @param net The net mode
+ *     GPRS: GPRS mode
+ *     NB:   NB-IOT mode
+ *
+ * @return
+ *     ture   Success
+ *     false  Failed
+ */
+bool HTTPinit(Net mode);
+
+/*
+ * @brief Connect to server
+ *
+ * @param Host Server IP
+ *
+ * @return
+ *     ture   Success
+ *     false  Failed
+ */
+bool HTTPconnect(const char *Host);
+
+/*
+ * @brief HTTP POST
+ *
+ * @param data POST data
+ *
+ * @return
+ *     ture   Success
+ *     false  Failed
+ */
+bool HTTPpost(String data);
+
+/*
+ * @brief HTTP GET
+ *
+ * @Note This function print the get data
+ */
+void HTTPget(void);
+
+/*
+ * @brief Disconnect from server and cancel initialization
+ *
+ */
+void HTTPdisconnect(void);
 
 ```
 

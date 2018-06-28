@@ -33,7 +33,7 @@ public:
     bool     setBaudRate(long rate);
     bool     checkSIMStatus(void);
     bool     openNetwork(Protocol ptl, const char *host, int port);
-    bool     close(void);
+    bool     closeNetwork(void);
     bool     turnON(void);
     bool     initPos(void);
     bool     MQTTconnect(char* iot_client, char* iot_username, char* iot_key);
@@ -42,6 +42,11 @@ public:
     bool     MQTTunsubscribe(char* iot_topic);
     bool     MQTTrecv(char* iot_topic, char* buf,int maxlen);
     bool     MQTTdisconnect(void);
+    bool     HTTPinit(Net mode);
+    bool     HTTPconnect(const char *Host);
+    bool     HTTPpost(String data);
+    void     HTTPget(void);
+    void     HTTPdisconnect(void);
     bool     send(void *buffer,size_t len);
     bool     send(char *data);
     bool     getPosition(void);

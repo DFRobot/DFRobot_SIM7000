@@ -23,7 +23,7 @@ bringupConnection	KEYWORD2
 openNetwork	KEYWORD2
 send	KEYWORD2
 recv	KEYWORD2
-close	KEYWORD2
+closeNetwork	KEYWORD2
 turnON	KEYWORD2
 turnOFF	KEYWORD2
 initPos	KEYWORD2
@@ -36,6 +36,11 @@ MQTTpublish	KEYWORD2
 MQTTsubscribe	KEYWORD2
 MQTTunsubscribe	KEYWORD2
 MQTTrecv	KEYWORD2
+HTTPinit	KEYWORD2
+HTTPconnect	KEYWORD2
+HTTPpost	KEYWORD2
+HTTPget	KEYWORD2
+HTTPdisconnect	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
