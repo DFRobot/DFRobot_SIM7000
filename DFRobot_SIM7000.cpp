@@ -506,16 +506,19 @@ bool  DFRobot_SIM7000::HTTPpost(String data)
     if(check_send_cmd("AT+HTTPACTION=1\r\n","601")){
         return false;
     }
+    send_cmd("AT+HTTPREAD\r\n");
+    get_String(data);
     return true;
 }
 
 void  DFRobot_SIM7000::HTTPget(void)
 {
     if(check_send_cmd("AT+HTTPACTION=0\r\n","601")){
-        data += 0;
-        return data;
+        Serial.println("ERROR !");
+        return ;
     }
     send_cmd("AT+HTTPREAD\r\n");
+    String data;
     get_String(data);
 }
 
