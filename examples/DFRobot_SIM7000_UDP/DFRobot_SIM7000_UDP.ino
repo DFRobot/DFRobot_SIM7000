@@ -106,7 +106,7 @@ void loop(){
     delay(500);
 
     Serial.println("Close connection......");
-    if(sim7000.close()){                                        //End the connection
+    if(sim7000.closeNetwork()){                                 //End the connection
         Serial.println("Closed !");
     }else{
         Serial.println("Fail to close connection");

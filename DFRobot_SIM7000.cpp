@@ -469,6 +469,7 @@ bool  DFRobot_SIM7000::httpInit(Net mode)
 bool  DFRobot_SIM7000::httpConnect(const char *Host)
 {
     httpDisconnect();
+    delay(5);
     if(!check_send_cmd("AT+HTTPINIT\r\n","OK")){
         return false;
     }
