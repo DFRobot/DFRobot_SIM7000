@@ -206,7 +206,7 @@ char* getLatitude(void);
  *     ture   Success
  *     false  Failed
  */
-bool MQTTconnect(char* iot_client, char* iot_username, char* iot_key);
+bool mqttConnect(char* iot_client, char* iot_username, char* iot_key);
 
 /*
  * @brief MQTT send command
@@ -219,7 +219,7 @@ bool MQTTconnect(char* iot_client, char* iot_username, char* iot_key);
  *     ture   Success
  *     false  Failed
  */
-bool MQTTpublish(char* iot_topic, String iot_data);
+bool mqttPublish(char* iot_topic, String iot_data);
 
 /*
  * @brief Initialize HTTP service
@@ -232,7 +232,7 @@ bool MQTTpublish(char* iot_topic, String iot_data);
  *     ture   Success
  *     false  Failed
  */
-bool HTTPinit(Net mode);
+bool httpInit(Net mode);
 
 /*
  * @brief Connect to server
@@ -243,7 +243,7 @@ bool HTTPinit(Net mode);
  *     ture   Success
  *     false  Failed
  */
-bool HTTPconnect(const char *Host);
+bool httpConnect(const char *Host);
 
 /*
  * @brief HTTP POST
@@ -254,20 +254,20 @@ bool HTTPconnect(const char *Host);
  *     ture   Success
  *     false  Failed
  */
-bool HTTPpost(String data);
+bool httpPost(String data);
 
 /*
  * @brief HTTP GET
  *
  * @Note This function print the get data
  */
-void HTTPget(void);
+void httpGet(void);
 
 /*
  * @brief Disconnect from server and cancel initialization
  *
  */
-void HTTPdisconnect(void);
+void httpDisconnect(void);
 
 ```
 

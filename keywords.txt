@@ -31,16 +31,16 @@ getTime	KEYWORD2
 getPosition	KEYWORD2
 getLatitude	KEYWORD2
 getLongitude	KEYWORD2
-MQTTconnect	KEYWORD2
-MQTTpublish	KEYWORD2
-MQTTsubscribe	KEYWORD2
-MQTTunsubscribe	KEYWORD2
-MQTTrecv	KEYWORD2
-HTTPinit	KEYWORD2
-HTTPconnect	KEYWORD2
-HTTPpost	KEYWORD2
-HTTPget	KEYWORD2
-HTTPdisconnect	KEYWORD2
+mqttConnect	KEYWORD2
+mqttPublish	KEYWORD2
+mqttSubscribe	KEYWORD2
+mqttUnsubscribe	KEYWORD2
+mqttRecv	KEYWORD2
+httpInit	KEYWORD2
+httpConnect	KEYWORD2
+httpPost	KEYWORD2
+httpGet	KEYWORD2
+httpDisconnect	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

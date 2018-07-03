@@ -316,7 +316,7 @@ bool  DFRobot_SIM7000::send(void *buffer,size_t len)
     }
 }
 
-bool  DFRobot_SIM7000::MQTTconnect(char* iot_client, char* iot_username, char* iot_key)
+bool  DFRobot_SIM7000::mqttConnect(char* iot_client, char* iot_username, char* iot_key)
 {
     if(check_send_cmd("AT+CIPSEND\r\n",">")){
         char MQTThead[10]={0x00,0x04,0x4d,0x51,0x54,0x54,0x04,0xc2,0x0b,0xb8};
@@ -351,7 +351,7 @@ bool  DFRobot_SIM7000::MQTTconnect(char* iot_client, char* iot_username, char* i
     return false;
 }
 
-bool  DFRobot_SIM7000::MQTTpublish(char* iot_topic, String iot_data)
+bool  DFRobot_SIM7000::mqttPublish(char* iot_topic, String iot_data)
 {
     if(check_send_cmd("AT+CIPSEND\r\n",">")){
         char     MQTTdata[2]={0x00,0x04};
@@ -376,7 +376,7 @@ bool  DFRobot_SIM7000::MQTTpublish(char* iot_topic, String iot_data)
     }
 }
 
-bool  DFRobot_SIM7000::MQTTsubscribe(char* iot_topic)
+bool  DFRobot_SIM7000::mqttSubscribe(char* iot_topic)
 {
     if(check_send_cmd("AT+CIPSEND\r\n",">")){
         char     MQTTbuff[10]={0};
@@ -396,7 +396,7 @@ bool  DFRobot_SIM7000::MQTTsubscribe(char* iot_topic)
     }
 }
 
-bool  DFRobot_SIM7000::MQTTunsubscribe(char* iot_topic)
+bool  DFRobot_SIM7000::mqttUnsubscribe(char* iot_topic)
 {
     if(check_send_cmd("AT+CIPSEND\r\n",">")){
         char     MQTTbuff[10]={0};
@@ -416,7 +416,7 @@ bool  DFRobot_SIM7000::MQTTunsubscribe(char* iot_topic)
     }
 }
 
-bool  DFRobot_SIM7000::MQTTrecv(char* iot_topic, char* buf, int maxlen)
+bool  DFRobot_SIM7000::mqttRecv(char* iot_topic, char* buf, int maxlen)
 {
     char   MQTTbuff[maxlen+30];
     char  *p; 
@@ -431,7 +431,7 @@ bool  DFRobot_SIM7000::MQTTrecv(char* iot_topic, char* buf, int maxlen)
     return false;
 }
 
-bool  DFRobot_SIM7000::MQTTdisconnect(void)
+bool  DFRobot_SIM7000::mqttDisconnect(void)
 {
     if(check_send_cmd("AT+CIPSEND\r\n",">")){
         char     MQTTdata[2]={0xe0,0x00};
@@ -446,7 +446,7 @@ bool  DFRobot_SIM7000::MQTTdisconnect(void)
     }
 }
 
-bool  DFRobot_SIM7000::HTTPinit(Net mode)
+bool  DFRobot_SIM7000::httpInit(Net mode)
 {
     if(mode == NB){
         if(!check_send_cmd("AT+SAPBR=3,1,\"APN\",\"ctnb\"\r\n","OK")){
@@ -466,9 +466,9 @@ bool  DFRobot_SIM7000::HTTPinit(Net mode)
     return true;
 }
 
-bool  DFRobot_SIM7000::HTTPconnect(const char *Host)
+bool  DFRobot_SIM7000::httpConnect(const char *Host)
 {
-    check_send_cmd("AT+HTTPTERM\r\n","OK");
+    httpDisconnect();
     if(!check_send_cmd("AT+HTTPINIT\r\n","OK")){
         return false;
     }
@@ -483,8 +483,11 @@ bool  DFRobot_SIM7000::HTTPconnect(const char *Host)
     return true;
 }
 
-bool  DFRobot_SIM7000::HTTPpost(String data)
+bool  DFRobot_SIM7000::httpPost(const char *Host , String data)
 {
+    if(!httpConnect(Host)){
+        return false;
+    }
     char resp[40];
     send_cmd("AT+HTTPDATA=");
     String    length ;
@@ -511,18 +514,21 @@ bool  DFRobot_SIM7000::HTTPpost(String data)
     return true;
 }
 
-void  DFRobot_SIM7000::HTTPget(void)
+void  DFRobot_SIM7000::httpGet(const char *Host)
 {
+    if(!httpConnect(Host)){
+        return;
+    }
     if(check_send_cmd("AT+HTTPACTION=0\r\n","601")){
         Serial.println("ERROR !");
-        return ;
+        return;
     }
     send_cmd("AT+HTTPREAD\r\n");
     String data;
     get_String(data);
 }
 
-void  DFRobot_SIM7000::HTTPdisconnect(void)
+void  DFRobot_SIM7000::httpDisconnect(void)
 {
     send_cmd("AT+HTTPTERM\r\n");
 }

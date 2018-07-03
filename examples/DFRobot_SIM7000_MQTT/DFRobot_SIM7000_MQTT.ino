@@ -100,7 +100,7 @@ void loop(){
 
     Serial.print("Connect to : ");
     Serial.println(IOT_USERNAME);
-    if(sim7000.MQTTconnect(IOT_CLIENT,IOT_USERNAME,IOT_KEY)){    //MQTT connect request
+    if(sim7000.mqttConnect(IOT_CLIENT,IOT_USERNAME,IOT_KEY)){    //MQTT connect request
         Serial.println("Connected !");
     }else{
         Serial.println("Failed to connect");
@@ -113,7 +113,7 @@ void loop(){
     Serial.print("Send data : ");
     Serial.print(sendData);
     Serial.println(" ......");
-    if(sim7000.MQTTpublish(IOT_TOPIC,sendData)){                 //Send data to topic
+    if(sim7000.mqttPublish(IOT_TOPIC,sendData)){                 //Send data to topic
         Serial.println("Send OK");
     }else{
         Serial.println("Failed to send");

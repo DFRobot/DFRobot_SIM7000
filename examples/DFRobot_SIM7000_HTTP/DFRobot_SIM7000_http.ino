@@ -15,10 +15,14 @@
 #define PIN_RX     8
 
 //Login website (https://www.tlink.io/) to register an account ,fill the following information based on your account
-#define URL       "http://api.tlink.io/tlink_interface/api/device/createDataPonit.htm"
 #define deviceNo  "DEVICE ID"
 #define sensorsId "SENSOR ID"
 #define value     "  VALUE  "
+
+//This URL is use for post data to tlink
+#define POSTURL   "api.tlink.io/tlink_interface/api/device/createDataPonit.htm"
+//This URL is use for get data from tlink, please change the SENSORID to your sensorsId
+#define GETURL    "api.tlink.io/tlink_interface/api/device//getDataPoint_SENEORID.htm"
 
 SoftwareSerial     mySerial(PIN_RX,PIN_TX);
 DFRobot_SIM7000    sim7000;
@@ -82,7 +86,7 @@ void setup(){
 
     Serial.println("Init http......");
     while(1){
-        if(sim7000.HTTPinit(GPRS)){                          //Init http server
+        if(sim7000.httpInit(GPRS)){                          //Init http server
             Serial.println("HTTP init !");
             break;
         }else{
@@ -90,19 +94,8 @@ void setup(){
         }
     }
 
-    Serial.print("Connect to ");
-    Serial.print(URL);
-    Serial.println("......");
-    while(1){
-        if(sim7000.HTTPconnect(URL)){                        //Connect to server
-            Serial.println("Connected !");
-            break;
-        }else{
-            Serial.println("Fail to connect");
-        }
-    }
-
-    Serial.println("POST ......");
+    Serial.print("POST to ");
+    Serial.println(POSTURL);
     String httpbuff;
     httpbuff += "{\"deviceNo\":\"";                          //{
     httpbuff += deviceNo;                                    //   "deviceNo" : "DEVICE NO",
@@ -112,7 +105,7 @@ void setup(){
     httpbuff += value;                                       //       }]
     httpbuff += "\"}]}";                                     //}
     while(1){
-        if(sim7000.HTTPpost(httpbuff)){                      //HTTP POST
+        if(sim7000.httpPost(POSTURL,httpbuff)){              //HTTP POST
             Serial.println("Post successed");
             break;
         }else{
@@ -120,11 +113,12 @@ void setup(){
         }
     }
 
-    Serial.println("GET ......");
-    sim7000.HTTPget();                                       //HTTP GET
+    Serial.print("GET from ");
+    Serial.println(GETURL);
+    sim7000.httpGet(GETURL);                                 //HTTP GET
 
     Serial.println("Disconnect");
-    sim7000.HTTPdisconnect();                                //Disconnect
+    sim7000.httpDisconnect();                                //Disconnect
     Serial.println("Close net work");
     sim7000.closeNetwork();                                  //Close net work
     Serial.println("Turn off SIM7000");
