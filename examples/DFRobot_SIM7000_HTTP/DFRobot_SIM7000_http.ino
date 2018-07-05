@@ -86,7 +86,7 @@ void setup(){
 
     Serial.println("Init http......");
     while(1){
-        if(sim7000.httpInit(GPRS)){                          //Init http server
+        if(sim7000.httpInit(GPRS)){                          //Init http service
             Serial.println("HTTP init !");
             break;
         }else{
