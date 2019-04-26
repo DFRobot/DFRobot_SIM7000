@@ -58,6 +58,7 @@ private:
     char     latitude[8];
     char     longitude[8];
     char     battery[3];
+    int      mode_t=0;
  };
 
 #endif

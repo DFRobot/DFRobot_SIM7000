@@ -96,6 +96,7 @@ bool  DFRobot_SIM7000::checkSIMStatus(void)
 bool  DFRobot_SIM7000::setNetMode(Net net)
 {
     if(net == NB){
+       mode_t=0;
        if(check_send_cmd("AT+CNMP=38\r\n","OK")){
             delay(300);
             if(check_send_cmd("AT+CMNB=2\r\n","OK")){
@@ -107,6 +108,7 @@ bool  DFRobot_SIM7000::setNetMode(Net net)
             return false;
         }
     }else if(net == GPRS){
+       mode_t=1;
        if(check_send_cmd("AT+CNMP=13\r\n","OK")){
             delay(300);
             if(check_send_cmd("AT+CMNB=3\r\n","OK")){
@@ -137,10 +139,18 @@ bool  DFRobot_SIM7000::attacthService(void)
         }
     }
     cleanBuffer(gprsBuffer,32);
-    if(check_send_cmd("AT+CSTT\r\n","OK")){
-        delay(100);
+    if(mode_t){
+        if(check_send_cmd("AT+CSTT=\"cmnet\"\r\n","OK")){
+            delay(100);
+        }else{
+            return false;
+        }
     }else{
-        return false;
+        if(check_send_cmd("AT+CSTT=\"ctnb\"\r\n","OK")){
+            delay(100);
+        }else{
+            return false;
+        }
     }
     send_cmd("AT+CIICR\r\n");
     while(1){
