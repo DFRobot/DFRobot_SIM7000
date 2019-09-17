@@ -32,7 +32,9 @@ it has wireless communication capabilities even in a similar basement and the li
 /*
  * @brief Set SIM7000 software serial
  *
- * @Param &s_ SoftwareSerial
+ * @param &s_ SoftwareSerial
+ *
+ * @inherited from  DFRobot_SIM
  */
 void begin(Stream &s_);
 
@@ -51,6 +53,7 @@ void begin(Stream &s_);
  * @return
  *     ture   Success
  *     false  Failed
+ * @inherited from  DFRobot_SIM
  */
 bool turnOFF(void);
 
@@ -75,6 +78,7 @@ bool setBaudRate(long rate);
  * @return
  *     ture   Success
  *     false  Failed
+ * @inherited from  DFRobot_SIM
  */
 bool init(void);
 
