@@ -243,7 +243,7 @@ bool  DFRobot_SIM7000::turnON(void)
             if(check_send_cmd("AT\r\n","OK",1,1000)){
                 return true;
             }
-            delay(20);
+            delay(3000); // to fix Turn ON problem
             i--;
         }
         pinMode(12,OUTPUT);
