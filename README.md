@@ -1,278 +1,309 @@
 
-# DFROBOT_SIM7000 Library for Arduino
--  Provides an Arduino library for NB-IOT SIM7000 Shield
--  SIM7000 is the first LTE CAT-M1 / NB-IoT module, it supports multiple frequency bands of LTE-TDD / LTE-FDD / GSM / GPRS / EDGE
-The upstream and downstream data flow peak 375kbps, it a stable low-power communications module.NB-IoT has 20dB + coverage gain, so
-it has wireless communication capabilities even in a similar basement and the like.
-
-# NB-IOT SIM7000 Shield
+# DFRobot_SIM7000
+* [中文版](./README_CN.md)
+  
+SIM7000 is the first LTE CAT-M1 / NB-IoT module, it supports multiple frequency bands of LTE-TDD / LTE-FDD / GSM / GPRS / EDGE.
+The upstream and downstream data flow peaks at 375kbps. It is a stable low-power communications module. NB-IoT has 20dB + coverage gain, so
+it has wireless communication capabilities even in environment like basement.
 
 ![SVG1](https://raw.githubusercontent.com/DFRobot/binaryfiles/master/DFR0505/DFR0505svg1.png)
 
+## Product Link(https://www.dfrobot.com/product-1701.html)
+
+    SKU:DFR0505
+
 ## Table of Contents
 
-* [Summary](#summary)
-* [Methods](#methods)
-* [Compatibility](#Compatibility)
-* [Depends](#depends)
-* [History](#history)
-* [Credits](#credits)
-<snippet>
-<content>
+  * [Summary](#summary)
+  * [Installation](#installation)
+  * [Methods](#methods)
+  * [Compatibility](#compatibility)
+  * [History](#history)
+  * [Credits](#credits)
 
 ## Summary
-### The library provide some application rely on SIM7000:
-####   Use GPRS mode or NB-IOT mod to send and receive data by UDP or TCP
-####   Positioning current position by GNSS, this function works better on outdoor
-####   We also provide a way to send AT command directly to SIM7000
+
+The library provide some application rely on SIM7000:
+Use GPRS mode or NB-IOT mod to send and receive data by UDP or TCP
+Positioning current position by GNSS, this function works better on outdoor
+We also provide a way to send AT command directly to SIM7000
+
+## Installation
+
+Download the associated library before running the demo of the library:  https://github.com/DFRobot/DFRobot_SIM
+To use this library, first download the library file, paste it into the \Arduino\libraries directory, then open the examples folder and run the demo in the folder.
 
 ## Methods
 
 ```C++
-/*
- * @brief Set SIM7000 software serial
- *
- * @param &s_ SoftwareSerial
- *
- * @inherited from  DFRobot_SIM
- */
-void begin(Stream &s_);
+  /**
+   * @fn DFRobot_SIM7000
+   * @brief DFRobot_SIMcore constructor of abstract class. Construct serial ports
+   * @param s The pointer to abstract class, where you can fill in the pointer to serial object.
+   * @return None
+   */
+  DFRobot_SIM7000(Stream *s);
+  ~DFRobot_SIM7000(){};
 
-/*
- * @brief Turn ON SIM7000
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
- bool turnON(void);
+  /**
+   * @fn recv
+   * @brief Receive
+   * @param buf Receive data content
+   * @param maxlen Receive data length
+   * @return Get data length
+   */
+  int recv(char* buf, int maxlen);
+ 
+  /**
+   * @fn checkSignalQuality
+   * @brief Check signal quality
+   * @return 0-30:Signal quality
+   */
+  int checkSignalQuality(void);
 
-/*
- * @brief Turn OFF SIM7000
- *
- * @return
- *     ture   Success
- *     false  Failed
- * @inherited from  DFRobot_SIM
- */
-bool turnOFF(void);
+  /**
+   * @fn batteryPower
+   * @brief Battery power
+   * @return Battery power
+   */
+  int batteryPower(void);
+ 
+  /**
+   * @fn setNetMode
+   * @brief Set net mode
+   * @param net The net mode
+   * @n    GPRS: GPRS mode
+   * @n    NB:   NB-IOT mode
+   * @return bool type, indicating the status of setting
+   * @retval ture Success 
+   * @retval false Failed
+   */
+  bool setNetMode(eNet net);
 
-/*
- * @brief Set baud rate to avoid garbled
- *
- * @param rate Baud rate value
- *     Possible values:1200 2400 4800 9600 19200 38400
- *
- * @note 
- *     SIM7000 default baud rate is 115200 reduce the baud rate to avoid distortion
- *
- * @return
- *     ture   Success
- *     false  Faile
- */
-bool setBaudRate(long rate);
+  /**
+   * @fn attacthService
+   * @brief Open the connection
+   * @return bool type, indicating the status of opening the connection
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool attacthService(void);
 
-/*
- * @brief Init SIM7000
- *
- * @return
- *     ture   Success
- *     false  Failed
- * @inherited from  DFRobot_SIM
- */
-bool init(void);
+  /**
+   * @fn setBaudRate
+   * @brief Set baud rate to avoid garbled
+   * @param rate Baud rate value
+   * @n    Possible values:1200 2400 4800 9600 19200 38400
+   * @note SIM7000 default baud rate is 115200, reduce the baud rate to avoid distortion
+   * @return bool type, indicating the status of setting
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool setBaudRate(long rate);
 
-/*
- * @brief Check SIM card
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool checkSIMStatus(void);
+  /**
+   * @fn checkSIMStatus
+   * @brief Check SIM card
+   * @return bool type, indicating the status of checking SIM card
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool checkSIMStatus(void);
 
-/*
- * @brief Set net mode
- *
- * @param net The net mode
- *     GPRS: GPRS mode
- *     NB:   NB-IOT mode
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool setNetMode(Net net);
+  /**
+   * @fn openNetwork
+   * @brief Start up connection
+   * @param ptl  Choose connection protocol
+   * @n    TCP  Choose TCP
+   * @n    UDP  Choose UDP
+   * @param host Host domain name
+   * @param port  Contented port
+   * @return bool type, indicating the status of opening Network
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool openNetwork(eProtocol ptl, const char *host, int port);
 
-/*
- * @brief Check signal quality
- *
- * @return
- *     0-30:Signal quality
- */
-int checkSignalQuality(void);
+  /**
+   * @fn closeNetwork
+   * @brief End the connection
+   * @return bool type, indicating the status of closing Network
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool closeNetwork(void);
 
-/*
- * @brief Open the connection
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool attacthService(void);
+  /**
+   * @fn turnON
+   * @brief Turn ON SIM7000
+   * @return bool type, indicating the status of turning on
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool turnON(void);
 
-/*
- * @brief Start up connection
- *
- * @param ptl  Choose connection protocol
- *     TCP  Choose TCP
- *     UDP  Choose UDP
- *
- * @param *host Host domain name
- *
- * @param port  Contented port
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool openNetwork(Protocol ptl,const char *host, int port);
+  /**
+   * @fn initPos
+   * @brief Init SIM7000 positioning module
+   * @return bool type, indicating the initialization status
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool initPos(void);
 
-/*
- * @brief Send data
- *
- * @param *str The data to send
- */
-void send(const char *str);
+  /**
+   * @fn mqttConnect
+   * @brief MQTT connect request
+   * @param iot_client Client name user-defined
+   * @param iot_username The user name identifies the name of the user who is connecting
+   * @param iot_key The password for user
+   * @return bool type, indicating the connection status
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool mqttConnect(const char* iot_client, const char* iot_username, const char* iot_key);
 
-/*
- * @brief Send data with specify the length
- *
- * @param buf The buffer stored data to be send
- *
- * @param len The length of data to be send
- */
-void send(void* buf,size_t len);
+  /**
+   * @fn mqttPublish
+   * @brief MQTT send command
+   * @param iot_topic Target topic
+   * @param iot_data  The data you want to send
+   * @return bool type, indicating status of sending
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool mqttPublish(const char* iot_topic, String iot_data);
 
-/*
- * @brief End the connection
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool closeNetwork(void);
+  /**
+   * @fn mqttSubscribe
+   * @brief Subscribe MQTT channel
+   * @param iot_topic The subscribed MQTT key 
+   * @return bool type, indicating subscription status
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool mqttSubscribe(const char* iot_topic);
 
-/*
- * @brief Init SIM7000 positioning module
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool initPos(void);
+  /**
+   * @fn mqttUnsubscribe
+   * @brief Unsubscribe MQTT channel
+   * @param iot_topic The unsubscribed MQTT key
+   * @return bool type, indicating unsubscribe status
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool mqttUnsubscribe(const char* iot_topic);
 
-/*
- * @brief Get the current position
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool getPosition(void);
+  /**
+   * @fn mqttRecv
+   * @brief MQTT send data
+   * @param iot_topic Subscribe channel key
+   * @param buf Send data
+   * @param maxlen Send data length
+   * @return bool type, indicating subscription status
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool mqttRecv(char* iot_topic, char* buf,int maxlen);
 
-/*
- * @brief Get longitude
- *
- * @return
- *     Longitude value
- */
-char* getLongitude(void);
+  /**
+   * @fn mqttDisconnect
+   * @brief MQTT disconnection
+   * @return bool type, indicating disconnection status
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool mqttDisconnect(void);
 
-/*
- * @brief Get latitude
- *
- * @return
- *     Latitude value
- */
-char* getLatitude(void);
+  /**
+   * @fn httpInit
+   * @brief Initialize HTTP service
+   * @param net The net mode
+   * @n    eGPRS: GPRS mode
+   * @n    eNB:   NB-IOT mode
+   * @return bool type, indicating initialization status
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool httpInit(eNet net);
 
-/*
- * @brief MQTT connect request
- *
- * @param iot_client Client name user-defined
- *
- * @param iot_username The user name identifies the name of the user who is connecting
- *
- * @param iot_key The password for user
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool mqttConnect(char* iot_client, char* iot_username, char* iot_key);
+  /**
+   * @fn httpConnect
+   * @brief Connect to server
+   * @param host Server IP
+   * @return bool type, indicating connection status
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool httpConnect(const char *host);
 
-/*
- * @brief MQTT send command
- *
- * @param iot_topic Target topic
- *
- * @param iot_data  The data you want to send
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool mqttPublish(char* iot_topic, String iot_data);
+  /**
+   * @fn httpPost
+   * @brief HTTP POST
+   * @param host URL
+   * @param data POST data
+   * @return bool type, indicating request status
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool httpPost(const char *host , String data);
 
-/*
- * @brief Initialize HTTP service
- *
- * @param net The net mode
- *     GPRS: GPRS mode
- *     NB:   NB-IOT mode
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool httpInit(Net mode);
+  /**
+   * @fn httpGet
+   * @brief HTTP GET This function print the get data
+   * @param host URL
+   */
+  void httpGet(const char *host);
 
-/*
- * @brief Connect to server
- *
- * @param Host Server IP
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool httpConnect(const char *Host);
+  /**
+   * @fn httpDisconnect
+   * @brief Disconnect from server and cancel initialization
+   */
+  void httpDisconnect(void);
 
-/*
- * @brief HTTP POST
- *
- * @param data POST data
- *
- * @return
- *     ture   Success
- *     false  Failed
- */
-bool httpPost(String data);
+  /**
+   * @fn send
+   * @brief Send data with specify the length
+   * @param buf The buffer for data to be sent
+   * @param len The length of data to be sent
+   * @return bool type, indicating status of sending
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool send(char *buf,size_t len);
 
-/*
- * @brief HTTP GET
- *
- * @Note This function print the get data
- */
-void httpGet(void);
+  /**
+   * @fn send
+   * @brief Send data
+   * @param data The data to send
+   * @return bool type, indicating status of sending
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool send(char *data);
 
-/*
- * @brief Disconnect from server and cancel initialization
- *
- */
-void httpDisconnect(void);
+  /**
+   * @fn getPosition
+   * @brief Get the current position
+   * @return bool type, indicating the status of getting position
+   * @retval true Success 
+   * @retval false Failed
+   */
+  bool getPosition(void);
 
+  /**
+   * @fn getLatitude
+   * @brief Get latitude
+   * @return Latitude value
+   */
+  const char* getLatitude(void);
+
+  /**
+   * @fn getLongitude
+   * @brief Get longitude
+   * @return Longitude value
+   */
+  const char* getLongitude(void);
 ```
 
 ## Compatibility
@@ -281,21 +312,15 @@ MCU                | Work Well | Work Wrong | Untested  | Remarks
 ------------------ | :----------: | :----------: | :---------: | -----
 Arduino Uno  |      √       |             |            | 
 Leonardo  |      √       |             |            | 
-Meag2560 |      √       |             |            | 
+Meag2560 |         √    |              |            | 
 
 If you use Mega please connect PIN8 PIN10
 
-## Depends
-
-Projects           |                     URL                       | Remarks
------------------- | :-------------------------------------------: | -----------
-DFRobot_SIM        |  https://github.com/DFRobot/DFRobot_SIM       | must
-
 ## History
 
-- data 2017-8-30
-- version V1.0
+- 2017/8/30 - 1.0.0 version
+- 2021/09/16 - 1.0.1 version
 
 ## Credits
 
-- author [Zhangjiawei  <jiawei.zhang@dfrobot.com>]
+- Written by TangJie(jie.tang@dfrobot.com), 2021. (Welcome to our [website](https://www.dfrobot.com/))
