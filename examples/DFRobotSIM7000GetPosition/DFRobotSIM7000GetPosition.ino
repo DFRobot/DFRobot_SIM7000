@@ -51,7 +51,7 @@ void setup(){
     if(sim7000.checkSIMStatus()){                                  //Check SIM card
       Serial.println("SIM card READY");
     }else{
-      Serial.println("SIM card ERROR, Check if you h ave insert SIM card and restart SIM7000");
+      Serial.println("SIM card ERROR, Check if you have insert SIM card and restart SIM7000");
       while(1);
     }
 
