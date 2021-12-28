@@ -320,6 +320,7 @@ If you use Mega please connect PIN8 PIN10
 
 - 2017/8/30 - 1.0.0 version
 - 2021/09/16 - 1.0.1 version
+- 2021/12/28 - 1.0.2 version
 
 ## Credits
 
